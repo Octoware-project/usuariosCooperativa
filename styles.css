@@ -1,0 +1,185 @@
+
+ 
+.Principal{
+    background-color: #EBF1F4;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 10px;
+    border: 5px solid #A5DFE9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 70%;
+    height: 80vh;   
+}
+.Lateral{
+    background-color: #EBF1F4;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 30%;
+    height: 80vh;
+    border: 5px solid #A5DFE9;
+    text-align: center;
+    justify-content: center;
+}
+
+.Ventanas{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 80vh;
+
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+header {
+    background-color: #A5DFE9; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    height: 8vh; 
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-center {
+    display: flex;
+    justify-content: right;
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.user-icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.Big-user-icon {
+    height: 25vh;
+    width: 25wh;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.Button {
+    min-width: 120px;
+    max-width: 200px;
+    background-color: #d6eef4;
+    text-align: center;
+    color: #3b2b8d;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: bold;
+    border: 1px solid #b0d0db;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 2px;
+    cursor: pointer;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+
+.Button:hover {
+    background-color: #c4e1eb;
+    transition: background-color 0.2s;
+    transform: scale(1.05);
+    transition: transform 0.2s;
+}
+
+.DatosPersonales{
+    text-align: left;
+    background-color: #EBF1F4;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 82%;
+    height: 37vh;
+    border: 5px solid #A5DFE9;
+    justify-content: center;
+}
+
+.section {
+  background-color: #ffffff;
+  border: 1px solid #d6e0ef;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+  height: 35%;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #2c1e50;
+  margin-bottom: 10px;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla tbody tr {
+  border-top: 1px solid #d6e0ef;
+}
+
+.tabla tbody tr:first-child {
+  border-top: none;
+}
+
+.label {
+  font-weight: bold;
+  padding: 8px;
+  width: 35%;
+}
+
+.value {
+  padding: 8px;
+  width: 45%;
+}
+
+.actions {
+  text-align: right;
+  padding: 8px;
+  width: 20%;
+}
+
+.btn.editar {
+  background-color: #e0ebf7;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: #2c1e50;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.btn.editar:hover {
+  background-color: #c9dbef;
+}
