@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"> 
+     
+    <link rel="stylesheet" href="styles_formulario.css">
+    <title>Agregar Horas</title>
+    <style>
+      
+      /* El botón ya usa .btn */
+    </style>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="header">
+        <h2>Agregar Horas</h2>
+    </div>
+    <div class="form-container">
+      <form class="add-hours-form" id="addHoursForm">
+          <label for="date">Fecha:</label>
+          <input type="date" id="date" name="date" required>
+
+          <label for="hours">Horas:</label>
+          <input type="number" id="hours" name="hours" step="0.1" required>
+
+          <label for="description">Descripción:</label>
+          <textarea id="description" name="description" rows="4" required></textarea>
+
+          <button type="submit" class="btn">Guardar</button>
+      </form>
+    </div>
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/loader.js"></script>
+    <script>
+      document.getElementById('addHoursForm').onsubmit = function(e) {
+        e.preventDefault();
+        window.location.href = 'HorasMensuales.html';
+      };
+    </script>
+</body>
+</html>

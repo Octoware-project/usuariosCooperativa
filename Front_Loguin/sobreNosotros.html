@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sobre Nosotros</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      main {
+        max-width: 900px;
+        margin: 2.5rem auto;
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem 3rem;
+        box-shadow: 0 15px 30px rgba(255, 193, 227, 0.5);
+        color: #444;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        user-select: none;
+      }
+      main h1 {
+        color: #de5f88;
+        text-align: center;
+        font-weight: 900;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 0 0 6px #ffc1e3;
+      }
+      .container {
+        background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%);
+        border-radius: 16px;
+        padding: 1.8rem 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 20px rgba(222, 95, 136, 0.3);
+        color: #3c3c3c;
+        font-size: 1.15rem;
+        line-height: 1.6;
+        user-select: text;
+        transition: box-shadow 0.3s ease;
+      }
+      .container:hover {
+        box-shadow: 0 15px 30px rgba(222, 95, 136, 0.6);
+      }
+      .container strong {
+        color: #de5f88;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+   <main style="max-width: 900px; margin: 2.5rem auto; display: flex; gap: 2rem;">
+
+  <!-- Contenedor izquierdo: texto -->
+  <section style="flex:1; display: flex; flex-direction: column; gap: 1.8rem;">
+    <div style="background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%); border-radius: 16px; padding: 1.8rem 2.5rem; box-shadow: 0 10px 20px rgba(222,95,136,0.3); color:#3c3c3c; font-size:1.15rem; line-height:1.6; user-select:text;">
+      En <strong>Cooperativa Horizonte Solidario</strong> creemos que el cambio real comienza cuando las personas se unen por un propósito común.
+    </div>
+    <div style="background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%); border-radius: 16px; padding: 1.8rem 2.5rem; box-shadow: 0 10px 20px rgba(222,95,136,0.3); color:#3c3c3c; font-size:1.15rem; line-height:1.6; user-select:text;">
+      Nacimos en 2015 con un grupo de vecinos que soñaban con mejorar su calidad de vida y la de su comunidad, apostando por un modelo de trabajo basado en la cooperación, la igualdad y el compromiso social.
+    </div>
+    <div style="background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%); border-radius: 16px; padding: 1.8rem 2.5rem; box-shadow: 0 10px 20px rgba(222,95,136,0.3); color:#3c3c3c; font-size:1.15rem; line-height:1.6; user-select:text;">
+      Hoy, más de 120 socios trabajamos codo a codo para desarrollar proyectos de vivienda accesible, espacios comunitarios y programas de formación que fortalezcan nuestras capacidades y generen oportunidades para todos.
+    </div>
+    <div style="background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%); border-radius: 16px; padding: 1.8rem 2.5rem; box-shadow: 0 10px 20px rgba(222,95,136,0.3); color:#3c3c3c; font-size:1.15rem; line-height:1.6; user-select:text;">
+      Nuestro compromiso no se limita a construir hogares: queremos construir un futuro más justo, donde cada persona tenga un lugar digno para vivir y desarrollarse.
+      Guiados por los principios cooperativos, practicamos la ayuda mutua, la gestión democrática y la responsabilidad compartida, siempre con transparencia y cercanía.
+    </div>
+    <div style="background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%); border-radius: 16px; padding: 1.8rem 2.5rem; box-shadow: 0 10px 20px rgba(222,95,136,0.3); color:#3c3c3c; font-size:1.15rem; line-height:1.6; user-select:text;">
+      En Horizonte Solidario creemos que la unión no solo hace la fuerza: también hace comunidad, esperanza y progreso.
+    </div>
+  </section>
+
+  <!-- Contenedor derecho: imágenes scrollables -->
+<section style="flex:1; max-height: auto; overflow-y: auto; border-radius: 16px; box-shadow: 0 10px 20px rgba(222,95,136,0.3); background: linear-gradient(135deg, #a3d8f4 0%, #ffc1e3 100%); padding: 1rem;">
+    <img src="img/ImagenEjemplo.jpg" alt="Ejemplo 1" style="width: 68%; border-radius: 14px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;" />
+    <img src="img/ImagenEjemplo.jpg" alt="Ejemplo 2" style="width: 68%; border-radius: 14px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;" />
+    <img src="img/ImagenEjemplo.jpg" alt="Ejemplo 3" style="width: 68%; border-radius: 14px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;" />
+    <img src="img/ImagenEjemplo.jpg" alt="Ejemplo 4" style="width: 68%; border-radius: 14px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;" />
+</section>
+
+</main>
+
+    <!-- Modal para mostrar datos usuario y editar -->
+    <div class="modal-bg" id="modalBg">
+      <div class="modal">
+        <h3>Datos del Usuario</h3>
+        <div id="modalContent"><p>Cargando...</p></div>
+        <div class="modal-buttons" id="modalButtons">
+          <button class="btn-edit" id="editBtn">Editar</button>
+          <button class="btn-close" id="closeModalBtn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/loader.js"></script>
+  </body>
+</html>

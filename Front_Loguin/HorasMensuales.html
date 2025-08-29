@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horas mensaules</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_tabla.css">
+</head>
+
+<body>
+  <div id="navbar"></div>
+  <div class="header">
+    <h2>Horas Mensuales</h2>
+  </div>
+  <table class="hours-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Horas</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="ID">1</td>
+        <td data-label="Fecha">2024-06-01</td>
+        <td data-label="Horas">8</td>
+        <td data-label="Descripción">Trabajo en proyecto A</td>
+        <td data-label="Acciones">
+          <button class="btn btn-action">Enviar comentario</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-label="ID">2</td>
+        <td data-label="Fecha">2024-06-02</td>
+        <td data-label="Horas">7.5</td>
+        <td data-label="Descripción">Reunión y documentación</td>
+        <td data-label="Acciones">
+          <button class="btn btn-action">Enviar comentario</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-label="ID">3</td>
+        <td data-label="Fecha">2024-06-03</td>
+        <td data-label="Horas">9</td>
+        <td data-label="Descripción">Desarrollo módulo B</td>
+        <td data-label="Acciones">
+          <button class="btn btn-action">Enviar comentario</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="btn-group">
+    <button class="btn" id="searchBtn">Buscar</button>
+    <a href="AgregarHoras.html" class="btn">Agregar</a>
+  </div>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprobantes</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_tabla.css">
+</head>
+
+<body>
+  <div id="navbar"></div>
+  <div class="header">
+    <h2>Comprobantes</h2>
+  </div>
+  <table class="hours-table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Factura</th>
+        <th>Monto</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Fecha">2024-06-01</td>
+        <td data-label="Factura">FAC-001</td>
+        <td data-label="Monto">$1,200.00</td>
+        <td data-label="Acción">
+          <button class="btn btn-action">Editar</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-label="Fecha">2024-06-05</td>
+        <td data-label="Factura">FAC-002</td>
+        <td data-label="Monto">$850.50</td>
+        <td data-label="Acción">
+          <button class="btn btn-action">Editar</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-label="Fecha">2024-06-10</td>
+        <td data-label="Factura">FAC-003</td>
+        <td data-label="Monto">$2,300.00</td>
+        <td data-label="Acción">
+          <button class="btn btn-action">Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="btn-group">
+    <button class="btn" id="searchBtn">Filtrar por fecha</button>
+    <a href="AgregarComprobante.html" class="btn">Agregar</a>
+  </div>
+  </div>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
+</body>
+
+
+</html>

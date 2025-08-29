@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="styles_formulario.css">
+    <title>Agregar Comprobante</title>
+    <style>
+      /* El botón ya usa .btn */
+    </style>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="header">
+        <h2>Agregar Comprobante</h2>
+    </div>
+    <div class="form-container">
+      <form class="add-hours-form" id="addComprobanteForm" enctype="multipart/form-data">
+          <label for="date">Fecha:</label>
+          <input type="date" id="date" name="date" required>
+
+          <label for="monto">Monto:</label>
+          <input type="number" id="monto" name="monto" step="0.01" required>
+
+          <label for="foto">Foto del comprobante:</label>
+          <input type="file" id="foto" name="foto" accept="image/*" required>
+
+          <button type="submit" class="btn">Guardar</button>
+      </form>
+    </div>
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/loader.js"></script>
+    <script>
+      document.getElementById('addComprobanteForm').onsubmit = function(e) {
+        e.preventDefault();
+        window.location.href = 'comprobantes.html';
+      };
+    </script>
+</body>
+</html>

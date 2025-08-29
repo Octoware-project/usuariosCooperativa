@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Aquí se cargará automáticamente el navbar -->
+  <div id="navbar"></div>
+
+  <main>
+    <section class="novedades">
+      <h2>Novedades</h2>
+      <p>Aquí estarán los mensajes y novedades de la asamblea.</p>
+    </section>
+    <section class="mision">
+      <h2>Misión, Visión y Valores</h2>
+      <p>
+        Nuestra misión es promover la participación activa y transparente de todos los asociados.<br>
+        Nuestra visión es ser un referente de gestión comunitaria eficiente y justa.<br>
+        Nuestros valores: Transparencia, Compromiso, Respeto y Solidaridad.
+      </p>
+    </section>
+  </main>
+    <!-- Modal para mostrar datos usuario y editar -->
+    <div class="modal-bg" id="modalBg">
+      <div class="modal">
+        <h3>Datos del Usuario</h3>
+        <div id="modalContent"><p>Cargando...</p></div>
+        <div class="modal-buttons" id="modalButtons">
+          <button class="btn-edit" id="editBtn">Editar</button>
+          <button class="btn-close" id="closeModalBtn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
+
+</body>
+</html>
