@@ -94,56 +94,69 @@
 <body>
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
-    <input type="email" id="email" placeholder="Correo electrónico" autocomplete="username" required />
+    <input type="email" id="usuario" placeholder="Correo electrónico" autocomplete="username" required />
     <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password" required />
-    <button id="loginBtn">Iniciar Sesión</button>
-    <div class="loader" id="loader">Iniciando sesión...</div>
+    <button id="boton">Iniciar Sesión</button>
+    <div class="loader" id="loader" style="display:none;">Iniciando sesión...</div>
     <div class="error" id="error"></div>
   </div>
 
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    const loginBtn = document.getElementById('loginBtn');
-    const loader = document.getElementById('loader');
-    const errorDiv = document.getElementById('error');
+    $(document).ready(function(){
+      $("#boton").click(function(){
+          var usuario = $("#usuario").val().trim();
+          var password = $("#password").val().trim();
 
-    loginBtn.addEventListener('click', async () => {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
+          if (!usuario || !password) {
+              $("#error").html("Todos los campos son obligatorios.");
+              return;
+          }
 
-      if (!email || !password) {
-        errorDiv.textContent = "Todos los campos son obligatorios.";
-        return;
-      }
+          $("#boton").prop("disabled", true);
+          $("#loader").show();
+          $("#error").html("");
 
-      loginBtn.disabled = true;
-      loader.style.display = 'block';
-      errorDiv.textContent = "";
+          var data = {
+              "username": usuario,
+              "password": password,
+              "grant_type": "password",
+              "client_id": "1",
+              "client_secret": "UJwdNc3exaiwb1NY6pykVmiGbYDiKHa8Y3rr0hgY"
+          };
 
-      try {
-        const response = await fetch("http://127.0.0.1:8000/oauth/token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({ email, password })
-        });
+          // Convertir a x-www-form-urlencoded
+          var formBody = Object.keys(data).map(function(key) {
+              return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+          }).join('&');
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Error en el inicio de sesión");
-        }
-
-        localStorage.setItem("access_token", data.access_token);
-        window.location.href = "dashboard.html";
-      } catch (err) {
-        errorDiv.textContent = err.message;
-      } finally {
-        loginBtn.disabled = false;
-        loader.style.display = 'none';
-      }
-    });
-  </script>
+          $.ajax({
+              url: 'http://localhost:8000/oauth/token',
+              type: 'POST',
+              headers: {
+                  "Accept" : "application/json",
+                  "Content-Type" : "application/x-www-form-urlencoded",
+              },
+              data: formBody,
+              success: function(data) {
+                  localStorage.setItem("access_token", data.access_token);
+                  window.location.href = "dashboard.html";
+              },
+              error: function(xhr){
+                  let msg = "Credenciales incorrectas";
+                  if (xhr.responseJSON && xhr.responseJSON.error_description) {
+                      msg = xhr.responseJSON.error_description;
+                  }
+                  $("#error").html(msg);
+              },
+              complete: function() {
+                  $("#boton").prop("disabled", false);
+                  $("#loader").hide();
+              }
+          });
+      });
+  });
+    </script>
 </body>
 </html>

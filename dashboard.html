@@ -37,10 +37,38 @@
       </div>
     </div>
 
-
-
     <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
+  <script>
+    // Validación de token y estado de usuario al cargar el dashboard
+    document.addEventListener('DOMContentLoaded', async function() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/validate', {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+          }
+        });
+        if (!res.ok) throw new Error('No se pudo validar el token');
+        const data = await res.json();
+        // Si el usuario está inactivo, muestra alerta y redirige
+        if (data.persona && data.persona.Activo === 'No') {
+          alert('Tu cuenta no está activa. Debes cambiar la contraseña para activarla.');
+          window.location.href = 'cambiarPassword.html';
+        }
+        // Puedes guardar los datos en localStorage si lo necesitas
+        // localStorage.setItem('user', JSON.stringify(data.user));
+        // localStorage.setItem('persona', JSON.stringify(data.persona));
+      } catch (err) {
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
 
 </body>
 </html>
