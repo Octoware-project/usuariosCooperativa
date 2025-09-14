@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Factura</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_tabla.css">
+</head>
+<body>
+  <!-- Navbar insertado -->
+  <nav>
+    <a href="dashboard.html" class="logo" aria-label="Ir a página principal">
+      <img src="img/Logo.jpg" alt="Logo de Cooperativa - Pulpo" style="height: 40px; width: auto;">
+    </a>
+    <div class="nav-links" role="navigation" aria-label="Menú principal">
+      <a href="HorasMensuales.html">Horas Mensuales</a>
+      <a href="Comprobantes.html">Pagos</a>
+    </div>
+    <div class="user-menu" id="userMenuBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Menú usuario">
+      <div class="user-icon" title="Menú usuario">U</div>
+      <div class="dropdown" id="userDropdown" role="menu" aria-label="Menú usuario">
+        <button id="verDatosBtn" role="menuitem">Ver datos</button>
+        <button id="logoutBtn" role="menuitem">Cerrar sesión</button>
+      </div>
+    </div>
+  </nav>
+  <div id="navbar"></div>
+  <div class="facturas-container" style="padding-top: 48px;">
+    <div class="facturas-box" style="max-width:1200px;margin:0 32px;display:flex;flex-direction:row;gap:40px;align-items:stretch; border-radius: 20px; padding: 40px 32px 32px 32px;">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <h2 class="detalle-titulo">Detalle de la factura</h2>
+  <style>
+    .detalle-titulo {
+      text-align: center;
+      margin-bottom: 28px;
+      font-family: 'Segoe UI', 'Montserrat', 'Arial', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #d81b60;
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 8px #f8bbd0;
+    }
+  </style>
+        <div class="factura-detalle-list-box">
+          <div id="factura-detalle" class="factura-detalle-list" style="margin-bottom:32px;"></div>
+        </div>
+        <div class="volver-container">
+          <a href="Comprobantes.html" class="btn-volver">Volver</a>
+        </div>
+  <style>
+    .volver-container {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .btn-volver {
+      background: #fff;
+      color: #d81b60;
+      border: 2px solid #d81b60;
+      border-radius: 18px;
+      padding: 12px 38px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px #f8bbd0;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      cursor: pointer;
+      display: inline-block;
+      margin: 0 auto;
+    }
+    .btn-volver:hover {
+      background: #f8bbd0;
+      color: #ad1457;
+      border-color: #ad1457;
+    }
+  </style>
+      </div>
+  <style>
+    .factura-detalle-list-box {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 32px 28px 24px 28px;
+      margin-bottom: 32px;
+    }
+  </style>
+  <div class="factura-imagen-box" style="margin: 0 0 0 12px;">
+        <div id="factura-imagen" style="display:flex;align-items:center;justify-content:center;"></div>
+      </div>
+  <style>
+    .factura-imagen-box {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 32px 28px 24px 28px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 320px;
+      max-width: 420px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    @media (max-width: 900px) {
+      .factura-imagen-box {
+        max-width: 100%;
+        min-width: unset;
+        padding: 18px 8px 12px 8px;
+      }
+    }
+  </style>
+    </div>
+  </div>
+  <style>
+    .factura-detalle-list {
+      padding: 0;
+      margin: 0;
+    }
+    .factura-detalle-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .factura-detalle-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 1.08rem;
+    }
+    .factura-detalle-list li:last-child {
+      border-bottom: none;
+    }
+    .factura-detalle-list .label {
+      color: #d81b60;
+      font-weight: 600;
+      min-width: 120px;
+    }
+    .factura-detalle-list .valor {
+      color: #333;
+      font-weight: 400;
+      text-align: right;
+    }
+    @media (max-width: 900px) {
+      .facturas-box {
+        flex-direction: column !important;
+      }
+      #factura-imagen {
+        margin-top: 32px;
+      }
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="JavaScript/factura_detalle.js"></script>
+</body>
+</html>

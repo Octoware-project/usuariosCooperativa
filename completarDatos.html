@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Completar Datos</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+    }
+    .completar-container {
+      background: #fff;
+      width: 400px;
+      padding: 3rem 2.5rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(255, 193, 227, 0.6);
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+    }
+    h1 {
+      color: #de5f88;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      font-size: 2rem;
+    }
+    p {
+      color: #555;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: #4ea9f7;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 1.2rem;
+      font-size: 1.1rem;
+      border: 2.5px solid #A3D8F4;
+      border-radius: 12px;
+      transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      display: block;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #de5f88;
+      background-color: #fff0f6;
+      box-shadow: 0 4px 12px rgba(222, 95, 136, 0.6);
+      transform: translateY(-3px);
+    }
+    .btn {
+      width: 100%;
+      padding: 16px 0;
+      background-color: #de5f88;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.15s ease;
+    }
+    .btn:hover:not(:disabled) {
+      background-color: #c94f76;
+      transform: scale(1.05);
+    }
+    .btn:disabled {
+      background-color: #f7a7c1;
+      cursor: not-allowed;
+    }
+    #mensaje {
+      min-height: 1.3rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="completar-container" style="margin-top: 40px;">
+    <h1>Completa tus datos</h1>
+    <p>Para activar tu cuenta, por favor completa todos los datos requeridos en el siguiente formulario.</p>
+    <form id="completarDatosForm">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required readonly>
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required readonly>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required readonly style="width:100%;padding:16px 20px;margin-bottom:1.2rem;font-size:1.1rem;border:2.5px solid #A3D8F4;border-radius:12px;transition:border-color 0.3s,background-color 0.3s,box-shadow 0.3s,transform 0.2s;display:block;background:#f7f7f7;">
+      </div>
+      <div class="form-group">
+        <label for="ci">Cédula de Identidad:</label>
+        <input type="text" id="ci" name="ci" required readonly>
+      </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required>
+      </div>
+      <div class="form-group">
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" required>
+      </div>
+      <div class="form-group">
+        <label for="estadoCivil">Estado Civil:</label>
+        <input type="text" id="estadoCivil" name="estadoCivil">
+      </div>
+      <div class="form-group">
+        <label for="genero">Género:</label>
+        <input type="text" id="genero" name="genero">
+      </div>
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required style="width:100%;padding:16px 20px;margin-bottom:1.2rem;font-size:1.1rem;border:2.5px solid #A3D8F4;border-radius:12px;transition:border-color 0.3s ease,background-color 0.3s ease,box-shadow 0.3s ease,transform 0.2s ease;display:block;background:#f7f7f7;">
+      </div>
+      <div class="form-group">
+        <label for="ocupacion">Ocupación:</label>
+        <input type="text" id="ocupacion" name="ocupacion">
+      </div>
+      <div class="form-group">
+        <label for="nacionalidad">Nacionalidad:</label>
+        <input type="text" id="nacionalidad" name="nacionalidad">
+      </div>
+      <button type="submit" class="btn">Guardar y Activar Cuenta</button>
+    </form>
+    <div id="mensaje" style="margin-top:20px;"></div>
+  </div>
+  <script src="JavaScript/loader.js"></script>
+  <script>
+    // Precargar datos del usuario autenticado
+    document.addEventListener('DOMContentLoaded', async function() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/validate', {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+          }
+        });
+        if (!res.ok) throw new Error('No se pudo validar el token');
+        const data = await res.json();
+        const persona = Array.isArray(data.persona) ? data.persona[0] : data.persona;
+        const user = Array.isArray(data.user) ? data.user[0] : data.user;
+        document.getElementById('nombre').value = persona?.name || '';
+        document.getElementById('apellido').value = persona?.apellido || '';
+        document.getElementById('email').value = user?.email || '';
+        document.getElementById('ci').value = persona?.CI || '';
+      } catch (err) {
+        window.location.href = 'login.html';
+      }
+    });
+
+    document.getElementById('completarDatosForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+      // Validar que todos los campos estén completos
+  const requiredFields = ['telefono','direccion','estadoCivil','genero','fechaNacimiento','ocupacion','nacionalidad'];
+      let valid = true;
+      for (const id of requiredFields) {
+        const el = document.getElementById(id);
+        if (!el || !el.value.trim()) {
+          valid = false;
+          el && (el.style.borderColor = '#de5f88');
+        } else {
+          el.style.borderColor = '#A3D8F4';
+        }
+      }
+      if (!valid) {
+        document.getElementById('mensaje').innerHTML = '<span style="color:red;">Debes completar todos los campos para activar tu cuenta.</span>';
+        console.error('Faltan campos obligatorios para activar la cuenta.');
+        return;
+      }
+      const datos = {
+        telefono: document.getElementById('telefono').value,
+        direccion: document.getElementById('direccion').value,
+        estadoCivil: document.getElementById('estadoCivil').value,
+        genero: document.getElementById('genero').value,
+        fechaNacimiento: document.getElementById('fechaNacimiento').value,
+        ocupacion: document.getElementById('ocupacion').value,
+        nacionalidad: document.getElementById('nacionalidad').value
+      };
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/completar-datos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('mensaje').innerHTML = '<span style="color:green;">Datos completados correctamente. Tu cuenta será activada pronto.</span>';
+          console.log('Datos guardados correctamente:', data);
+          setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
+        } else {
+          let errorMsg = data.message || 'Error al guardar los datos.';
+          if (data.errors) {
+            errorMsg += '<ul>' + Object.values(data.errors).map(arr => `<li>${arr[0]}</li>`).join('') + '</ul>';
+          }
+          document.getElementById('mensaje').innerHTML = '<span style="color:red;">' + errorMsg + '</span>';
+          console.error('Error al guardar los datos:', data);
+        }
+      } catch (err) {
+        document.getElementById('mensaje').innerHTML = '<span style="color:red;">Error de conexión.</span>';
+        console.error('Error de conexión:', err);
+      }
+    });
+  </script>
+</body>
+</html>

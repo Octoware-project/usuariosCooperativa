@@ -29,8 +29,10 @@
     margin-bottom: 0.3rem;
 }
 
+
 .add-hours-form input,
-.add-hours-form textarea {
+.add-hours-form textarea,
+.add-hours-form select {
     border-radius: 10px;
     border: 1.5px solid #a3d8f4;
     padding: 0.7rem 1rem;
@@ -38,6 +40,52 @@
     font-family: inherit;
     background: #f9f9f9;
     transition: border-color 0.2s;
+}
+
+.add-hours-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23de5f88" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7.293 7.293a1 1 0 011.414 0L10 8.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+    cursor: pointer;
+}
+
+.add-hours-form input[type="file"] {
+    padding: 0.5rem 0.5rem;
+    background: #f9f9f9;
+    border: none;
+    font-size: 1.05rem;
+    color: #555;
+}
+
+.add-hours-form input[type="file"]::-webkit-file-upload-button {
+    background: #de5f88;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.add-hours-form input[type="file"]:hover::-webkit-file-upload-button {
+    background: #c94f76;
+}
+.add-hours-form input[type="file"]::file-selector-button {
+    background: #de5f88;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.add-hours-form input[type="file"]:hover::file-selector-button {
+    background: #c94f76;
 }
 
 .add-hours-form input:focus,

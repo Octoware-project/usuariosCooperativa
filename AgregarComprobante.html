@@ -17,14 +17,41 @@
     </div>
     <div class="form-container">
       <form class="add-hours-form" id="addComprobanteForm" enctype="multipart/form-data">
-          <label for="date">Fecha:</label>
-          <input type="date" id="date" name="date" required>
 
-          <label for="monto">Monto:</label>
-          <input type="number" id="monto" name="monto" step="0.01" required>
+          <label for="Mes">Mes:</label>
+          <select id="Mes" name="Mes" required>
+            <option value="">Seleccione un mes</option>
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+          </select>
 
-          <label for="foto">Foto del comprobante:</label>
-          <input type="file" id="foto" name="foto" accept="image/*" required>
+          <label for="Anio">Año:</label>
+          <input type="number" id="Anio" name="Anio" min="2000" max="2100" required placeholder="Ej: 2025">
+
+          <label for="Monto">Monto:</label>
+          <input type="number" id="Monto" name="Monto" step="0.01" required>
+
+          <label for="Archivo_Comprobante">Archivo Comprobante:</label>
+          <input type="file" id="Archivo_Comprobante" name="Archivo_Comprobante" accept="image/*,application/pdf" required>
+
+          <label for="tipo_pago">Tipo de pago:</label>
+          <select id="tipo_pago" name="tipo_pago" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Débito">Débito</option>
+            <option value="Crédito">Crédito</option>
+          </select>
 
           <button type="submit" class="btn">Guardar</button>
       </form>
@@ -32,9 +59,103 @@
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
-      document.getElementById('addComprobanteForm').onsubmit = function(e) {
+      // Selecciona el mes y año actual por defecto en el formulario
+      (function setDefaultMonthYear() {
+        const meses = [
+          '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const now = new Date();
+        const mes = now.getMonth() + 1; // 1-12
+        const anio = now.getFullYear();
+        const mesSelect = document.getElementById('Mes');
+        const anioInput = document.getElementById('Anio');
+        if (mesSelect) {
+          for (let i = 0; i < mesSelect.options.length; i++) {
+            if (mesSelect.options[i].value === meses[mes]) {
+              mesSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+        if (anioInput) {
+          anioInput.value = anio;
+        }
+      })();
+
+      document.getElementById('addComprobanteForm').onsubmit = async function(e) {
         e.preventDefault();
-        window.location.href = 'comprobantes.html';
+        const form = e.target;
+        const formData = new FormData(form);
+
+        // Agregar campo fecha_pago en formato YYYY-MM-01
+        const mesStr = form.Mes.value;
+        const anioStr = form.Anio.value;
+        const meses = {
+          'Enero': '01', 'Febrero': '02', 'Marzo': '03', 'Abril': '04', 'Mayo': '05', 'Junio': '06',
+          'Julio': '07', 'Agosto': '08', 'Septiembre': '09', 'Octubre': '10', 'Noviembre': '11', 'Diciembre': '12'
+        };
+        if (mesStr && anioStr && meses[mesStr]) {
+          const fechaPago = `${anioStr}-${meses[mesStr]}-01`;
+          formData.append('fecha_pago', fechaPago);
+        }
+
+        // Mostrar mensaje de carga
+        let msg = document.getElementById('msg-estado');
+        if (!msg) {
+          msg = document.createElement('div');
+          msg.id = 'msg-estado';
+          msg.style.marginTop = '1rem';
+          msg.style.fontWeight = 'bold';
+          form.parentNode.appendChild(msg);
+        }
+        msg.textContent = 'Enviando...';
+        msg.style.color = '#555';
+
+        try {
+          // Obtener el token guardado en localStorage
+          const token = localStorage.getItem('access_token');
+          if (!token) {
+            msg.textContent = 'No autenticado. Por favor, inicie sesión.';
+            msg.style.color = 'red';
+            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+            return;
+          }
+          const response = await fetch('http://localhost:8001/api/facturas', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Authorization': 'Bearer ' + token
+            }
+            // credentials: 'include', // Descomentar si usas cookies/sesión
+          });
+          if (response.ok) {
+            msg.textContent = '¡Comprobante agregado exitosamente!';
+            msg.style.color = 'green';
+            setTimeout(() => { window.location.href = 'comprobantes.html'; }, 1200);
+          } else {
+            const text = await response.text();
+            let showMsg = '';
+            try {
+              const data = JSON.parse(text);
+              if (data && data.error === 'Un monto demasiado grande') {
+                showMsg = 'Monto demasiado alto';
+              } else if (data && data.error) {
+                showMsg = data.error;
+              } else {
+                showMsg = 'Error al agregar comprobante';
+              }
+            } catch {
+              showMsg = 'Error al agregar comprobante';
+            }
+            msg.textContent = showMsg;
+            msg.style.color = 'red';
+          }
+        } catch (err) {
+          msg.textContent = 'Error de conexión con el servidor';
+          msg.style.color = 'red';
+          console.error('Error de red o JS:', err);
+        }
       };
     </script>
 </body>

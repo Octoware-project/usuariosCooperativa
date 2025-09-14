@@ -1,22 +1,33 @@
-let modoEdicion = false;
-let userData = {};
-let personaData = {};
 
-const modalBg = document.getElementById('modalBg');
-const modalContent = document.getElementById('modalContent');
-const modalButtons = document.getElementById('modalButtons');
-const editBtn = document.getElementById('editBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
+// Hacer variables y función globales
+window.modoEdicion = false;
+window.userData = {};
+window.personaData = {};
+
+
+
+// No obtener referencias fijas, se buscarán dinámicamente en cada función
 
 function redirectToLogin() {
   localStorage.removeItem('access_token');
   window.location.href = 'login.html';
 }
 
-async function cargarDatosUsuario() {
-  modoEdicion = false;
-  modalButtons.style.display = 'flex';
-  modalContent.innerHTML = '<p>Cargando...</p>';
+
+window.cargarDatosUsuario = async function cargarDatosUsuario() {
+  window.modoEdicion = false;
+  // Obtener referencias dinámicamente
+  const modalContent = document.getElementById('modalContent');
+  const modalButtons = document.getElementById('modalButtons');
+  const editBtn = document.getElementById('editBtn');
+  if (modalButtons) modalButtons.style.display = 'flex';
+  if (modalContent) modalContent.innerHTML = '<p>Cargando...</p>';
+  // Asignar evento al botón Editar cada vez que se muestra el modal
+  if (editBtn) {
+    editBtn.onclick = function() {
+      window.location.href = 'EditarDatos.html';
+    };
+  }
   const token = localStorage.getItem('access_token');
   if (!token) {
     redirectToLogin();
@@ -36,30 +47,36 @@ async function cargarDatosUsuario() {
     const persona = Array.isArray(data.persona) ? data.persona[0] : data.persona;
     // Suponiendo que data.user es el array que contiene el email
     const user = Array.isArray(data.user) ? data.user[0] : data.user;
-    personaData = persona || {};
-    userData = user || {};
+    window.personaData = persona || {};
+    window.userData = user || {};
 
-
-    modalContent.innerHTML = `
-      <p><span class="icon">👤</span><strong>Nombre:</strong> ${personaData.name || ''}</p>
-      <p><span class="icon">👥</span><strong>Apellido:</strong> ${personaData.apellido || ''}</p>
-      <p><span class="icon">📧</span><strong>Email:</strong> ${userData.email || ''}</p>
-      <p><span class="icon">🆔</span><strong>Cédula:</strong> ${personaData.CI || ''}</p>
-      <p><span class="icon">📞</span><strong>Teléfono:</strong> ${personaData.Telefono || ''}</p>
-      <p><span class="icon">🏠</span><strong>Dirección:</strong> ${personaData.Direccion || ''}</p>
-      <p><span class="icon">🏢</span><strong>Unidad Habitacional:</strong> ${personaData.UnidadHabitacional || ''}</p>
-      <p><span class="icon">💍</span><strong>Estado Civil:</strong> ${personaData.EstadoCivil || ''}</p>
-      <p><span class="icon">⚧️</span><strong>Género:</strong> ${personaData.Genero || ''}</p>
-      <p><span class="icon">🎂</span><strong>Fecha de Nacimiento:</strong> ${personaData.FechaNacimiento || ''}</p>
-      <p><span class="icon">💼</span><strong>Ocupación:</strong> ${personaData.Ocupacion || ''}</p>
-      <p><span class="icon">🌍</span><strong>Nacionalidad:</strong> ${personaData.Nacionalidad || ''}</p>
-      `
-
-      ;
+    // Mostrar ambos objetos de forma clara y usando los nombres exactos de la API
+    if (modalContent) {
+      modalContent.innerHTML = `
+        <h4 style="margin-bottom:10px;">Datos de Usuario</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;align-items:center;">
+          <div><span class="icon">👤</span> <strong>Nombre:</strong></div><div>${window.userData.name || ''}</div>
+          <div><span class="icon">📧</span> <strong>Email:</strong></div><div>${window.userData.email || ''}</div>
+        </div>
+        <hr style="margin:14px 0;">
+        <h4 style="margin-bottom:10px;">Datos Personales</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;align-items:center;">
+          <div><span class="icon">👥</span> <strong>Apellido:</strong></div><div>${window.personaData.apellido || ''}</div>
+          <div><span class="icon">🆔</span> <strong>Cédula:</strong></div><div>${window.personaData.CI || ''}</div>
+          <div><span class="icon">📞</span> <strong>Teléfono:</strong></div><div>${window.personaData.telefono || ''}</div>
+          <div><span class="icon">🏠</span> <strong>Dirección:</strong></div><div>${window.personaData.direccion || ''}</div>
+          <div><span class="icon">💍</span> <strong>Estado Civil:</strong></div><div>${window.personaData.estadoCivil || ''}</div>
+          <div><span class="icon">⚧️</span> <strong>Género:</strong></div><div>${window.personaData.genero || ''}</div>
+          <div><span class="icon">🎂</span> <strong>Fecha de Nacimiento:</strong></div><div>${window.personaData.fechaNacimiento || ''}</div>
+          <div><span class="icon">💼</span> <strong>Ocupación:</strong></div><div>${window.personaData.ocupacion || ''}</div>
+          <div><span class="icon">🌍</span> <strong>Nacionalidad:</strong></div><div>${window.personaData.nacionalidad || ''}</div>
+        </div>
+      `;
+    }
   } catch (err) {
-    modalContent.innerHTML = `<p style="color:red;">${err.message}</p>`;
+    if (modalContent) modalContent.innerHTML = `<p style="color:red;">${err.message}</p>`;
   }
-}
+};
 
 
 
@@ -67,7 +84,24 @@ async function cargarDatosUsuario() {
 
 
 
-editBtn.addEventListener('click', mostrarFormularioEdicion);
+
+// Asignar eventos solo si existen los elementos (para compatibilidad cross-page)
+window.addEventListener('DOMContentLoaded', function() {
+  const editBtn = document.getElementById('editBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const modalBg = document.getElementById('modalBg');
+  if (editBtn) {
+    editBtn.addEventListener('click', function() {
+      window.location.href = 'EditarDatos.html';
+    });
+  }
+  if (closeModalBtn && modalBg) {
+    closeModalBtn.addEventListener('click', () => {
+      modalBg.classList.remove('show');
+      window.modoEdicion = false;
+    });
+  }
+});
 closeModalBtn.addEventListener('click', () => {
   modalBg.classList.remove('show');
   modoEdicion = false;

@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css"> 
+  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles_formulario.css">
-    <title>Agregar Horas</title>
+    <title>Agregar Justificación</title>
     <style>
-      .btn-guardar:hover {
-        color: #fff !important;
+      input[type="number"],
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 16px;
+        border: 1px solid #bdbdbd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        background: #f7fafd;
+        transition: border-color 0.2s;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
       }
-      /* El botón ya usa .btn */
+      input[type="number"]:focus,
+      input[type="text"]:focus,
+      select:focus {
+        border-color: #1976d2;
+        outline: none;
+        background: #fff;
+      }
       body {
         background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
       }
@@ -39,73 +56,74 @@
           font-size: 1.3rem;
         }
       }
-    </style>
-</head>
-<body>
-    <div id="navbar"></div>
-  <div class="header">
-    <h2>Agregar Horas</h2>
-  </div>
-  <div class="form-container">
-    <form class="add-hours-form" id="addHoursForm">
-      <label for="anio">Año:</label>
-      <input type="number" id="anio" name="anio" min="2000" max="2100" required>
-
-
-      <label for="mes">Mes:</label>
-      <select id="mes" name="mes" required>
-        <option value="">Seleccione un mes</option>
-        <option value="1">Enero</option>
-        <option value="2">Febrero</option>
-        <option value="3">Marzo</option>
-        <option value="4">Abril</option>
-        <option value="5">Mayo</option>
-        <option value="6">Junio</option>
-        <option value="7">Julio</option>
-        <option value="8">Agosto</option>
-        <option value="9">Septiembre</option>
-        <option value="10">Octubre</option>
-        <option value="11">Noviembre</option>
-        <option value="12">Diciembre</option>
-      </select>
-
-      <label for="dia">Día:</label>
-      <input type="number" id="dia" name="dia" min="1" max="31" required>
-
-      <label for="Cantidad_Horas">Cantidad de Horas:</label>
-  <input type="number" id="Cantidad_Horas" name="Cantidad_Horas" step="0.1" required>
-
-      <button type="submit" class="btn">Guardar</button>
-    </form>
-    <div class="justificacion-container">
-      <button id="btnJustificacion" class="btn btn-justificar">Subir Justificación</button>
-    </div>
-    <style>
       .btn-guardar {
         border-radius: 24px !important;
         padding-left: 32px !important;
         padding-right: 32px !important;
       }
-      .justificacion-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 32px;
-      }
-      .btn-justificar {
-        background: #1976d2 !important;
+      .btn-guardar:hover {
         color: #fff !important;
-        border-radius: 18px !important;
-        font-size: 0.95rem !important;
-        padding: 8px 20px !important;
-        min-width: 0;
-        box-shadow: 0 2px 8px rgba(25,118,210,0.08);
-        border: none;
-      }
-      .btn-justificar:hover {
-        background: #115293 !important;
       }
     </style>
-  </div>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="header">
+        <h2>Agregar Justificación</h2>
+    </div>
+    <div class="form-container">
+      <form class="add-justificacion-form" id="addJustificacionForm">
+        <label for="anio">Año:</label>
+        <input type="number" id="anio" name="anio" min="2000" max="2100" required>
+
+        <label for="mes">Mes:</label>
+        <select id="mes" name="mes" required>
+          <option value="">Seleccione un mes</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+
+
+  <label for="dia">Día:</label>
+  <input type="number" id="dia" name="dia" min="1" max="31" required>
+
+  <label for="Motivo_Falla">Motivo de Falla:</label>
+  <input type="text" id="Motivo_Falla" name="Motivo_Falla" required>
+
+        <label for="Tipo_Justificacion">Tipo de Justificación:</label>
+        <input type="text" id="Tipo_Justificacion" name="Tipo_Justificacion" required>
+
+        <label for="Monto_Compensario">Monto Compensatorio:</label>
+        <input type="number" id="Monto_Compensario" name="Monto_Compensario" step="0.01" required>
+
+        <button type="submit" class="btn">Guardar Justificación</button>
+      <style>
+        .btn {
+          background: #1976d2 !important;
+          color: #fff !important;
+          border-radius: 18px !important;
+          font-size: 0.95rem !important;
+          padding: 8px 20px !important;
+          min-width: 0;
+          box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+          border: none;
+        }
+        .btn:hover {
+          background: #115293 !important;
+        }
+      </style>
+      </form>
+    </div>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
@@ -118,8 +136,7 @@
         document.getElementById('dia').value = now.getDate();
       })();
 
-
-      document.getElementById('addHoursForm').onsubmit = async function(e) {
+      document.getElementById('addJustificacionForm').onsubmit = async function(e) {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
@@ -145,7 +162,7 @@
           // Convertir FormData a objeto para JSON
           const data = {};
           formData.forEach((value, key) => { data[key] = value; });
-          const response = await fetch('http://localhost:8001/api/horas', {
+          const response = await fetch('http://localhost:8001/api/horas/justificacion', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -154,11 +171,11 @@
             body: JSON.stringify(data)
           });
           if (response.ok) {
-            msg.textContent = '¡Horas registradas exitosamente!';
+            msg.textContent = '¡Justificación registrada exitosamente!';
             msg.style.color = 'green';
             setTimeout(() => { window.location.href = 'HorasMensuales.html'; }, 1200);
           } else {
-            let errorMsg = 'Error al registrar horas';
+            let errorMsg = 'Error al registrar justificación';
             try {
               const text = await response.text();
               const data = JSON.parse(text);
@@ -175,10 +192,6 @@
           msg.style.color = 'red';
           console.error('Error de red o JS:', err);
         }
-      };
-
-      document.getElementById('btnJustificacion').onclick = function() {
-        window.location.href = 'AgregarJustificacion.html';
       };
     </script>
 </body>

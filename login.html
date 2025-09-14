@@ -104,58 +104,88 @@
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    $(document).ready(function(){
-      $("#boton").click(function(){
-          var usuario = $("#usuario").val().trim();
-          var password = $("#password").val().trim();
+  $(document).ready(function(){
+    // Permitir iniciar sesión con Enter en los campos de email o password
+    $('#usuario, #password').on('keypress', function(e) {
+    if (e.which === 13) {
+      e.preventDefault();
+      $('#boton').click();
+    }
+    });
 
-          if (!usuario || !password) {
-              $("#error").html("Todos los campos son obligatorios.");
-              return;
-          }
+    $("#boton").click(function(){
+      var usuario = $("#usuario").val().trim();
+      var password = $("#password").val().trim();
 
-          $("#boton").prop("disabled", true);
-          $("#loader").show();
-          $("#error").html("");
+      if (!usuario || !password) {
+        $("#error").html("Todos los campos son obligatorios.");
+        return;
+      }
 
-          var data = {
-              "username": usuario,
-              "password": password,
-              "grant_type": "password",
-              "client_id": "1",
-              "client_secret": "UJwdNc3exaiwb1NY6pykVmiGbYDiKHa8Y3rr0hgY"
-          };
+      $("#boton").prop("disabled", true);
+      $("#loader").show();
+      $("#error").html("");
 
-          // Convertir a x-www-form-urlencoded
-          var formBody = Object.keys(data).map(function(key) {
-              return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
-          }).join('&');
+      var data = {
+        "username": usuario,
+        "password": password,
+        "grant_type": "password",
+        "client_id": "101",
+        "client_secret": "ZjZhGntcMKpY5dY1XEYeHcn8NXewiv8jgq3dX2O8"
+      };
 
+      // Convertir a x-www-form-urlencoded
+      var formBody = Object.keys(data).map(function(key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+      }).join('&');
+
+      $.ajax({
+        url: 'http://localhost:8000/oauth/token',
+        type: 'POST',
+        headers: {
+          "Accept" : "application/json",
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        data: formBody,
+        success: function(data) {
+          localStorage.setItem("access_token", data.access_token);
+          // Validar estadoRegistro antes de redirigir
           $.ajax({
-              url: 'http://localhost:8000/oauth/token',
-              type: 'POST',
-              headers: {
-                  "Accept" : "application/json",
-                  "Content-Type" : "application/x-www-form-urlencoded",
-              },
-              data: formBody,
-              success: function(data) {
-                  localStorage.setItem("access_token", data.access_token);
-                  window.location.href = "dashboard.html";
-              },
-              error: function(xhr){
-                  let msg = "Credenciales incorrectas";
-                  if (xhr.responseJSON && xhr.responseJSON.error_description) {
-                      msg = xhr.responseJSON.error_description;
-                  }
-                  $("#error").html(msg);
-              },
-              complete: function() {
-                  $("#boton").prop("disabled", false);
-                  $("#loader").hide();
+            url: 'http://127.0.0.1:8000/api/validate',
+            type: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + data.access_token,
+              'Accept': 'application/json'
+            },
+            success: function(res) {
+              if (res.persona && (res.persona.estadoRegistro === 'Aceptado' || res.persona.estadoRegistro === 'Inactivo')) {
+                window.location.href = "dashboard.html";
+              } else {
+                $("#error").html("Tu cuenta no está habilitada para acceder.");
               }
+            },
+            error: function() {
+              window.location.href = "dashboard.html";
+            }
           });
+        },
+        error: function(xhr){
+          let msg = "Credenciales incorrectas";
+          if (xhr.responseJSON) {
+            if (xhr.responseJSON.error_description) {
+              msg = xhr.responseJSON.error_description;
+            } else if (xhr.responseJSON.error) {
+              msg = xhr.responseJSON.error;
+            }
+          }
+          $("#error").html(msg);
+        },
+        complete: function() {
+          $("#boton").prop("disabled", false);
+          $("#loader").hide();
+        }
       });
+    });
   });
     </script>
 </body>

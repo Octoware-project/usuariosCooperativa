@@ -11,53 +11,211 @@
 
 <body>
   <div id="navbar"></div>
-  <div class="header">
-    <h2>Comprobantes</h2>
+  <div class="facturas-container">
+    <div class="facturas-box">
+      <div class="facturas-header">
+        <h2>Facturas</h2>
+        <a href="AgregarComprobante.html" class="btn btn-agregar">Agregar</a>
+      </div>
+      <div class="filtro-mes-container" style="display:flex;align-items:center;margin-bottom:18px;">
+        <label for="filtro-mes" style="font-weight:600;margin-right:8px;">Filtrar por mes:</label>
+        <select id="filtro-mes" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc; margin-right:10px;">
+          <option value="">Todos</option>
+          <option value="1">Enero</option>
+          <option value="2">Febrero</option>
+          <option value="3">Marzo</option>
+          <option value="4">Abril</option>
+          <option value="5">Mayo</option>
+          <option value="6">Junio</option>
+          <option value="7">Julio</option>
+          <option value="8">Agosto</option>
+          <option value="9">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
+        <label for="filtro-anio" style="font-weight:600;margin-right:8px;">Año:</label>
+  <input type="number" id="filtro-anio" min="2000" max="2100" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc;width:100px;">
+      </div>
+      <table class="hours-table facturas-table">
+        <thead>
+          <tr>
+            <th>Ingreso</th>
+            <th>Mes</th>
+            <th>Tipo de Pago</th>
+            <th>Monto</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-comprobantes-tbody">
+          <!-- Skeleton loader -->
+          <tr class="skeleton-row">
+            <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:100px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:60px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
+          </tr>
+          <tr class="skeleton-row">
+            <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:100px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:60px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
+          </tr>
+          <tr class="skeleton-row">
+            <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:100px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:60px;height:18px;"></div></td>
+            <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
+          </tr>
+        </tbody>
+  <style>
+    .skeleton-box {
+      background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+      border-radius: 6px;
+      animation: skeleton-loading 1.2s infinite linear;
+      display: inline-block;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+  </style>
+      </table>
+    </div>
   </div>
-  <table class="hours-table">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Factura</th>
-        <th>Monto</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-label="Fecha">2024-06-01</td>
-        <td data-label="Factura">FAC-001</td>
-        <td data-label="Monto">$1,200.00</td>
-        <td data-label="Acción">
-          <button class="btn btn-action">Editar</button>
-        </td>
-      </tr>
-      <tr>
-        <td data-label="Fecha">2024-06-05</td>
-        <td data-label="Factura">FAC-002</td>
-        <td data-label="Monto">$850.50</td>
-        <td data-label="Acción">
-          <button class="btn btn-action">Editar</button>
-        </td>
-      </tr>
-      <tr>
-        <td data-label="Fecha">2024-06-10</td>
-        <td data-label="Factura">FAC-003</td>
-        <td data-label="Monto">$2,300.00</td>
-        <td data-label="Acción">
-          <button class="btn btn-action">Editar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="btn-group">
-    <button class="btn" id="searchBtn">Filtrar por fecha</button>
-    <a href="AgregarComprobante.html" class="btn">Agregar</a>
-  </div>
-  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/comprobantes.js"></script>
+  <script>
+    // Set default year to current year
+  // No setear valor por defecto en el input de año
+  </script>
+  <style>
+    #navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    body {
+      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+    }
+    .facturas-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 48px 0 48px 0;
+    }
+    .facturas-box {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px 32px 24px 32px;
+  min-width: 350px;
+  max-width: 1200px;
+  width: 100%;
+    }
+    .facturas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .facturas-header h2 {
+      margin: 0;
+      font-size: 2rem;
+      color: #d81b60;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .btn-agregar {
+      background: #d81b60;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(216,27,96,0.08);
+    }
+    .btn-agregar:hover {
+      background: #ad1457;
+    }
+    .facturas-table thead {
+      background: #C8EAF1 ;
+    }
+    .facturas-table thead th {
+      color: #154360;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #C8EAF1;
+      border-radius: 0 !important;
+    }
+    .facturas-table tbody tr {
+      transition: background 0.2s;
+      border-radius: 0 !important;
+    }
+    .facturas-table tbody tr:hover {
+      background: #C8EAF1;
+    }
+    .facturas-table td {
+      border-radius: 0 !important;
+    }
+    .btn-cancelar {
+      background: #fff;
+      color: #d81b60;
+      border: 1px solid #d81b60;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-left: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-cancelar:hover {
+      background: #f8bbd0;
+      color: #ad1457;
+    }
+    .btn-action {
+      background: #f8bbd0;
+      color: #ad1457;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-right: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-action:hover {
+      background: #d81b60;
+      color: #fff;
+    }
+    .btn-group {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    @media (max-width: 600px) {
+      .facturas-box {
+        padding: 16px 4px 12px 4px;
+        min-width: unset;
+        max-width: 100vw;
+      }
+      .facturas-header h2 {
+        font-size: 1.3rem;
+      }
+      .btn-agregar {
+        padding: 8px 12px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </body>
+
 
 
 </html>
