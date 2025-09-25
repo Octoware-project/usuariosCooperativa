@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', async function() {
   const token = localStorage.getItem('access_token');
   if (!token) {
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
     return;
   }
   const form = document.getElementById('editDatosForm');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // Cargar datos actuales
   try {
-    const res = await fetch('http://127.0.0.1:8000/api/validate', {
+    const res = await fetch(API_URLS.usuarios.validate(), {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json'
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const body = {};
     formData.forEach((v, k) => body[k] = v);
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/editar-datos-persona', {
+      const res = await fetch(API_URLS.usuarios.editarDatos(), {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + token,

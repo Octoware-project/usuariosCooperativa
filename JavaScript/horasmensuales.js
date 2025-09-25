@@ -2,19 +2,24 @@ $(function() {
   // Obtener token de autenticación como en comprobantes.js
   const token = localStorage.getItem('access_token');
   const tbody = $('.facturas-table tbody');
+  
+  console.log('Token:', token ? 'Presente' : 'No encontrado');
+  
   if (!token) {
     tbody.empty();
     tbody.append('<tr><td colspan="4" style="text-align:center;">No autenticado. Inicie sesión.</td></tr>');
     return;
   }
 
+  
   $.ajax({
-    url: 'http://localhost:8001/api/horas/usuario',
+    url: API_URLS.cooperativa.horas(),
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + token
     },
     success: function(data) {
+      console.log('Respuesta exitosa:', data);
       tbody.empty();
       // data.horas es el array de registros
         if (data && Array.isArray(data.horas) && data.horas.length > 0) {
@@ -32,8 +37,13 @@ $(function() {
       }
     },
     error: function(xhr) {
+      console.log('Error en la petición:');
+      console.log('Status:', xhr.status);
+      console.log('Status Text:', xhr.statusText);
+      console.log('Response Text:', xhr.responseText);
+      
       tbody.empty();
-  tbody.append('<tr><td colspan="3" style="text-align:center;">Error al cargar las horas.</td></tr>');
+      tbody.append('<tr><td colspan="3" style="text-align:center;">Error al cargar las horas. Código: ' + xhr.status + '</td></tr>');
     }
   });
 
@@ -42,7 +52,7 @@ $(function() {
     const id = $(this).data('id');
     if (confirm('¿Seguro que deseas cancelar estas horas?')) {
       $.ajax({
-        url: 'http://localhost:8001/api/horas/' + id,
+        url: API_URLS.cooperativa.horasById(id),
         method: 'DELETE',
         headers: {
           'Authorization': 'Bearer ' + token

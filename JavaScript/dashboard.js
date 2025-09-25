@@ -10,7 +10,7 @@ window.personaData = {};
 
 function redirectToLogin() {
   localStorage.removeItem('access_token');
-  window.location.href = 'login.html';
+  window.location.href = 'index.html';
 }
 
 
@@ -34,7 +34,7 @@ window.cargarDatosUsuario = async function cargarDatosUsuario() {
     return;
   }
   try {
-    const res = await fetch('http://127.0.0.1:8000/api/validate', {
+    const res = await fetch(API_URLS.usuarios.validate(), {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json'

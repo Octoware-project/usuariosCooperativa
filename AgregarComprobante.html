@@ -43,6 +43,7 @@
 
           <label for="Archivo_Comprobante">Archivo Comprobante:</label>
           <input type="file" id="Archivo_Comprobante" name="Archivo_Comprobante" accept="image/*,application/pdf" required>
+          <small style="color:#666;font-size:0.9em;">Formatos permitidos: JPG, PNG, PDF (máx. 5MB)</small>
 
           <label for="tipo_pago">Tipo de pago:</label>
           <select id="tipo_pago" name="tipo_pago" required>
@@ -56,6 +57,7 @@
           <button type="submit" class="btn">Guardar</button>
       </form>
     </div>
+    <script src="JavaScript/config.js"></script>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
@@ -88,6 +90,23 @@
         const form = e.target;
         const formData = new FormData(form);
 
+        // Validar archivo antes de enviar
+        const archivo = form.Archivo_Comprobante.files[0];
+        if (archivo) {
+          // Validar tamaño (5MB = 5 * 1024 * 1024 bytes)
+          if (archivo.size > 5 * 1024 * 1024) {
+            alert('El archivo es demasiado grande. El tamaño máximo es 5MB.');
+            return;
+          }
+          
+          // Validar tipo
+          const tiposPermitidos = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+          if (!tiposPermitidos.includes(archivo.type)) {
+            alert('Tipo de archivo no permitido. Solo se permiten imágenes JPG, PNG y archivos PDF.');
+            return;
+          }
+        }
+
         // Agregar campo fecha_pago en formato YYYY-MM-01
         const mesStr = form.Mes.value;
         const anioStr = form.Anio.value;
@@ -118,10 +137,10 @@
           if (!token) {
             msg.textContent = 'No autenticado. Por favor, inicie sesión.';
             msg.style.color = 'red';
-            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
             return;
           }
-          const response = await fetch('http://localhost:8001/api/facturas', {
+          const response = await fetch(API_URLS.cooperativa.facturas(), {
             method: 'POST',
             body: formData,
             headers: {

@@ -124,6 +124,7 @@
       </style>
       </form>
     </div>
+    <script src="JavaScript/config.js"></script>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
@@ -156,13 +157,13 @@
           if (!token) {
             msg.textContent = 'No autenticado. Por favor, inicie sesión.';
             msg.style.color = 'red';
-            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
             return;
           }
           // Convertir FormData a objeto para JSON
           const data = {};
           formData.forEach((value, key) => { data[key] = value; });
-          const response = await fetch('http://localhost:8001/api/horas/justificacion', {
+          const response = await fetch(API_URLS.cooperativa.horasJustificacion(), {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

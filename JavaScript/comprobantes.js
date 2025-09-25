@@ -55,7 +55,7 @@ $(document).ready(function() {
       const token = localStorage.getItem("access_token");
       if (!confirm("¿Seguro que deseas cancelar esta factura?")) return;
       $.ajax({
-        url: `http://localhost:8001/api/facturas/${id}`,
+        url: API_URLS.cooperativa.facturasById(id),
         type: "DELETE",
         headers: {
           "Authorization": "Bearer " + token,
@@ -84,7 +84,7 @@ $(document).ready(function() {
       return;
     }
     $.ajax({
-      url: "http://localhost:8001/api/facturas",
+      url: API_URLS.cooperativa.facturas(),
       type: "GET",
       headers: {
         "Authorization": "Bearer " + token,

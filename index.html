@@ -103,8 +103,31 @@
 
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="JavaScript/config.js"></script>
   <script>
   $(document).ready(function(){
+    // Verificar si ya hay un usuario logueado
+    var accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      // Verificar si el token es válido
+      $.ajax({
+        url: API_URLS.usuarios.validate(),
+        type: 'GET',
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer " + accessToken
+        },
+        success: function(data) {
+          // Si el token es válido, redirigir al dashboard
+          window.location.href = 'dashboard.html';
+        },
+        error: function() {
+          // Si el token no es válido, eliminarlo del localStorage
+          localStorage.removeItem("access_token");
+        }
+      });
+    }
+
     // Permitir iniciar sesión con Enter en los campos de email o password
     $('#usuario, #password').on('keypress', function(e) {
     if (e.which === 13) {
@@ -140,7 +163,7 @@
       }).join('&');
 
       $.ajax({
-        url: 'http://localhost:8000/oauth/token',
+        url: API_URLS.usuarios.token(),
         type: 'POST',
         headers: {
           "Accept" : "application/json",
@@ -151,7 +174,7 @@
           localStorage.setItem("access_token", data.access_token);
           // Validar estadoRegistro antes de redirigir
           $.ajax({
-            url: 'http://127.0.0.1:8000/api/validate',
+            url: API_URLS.usuarios.validate(),
             type: 'GET',
             headers: {
               'Authorization': 'Bearer ' + data.access_token,

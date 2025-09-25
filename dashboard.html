@@ -43,6 +43,7 @@
       </div>
     </div>
 
+    <script src="JavaScript/config.js"></script>
     <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
   <script>
@@ -50,11 +51,11 @@
     document.addEventListener('DOMContentLoaded', async function() {
       const token = localStorage.getItem('access_token');
       if (!token) {
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
         return;
       }
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/validate', {
+        const res = await fetch(API_URLS.usuarios.validate(), {
           headers: {
             'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
@@ -70,14 +71,14 @@
         }
         // Si el usuario no está aceptado, redirige a login
         if (data.persona && data.persona.estadoRegistro !== 'Aceptado') {
-          window.location.href = 'login.html';
+          window.location.href = 'index.html';
           return;
         }
         // Puedes guardar los datos en localStorage si lo necesitas
         // localStorage.setItem('user', JSON.stringify(data.user));
         // localStorage.setItem('persona', JSON.stringify(data.persona));
       } catch (err) {
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
       }
     });
   </script>

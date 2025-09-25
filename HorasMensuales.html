@@ -67,9 +67,10 @@
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="JavaScript/dashboard.js"></script>
-  <script src="JavaScript/loader.js"></script>
-  <script src="JavaScript/horasmensuales.js"></script>
+  <script src="JavaScript/dashboard.js?v=2"></script>
+  <script src="JavaScript/loader.js?v=2"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/horasmensuales.js?v=2"></script>
   <script>
     // Redirigir al hacer click en el botón de planes de trabajo
     document.addEventListener('DOMContentLoaded', function() {
@@ -123,7 +124,7 @@
       let hayPlan = false;
   try {
         // Obtener horas trabajadas del mes actual
-        const respHoras = await fetch('http://localhost:8001/api/horas/calcular', {
+        const respHoras = await fetch(API_URLS.cooperativa.horasCalcular(), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -136,7 +137,7 @@
           horasTrabajadas = data.total_horas || 0;
         }
         // Obtener plan de trabajo actual del usuario
-        const respPlan = await fetch(`http://localhost:8001/api/planes-trabajo`, {
+        const respPlan = await fetch(API_URLS.cooperativa.planesTrabajoList(), {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (respPlan.ok) {

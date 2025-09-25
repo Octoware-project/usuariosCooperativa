@@ -82,7 +82,7 @@ function attachNavbarEvents() {
 
   function redirectToLogin() {
     localStorage.removeItem('access_token');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   }
 
   userMenuBtn.addEventListener('click', () => {
