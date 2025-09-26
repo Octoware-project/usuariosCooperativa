@@ -20,7 +20,7 @@
             <th style="padding: 1rem 2.5rem;">Mes</th>
             <th style="padding: 1rem 2.5rem;">Año</th>
             <th style="padding: 1rem 2.5rem;">Horas Requeridas</th>
-            <th style="padding: 1rem 2.5rem;">Horas Trabajadas</th>
+            <th style="padding: 1rem 2.5rem;">Horas Completadas</th>
             <th style="padding: 1rem 2.5rem;">Progreso</th>
           </tr>
         </thead>
@@ -114,6 +114,18 @@
     .hours-table th, .hours-table td {
       text-align: center;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .horas-desglose {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: normal;
+    }
+    .horas-completo {
+      background: #eafaf1 !important;
+      border-left: 4px solid #27ae60;
+    }
+    .horas-completo:hover {
+      background: #d5f4e6 !important;
     }
     @media (max-width: 600px) {
       .facturas-box {

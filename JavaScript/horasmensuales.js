@@ -25,11 +25,60 @@ $(function() {
         if (data && Array.isArray(data.horas) && data.horas.length > 0) {
           data.horas.forEach(function(hora) {
             const fecha = `${hora.dia.toString().padStart(2, '0')}/${hora.mes.toString().padStart(2, '0')}/${hora.anio}`;
-            const horas = hora.Cantidad_Horas !== null ? hora.Cantidad_Horas : '-';
+            const horasReales = hora.Cantidad_Horas !== null ? parseFloat(hora.Cantidad_Horas) : 0;
+            const esJustificacion = hora.Monto_Compensario && hora.Monto_Compensario > 0;
+            
+            // Verificar si puede cancelar (menos de 1 día desde created_at)
+            let puedeCancelar = false;
+            if (hora.created_at) {
+              const date = new Date(hora.created_at);
+              const ahora = new Date();
+              const diffMs = ahora - date;
+              const diffDias = diffMs / (1000 * 60 * 60 * 24);
+              puedeCancelar = diffDias <= 1;
+            }
+            
+            let horasTexto = '';
+            let claseRow = '';
+            
+            if (horasReales > 0 && esJustificacion) {
+              // Tiene horas reales Y justificación (registro mixto)
+              const horasJustificadas = hora.horas_equivalentes_calculadas ? 
+                parseFloat(hora.horas_equivalentes_calculadas) : 
+                (hora.Monto_Compensario / (hora.valor_hora_al_momento || 1000));
+              horasTexto = `${horasReales}h + ${horasJustificadas.toFixed(1)}h justif.`;
+              claseRow = 'horas-mixtas-row';
+            } else if (horasReales > 0) {
+              // Solo horas reales
+              horasTexto = `${horasReales}h`;
+              claseRow = 'horas-reales-row';
+            } else if (esJustificacion) {
+              // Solo justificación
+              const horasJustificadas = hora.horas_equivalentes_calculadas ? 
+                parseFloat(hora.horas_equivalentes_calculadas) : 
+                (hora.Monto_Compensario / (hora.valor_hora_al_momento || 1000));
+              horasTexto = `${horasJustificadas.toFixed(1)}h justif.`;
+              claseRow = 'justificacion-row';
+            } else {
+              horasTexto = '-';
+              claseRow = '';
+            }
+            
+            // Crear botón de cancelar (habilitado o deshabilitado)
+            let botonCancelar = puedeCancelar
+              ? `<button class="btn-cancelar" data-id="${hora.id}">Cancelar</button>`
+              : `<button class="btn-cancelar" data-id="${hora.id}" disabled style="opacity:0.5;cursor:not-allowed;">Cancelar</button>`;
+            
             const row = $('<tr>');
+            
+            // Aplicar clase CSS según el tipo de registro
+            if (claseRow) {
+              row.addClass(claseRow);
+            }
+            
             row.append($('<td>').text(fecha));
-            row.append($('<td>').text(horas));
-            row.append($('<td>').html('<button class="btn-cancelar" data-id="'+hora.id+'">Cancelar</button>'));
+            row.append($('<td>').html(horasTexto));
+            row.append($('<td>').html(botonCancelar));
             tbody.append(row);
           });
       } else {
@@ -47,8 +96,8 @@ $(function() {
     }
   });
 
-  // Manejar el click en Cancelar
-  $(document).on('click', '.btn-cancelar', function() {
+  // Manejar el click en Cancelar (solo para botones habilitados)
+  $(document).on('click', '.btn-cancelar:not([disabled])', function() {
     const id = $(this).data('id');
     if (confirm('¿Seguro que deseas cancelar estas horas?')) {
       $.ajax({

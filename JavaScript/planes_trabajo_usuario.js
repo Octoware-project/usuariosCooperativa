@@ -50,12 +50,29 @@ document.addEventListener('DOMContentLoaded', async function() {
         const porcentaje = Math.min(Math.round(progreso.porcentaje), 100);
         const esCompleto = porcentaje >= 100;
         
+        // Crear el texto de horas trabajadas con desglose si hay justificadas
+        let horasTexto = '';
+        if (progreso.horas_justificadas && progreso.horas_justificadas > 0) {
+          horasTexto = `
+            <div>
+              <strong>${progreso.horas_cumplidas}h</strong>
+            </div>
+            <div class="horas-desglose">
+              ${progreso.horas_reales}h reales + ${progreso.horas_justificadas}h justif.
+            </div>
+          `;
+        } else {
+          horasTexto = `<strong>${progreso.horas_cumplidas}h</strong>`;
+        }
+        
+        const claseRow = esCompleto ? ' class="horas-completo"' : '';
+        
         tbody.innerHTML += `
-          <tr${esCompleto ? ' style="background:#eafaf1;"' : ''}>
+          <tr${claseRow}>
             <td>${plan.mes}</td>
             <td>${plan.anio}</td>
-            <td>${progreso.horas_requeridas}</td>
-            <td>${progreso.horas_cumplidas}</td>
+            <td>${progreso.horas_requeridas}h</td>
+            <td>${horasTexto}</td>
             <td><span style="font-weight:600;color:${esCompleto ? '#27ae60' : '#1976d2'}">${porcentaje}%</span></td>
           </tr>
         `;
