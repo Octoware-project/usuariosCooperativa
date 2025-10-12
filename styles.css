@@ -77,11 +77,33 @@ nav {
   font-size: 1.2rem;
   letter-spacing: 1px;
   box-shadow: 0 2px 8px rgba(222, 95, 136, 0.7);
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .user-icon:hover {
   background-color: #c94f76;
   box-shadow: 0 4px 12px rgba(201, 79, 118, 0.8);
+}
+.user-icon:active {
+  background-color: #b8456a;
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(184, 69, 106, 0.6);
+  transition: all 0.1s ease;
+}
+.user-icon:focus {
+  outline: none;
+}
+.user-menu:focus {
+  outline: none;
+}
+.user-menu.menu-open .user-icon {
+  background-color: #c94f76;
+  box-shadow: 0 4px 12px rgba(201, 79, 118, 0.8);
+}
+.user-menu.menu-open .user-icon:active {
+  transform: none;
+  background-color: #c94f76;
 }
 .dropdown {
   position: absolute;
@@ -98,7 +120,8 @@ nav {
 .dropdown.show {
   display: flex;
 }
-.dropdown button {
+.dropdown button,
+.dropdown a {
   border: none;
   background: none;
   padding: 12px 18px;
@@ -109,8 +132,12 @@ nav {
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
   font-weight: 600;
   user-select: none;
+  text-decoration: none;
+  display: block;
+  width: 100%;
 }
-.dropdown button:hover {
+.dropdown button:hover,
+.dropdown a:hover {
   background: #ffc1e3;
   color: #de5f88;
   font-weight: 700;

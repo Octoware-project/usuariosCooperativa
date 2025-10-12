@@ -2,158 +2,1196 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Detalle de Factura</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles_tabla.css">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <!-- Google Fonts - Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Navbar insertado -->
-  <nav>
-    <a href="dashboard.html" class="logo" aria-label="Ir a página principal">
-      <img src="img/Logo.jpg" alt="Logo de Cooperativa - Pulpo" style="height: 40px; width: auto;">
-    </a>
-    <div class="nav-links" role="navigation" aria-label="Menú principal">
-      <a href="HorasMensuales.html">Horas Mensuales</a>
-      <a href="Comprobantes.html">Pagos</a>
-    </div>
-    <div class="user-menu" id="userMenuBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Menú usuario">
-      <div class="user-icon" title="Menú usuario">U</div>
-      <div class="dropdown" id="userDropdown" role="menu" aria-label="Menú usuario">
-        <button id="verDatosBtn" role="menuitem">Ver datos</button>
-        <button id="logoutBtn" role="menuitem">Cerrar sesión</button>
-      </div>
-    </div>
-  </nav>
-  <div id="navbar"></div>
-  <div class="facturas-container" style="padding-top: 48px;">
-    <div class="facturas-box" style="max-width:1200px;margin:0 32px;display:flex;flex-direction:row;gap:40px;align-items:stretch; border-radius: 20px; padding: 40px 32px 32px 32px;">
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-        <h2 class="detalle-titulo">Detalle de la factura</h2>
   <style>
-    .detalle-titulo {
-      text-align: center;
-      margin-bottom: 28px;
-      font-family: 'Segoe UI', 'Montserrat', 'Arial', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #d81b60;
-      letter-spacing: 1.5px;
-      text-shadow: 0 2px 8px #f8bbd0;
-    }
-  </style>
-        <div class="factura-detalle-list-box">
-          <div id="factura-detalle" class="factura-detalle-list" style="margin-bottom:32px;"></div>
-        </div>
-        <div class="volver-container">
-          <a href="Comprobantes.html" class="btn-volver">Volver</a>
-        </div>
-  <style>
-    .volver-container {
-      text-align: center;
-      margin-top: 32px;
-    }
-    .btn-volver {
-      background: #fff;
-      color: #d81b60;
-      border: 2px solid #d81b60;
-      border-radius: 18px;
-      padding: 12px 38px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      box-shadow: 0 2px 8px #f8bbd0;
-      transition: background 0.2s, color 0.2s, border 0.2s;
-      cursor: pointer;
-      display: inline-block;
-      margin: 0 auto;
-    }
-    .btn-volver:hover {
-      background: #f8bbd0;
-      color: #ad1457;
-      border-color: #ad1457;
-    }
-  </style>
-      </div>
-  <style>
-    .factura-detalle-list-box {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 32px 28px 24px 28px;
-      margin-bottom: 32px;
-    }
-  </style>
-  <div class="factura-imagen-box" style="margin: 0 0 0 12px;">
-        <div id="factura-imagen" style="display:flex;align-items:center;justify-content:center;"></div>
-      </div>
-  <style>
-    .factura-imagen-box {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 32px 28px 24px 28px;
-      margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 320px;
-      max-width: 420px;
-      width: 100%;
-      height: 100%;
+    /* Global Box Sizing */
+    *, *::before, *::after {
       box-sizing: border-box;
     }
-    @media (max-width: 900px) {
-      .factura-imagen-box {
-        max-width: 100%;
-        min-width: unset;
-        padding: 18px 8px 12px 8px;
-      }
+    
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
     }
-  </style>
-    </div>
-  </div>
-  <style>
-    .factura-detalle-list {
-      padding: 0;
-      margin: 0;
+    
+    /* CSS Variables */
+    :root {
+      --primary: #ec4899;
+      --primary-dark: #be185d;
+      --primary-light: #f9a8d4;
+      --secondary: #64748b;
+      --surface: #ffffff;
+      --background: #fafafa;
+      --border: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     }
-    .factura-detalle-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .factura-detalle-list li {
+
+    /* Mobile Navigation Styles */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 1.08rem;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
     }
-    .factura-detalle-list li:last-child {
-      border-bottom: none;
+    
+    .menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #ec4899;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
     }
-    .factura-detalle-list .label {
-      color: #d81b60;
-      font-weight: 600;
-      min-width: 120px;
+    
+    .menu-btn:hover {
+      background: rgba(236, 72, 153, 0.1);
     }
-    .factura-detalle-list .valor {
-      color: #333;
-      font-weight: 400;
-      text-align: right;
+    
+    .logo-mobile {
+      height: 40px;
+      width: auto;
     }
-    @media (max-width: 900px) {
-      .facturas-box {
-        flex-direction: column !important;
+
+    /* Sidebar Menu Styles */
+    .sidebar-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100vh;
+      background: var(--surface);
+      box-shadow: var(--shadow-xl);
+      z-index: 1001;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+    
+    .sidebar-menu.active {
+      left: 0;
+    }
+    
+    .sidebar-header {
+      padding: 2rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .sidebar-nav {
+      padding: 1rem 0;
+    }
+    
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    
+    .sidebar-nav a:hover {
+      background: rgba(236, 72, 153, 0.1);
+      color: var(--primary);
+    }
+    
+    .sidebar-nav a.active {
+      background: rgba(236, 72, 153, 0.1);
+      color: var(--primary);
+      border-right: 3px solid var(--primary);
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Desktop Navigation - Hidden on Mobile */
+    .desktop-nav {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .mobile-nav {
+        display: none;
       }
-      #factura-imagen {
-        margin-top: 32px;
+      
+      .desktop-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+        border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+      }
+      
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+      
+      .nav-links a {
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+      
+      .nav-links a:hover {
+        background: rgba(236, 72, 153, 0.1);
+        color: var(--primary);
+      }
+      
+      .user-menu {
+        position: relative;
+        cursor: pointer;
+      }
+      
+      .user-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+      
+      body {
+        padding-top: 70px;
+      }
+    }
+    
+    /* Main Content Styles */
+    body {
+      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      padding-top: 80px;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-bottom: 2rem;
+    }
+    
+    @media (max-width: 767px) {
+      body {
+        padding-top: 70px;
+      }
+      
+      .container {
+        padding: 1rem;
+        padding-top: 80px;
       }
     }
   </style>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav d-md-none">
+    <button class="menu-btn" id="menuBtn">
+      <i class="bi bi-list"></i>
+    </button>
+    <img src="img/Logo.jpg" alt="Logo" class="logo-mobile">
+    <div></div>
+  </div>
+
+  <!-- Desktop Navigation -->
+  <nav class="desktop-nav d-none d-md-flex">
+    <div class="nav-brand">
+      <img src="img/Logo.jpg" alt="Logo" style="height: 40px; width: auto;">
+      <span style="font-weight: 600; color: var(--primary);">Cooperativa</span>
+    </div>
+    <div class="nav-links">
+      <a href="dashboard.html">
+        <i class="bi bi-house me-1"></i>Dashboard
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock me-1"></i>Horas Mensuales
+      </a>
+      <a href="Comprobantes.html" class="active">
+        <i class="bi bi-receipt me-1"></i>Comprobantes
+      </a>
+    </div>
+    <div class="user-menu" id="userMenuDesktop">
+      <div class="user-icon">U</div>
+    </div>
+  </nav>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <img src="img/Logo.jpg" alt="Logo" style="height: 40px; width: auto;">
+      <span style="font-weight: 600; color: var(--primary);">Cooperativa</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">
+        <i class="bi bi-house"></i>Dashboard
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock"></i>Horas Mensuales
+      </a>
+      <a href="Comprobantes.html" class="active">
+        <i class="bi bi-receipt"></i>Comprobantes
+      </a>
+      <hr class="my-3">
+      <a href="#" id="verDatosBtn">
+        <i class="bi bi-person"></i>Ver Datos
+      </a>
+      <a href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+  <div class="container">
+    <div class="row justify-content-center w-100">
+      <div class="col-12 col-lg-10 col-xl-8">
+        <!-- Header Card -->
+        <div class="detail-header-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="back-button" onclick="window.location.href='Comprobantes.html'">
+                <i class="bi bi-arrow-left"></i>
+              </div>
+              <div>
+                <h1 class="page-title mb-0">Detalle de Comprobante</h1>
+                <p class="page-subtitle mb-0">Información completa de la factura</p>
+              </div>
+            </div>
+            <div class="action-buttons d-none d-md-flex">
+              <button class="btn-action" id="downloadBtn">
+                <i class="bi bi-download"></i>
+                <span>Descargar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row g-4">
+          <!-- Details Card -->
+          <div class="col-12 col-lg-6">
+            <div class="detail-card">
+              <div class="card-header">
+                <div class="header-icon">
+                  <i class="bi bi-receipt"></i>
+                </div>
+                <div>
+                  <h3 class="card-title">Información del Comprobante</h3>
+                  <p class="card-subtitle">Detalles de la factura</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="factura-detalle" class="detail-list">
+                  <!-- Content will be loaded here -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Card -->
+          <div class="col-12 col-lg-6">
+            <div class="detail-card image-card">
+              <div class="card-header">
+                <div class="header-icon">
+                  <i class="bi bi-image"></i>
+                </div>
+                <div>
+                  <h3 class="card-title">Comprobante</h3>
+                  <p class="card-subtitle">Imagen del archivo</p>
+                </div>
+              </div>
+              <div class="card-body image-container">
+                <div id="factura-imagen" class="image-content">
+                  <!-- Image will be loaded here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Actions -->
+        <div class="mobile-actions d-md-none">
+          <button class="btn-mobile-action" id="downloadBtnMobile">
+            <i class="bi bi-download"></i>
+            <span>Descargar Comprobante</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Detail Page Specific Styles */
+    .detail-header-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .back-button {
+      width: 48px;
+      height: 48px;
+      background: rgba(236, 72, 153, 0.1);
+      border: 1px solid rgba(236, 72, 153, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .back-button:hover {
+      background: rgba(236, 72, 153, 0.15);
+      transform: translateX(-2px);
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .action-buttons {
+      gap: 1rem;
+    }
+
+    .btn-action {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-action:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Detail Cards */
+    .detail-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .detail-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(236, 72, 153, 0.02));
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(236, 72, 153, 0.1);
+      border: 1px solid rgba(236, 72, 153, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    /* Detail List */
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(236, 72, 153, 0.02);
+      border: 1px solid rgba(236, 72, 153, 0.1);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .detail-item:hover {
+      background: rgba(236, 72, 153, 0.05);
+      border-color: rgba(236, 72, 153, 0.2);
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-weight: 500;
+      color: var(--text-primary);
+      text-align: right;
+      word-break: break-word;
+    }
+
+    /* Image Container */
+    .image-card .card-body {
+      padding: 1rem;
+    }
+
+    .image-container {
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-content {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(236, 72, 153, 0.02);
+      border: 1px solid rgba(236, 72, 153, 0.2);
+      min-height: 250px;
+      padding: 1rem;
+    }
+
+    .image-content img {
+      max-width: 100%;
+      max-height: 400px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      object-fit: contain;
+      width: auto;
+      height: auto;
+    }
+
+    .image-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .image-placeholder i {
+      font-size: 3rem;
+      color: rgba(236, 72, 153, 0.3);
+    }
+
+    .image-placeholder small {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+
+    .image-placeholder .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      font-size: 0.9rem;
+    }
+
+    .image-placeholder .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .image-placeholder .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .image-placeholder .btn-secondary {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .image-placeholder .btn-secondary:hover {
+      background: #475569;
+      transform: translateY(-1px);
+    }
+
+    /* Mobile Actions */
+    .mobile-actions {
+      margin-top: 2rem;
+      padding: 1rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-mobile-action {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-mobile-action:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 767px) {
+      .detail-header-card {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .card-header {
+        padding: 1rem;
+      }
+
+      .card-body {
+        padding: 1rem;
+      }
+
+      .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .detail-value {
+        text-align: left;
+        font-size: 0.9rem;
+      }
+
+      .image-container {
+        min-height: 200px;
+      }
+
+      .image-content {
+        min-height: 180px;
+      }
+    }
+
+    /* Loading States */
+    .skeleton-item {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: 8px;
+      height: 20px;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Toast Styles */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .toast {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: var(--shadow-lg);
+      min-width: 300px;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--error);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--primary);
+    }
+  </style>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Config -->
   <script src="JavaScript/config.js"></script>
-  <script src="JavaScript/factura_detalle.js"></script>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById('menuBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('overlay');
+
+      function openMenu() {
+        sidebarMenu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        sidebarMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (menuBtn) {
+        menuBtn.addEventListener('click', openMenu);
+      }
+
+      if (overlay) {
+        overlay.addEventListener('click', closeMenu);
+      }
+
+      // Close menu on escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeMenu();
+        }
+      });
+
+      // Load factura detail
+      loadFacturaDetail();
+    });
+
+    // Toast notification system
+    function showToast(message, type = 'info') {
+      const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      toast.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-${getToastIcon(type)}"></i>
+          <span>${message}</span>
+        </div>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Show toast
+      setTimeout(() => toast.classList.add('show'), 100);
+      
+      // Remove toast
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function createToastContainer() {
+      const container = document.createElement('div');
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+      return container;
+    }
+
+    function getToastIcon(type) {
+      switch (type) {
+        case 'success': return 'check-circle';
+        case 'error': return 'x-circle';
+        case 'warning': return 'exclamation-triangle';
+        default: return 'info-circle';
+      }
+    }
+
+    // Load factura detail function
+    function loadFacturaDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const facturaId = urlParams.get('id');
+      
+      if (!facturaId) {
+        showToast('ID de factura no encontrado', 'error');
+        setTimeout(() => window.location.href = 'Comprobantes.html', 2000);
+        return;
+      }
+
+      showSkeletonLoading();
+      
+      const token = localStorage.getItem('access_token');
+      
+      fetch(API_URLS.cooperativa.facturasById(facturaId), {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: No se pudo cargar la factura`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Factura data received:', data);
+        hideSkeletonLoading();
+        renderFacturaDetail(data.factura);
+        setupDownloadButton(facturaId);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        hideSkeletonLoading();
+        showToast('Error al cargar los detalles de la factura', 'error');
+      });
+    }
+
+    function showSkeletonLoading() {
+      const detailContainer = document.getElementById('factura-detalle');
+      const imageContainer = document.getElementById('factura-imagen');
+      
+      detailContainer.innerHTML = `
+        <div class="skeleton-item"></div>
+        <div class="skeleton-item"></div>
+        <div class="skeleton-item"></div>
+        <div class="skeleton-item"></div>
+        <div class="skeleton-item"></div>
+      `;
+      
+      imageContainer.innerHTML = `
+        <div class="skeleton-item" style="width: 200px; height: 200px; border-radius: 12px;"></div>
+      `;
+    }
+
+    function hideSkeletonLoading() {
+      // Content will be replaced by renderFacturaDetail
+    }
+
+    function renderFacturaDetail(factura) {
+      const detailContainer = document.getElementById('factura-detalle');
+      const imageContainer = document.getElementById('factura-imagen');
+      
+      // Render details
+      const details = [
+        { label: 'Motivo', value: factura.motivo || 'Sin motivo especificado' },
+        { label: 'Fecha de Pago', value: new Date(factura.created_at).toLocaleDateString('es-ES') },
+        { label: 'Monto', value: `$${parseFloat(factura.Monto || 0).toFixed(2)}` },
+        { label: 'Estado', value: getEstadoBadge(factura.Estado_Pago) },
+        { label: 'Mes del Pago', value: getMonthName(new Date(factura.created_at)) }
+      ];
+      
+      detailContainer.innerHTML = details.map(item => `
+        <div class="detail-item">
+          <span class="detail-label">${item.label}</span>
+          <span class="detail-value">${item.value}</span>
+        </div>
+      `).join('');
+      
+      // Render image
+      console.log('Factura data:', factura);
+      console.log('imagen_comprobante:', factura.imagen_comprobante);
+      console.log('Archivo_Comprobante:', factura.Archivo_Comprobante);
+      
+      if (factura.imagen_comprobante) {
+        // Si hay URL de imagen directa, usarla
+        imageContainer.innerHTML = `
+          <img src="${factura.imagen_comprobante}" alt="Comprobante" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: var(--shadow);" onerror="handleImageError(this, ${factura.id})">
+        `;
+      } else if (factura.Archivo_Comprobante) {
+        // Si hay archivo almacenado, cargar con autenticación
+        console.log('Loading comprobante from API for ID:', factura.id);
+        loadComprobanteImage(factura.id, imageContainer);
+      } else {
+        // No hay comprobante disponible
+        imageContainer.innerHTML = `
+          <div class="image-placeholder">
+            <i class="bi bi-image"></i>
+            <span>Sin imagen de comprobante</span>
+          </div>
+        `;
+      }
+    }
+
+    // Global function to handle image errors
+    window.handleImageError = function(img, facturaId) {
+      console.log('Image load error, trying API endpoint for ID:', facturaId);
+      const container = img.parentElement;
+      loadComprobanteImage(facturaId, container);
+    }
+
+    function loadComprobanteImage(facturaId, container) {
+      // Show loading state
+      container.innerHTML = `
+        <div class="image-placeholder">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <span>Cargando comprobante...</span>
+        </div>
+      `;
+      
+      const token = localStorage.getItem('access_token');
+      const comprobanteUrl = API_URLS.cooperativa.comprobante(facturaId);
+      
+      console.log('Fetching comprobante from:', comprobanteUrl);
+      console.log('Using token:', token ? 'Present' : 'Missing');
+      
+      fetch(comprobanteUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': '*/*'
+        }
+      })
+      .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response headers:', [...response.headers.entries()]);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: No se pudo cargar el comprobante`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        console.log('Content-Type:', contentType);
+        
+        return response.blob();
+      })
+      .then(blob => {
+        console.log('Blob received:', blob.size, 'bytes, type:', blob.type);
+        
+        const imageUrl = URL.createObjectURL(blob);
+        const contentType = blob.type || 'application/octet-stream';
+        
+        if (contentType.startsWith('image/')) {
+          container.innerHTML = `
+            <img src="${imageUrl}" alt="Comprobante" 
+                 style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: var(--shadow);">
+          `;
+        } else if (contentType.includes('pdf')) {
+          container.innerHTML = `
+            <div class="image-placeholder">
+              <i class="bi bi-file-earmark-pdf" style="font-size: 4rem; color: #dc3545;"></i>
+              <span>Documento PDF</span>
+              <button type="button" class="btn btn-primary mt-2" onclick="window.open('${imageUrl}', '_blank')" style="justify-content: center;">
+                Ver PDF
+              </button>
+            </div>
+          `;
+        } else {
+          // Try to display as image anyway (some servers don't set correct content-type)
+          const img = new Image();
+          img.onload = function() {
+            container.innerHTML = `
+              <img src="${imageUrl}" alt="Comprobante" 
+                   style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: var(--shadow);">
+            `;
+          };
+          img.onerror = function() {
+            container.innerHTML = `
+              <div class="image-placeholder">
+                <i class="bi bi-file-earmark" style="font-size: 4rem; color: #6c757d;"></i>
+                <span>Archivo de comprobante</span>
+                <button type="button" class="btn btn-secondary mt-2" onclick="window.open('${imageUrl}', '_blank')">
+                  <i class="bi bi-eye me-1"></i>Ver Archivo
+                </button>
+              </div>
+            `;
+          };
+          img.src = imageUrl;
+        }
+      })
+      .catch(error => {
+        console.error('Error loading comprobante:', error);
+        container.innerHTML = `
+          <div class="image-placeholder">
+            <i class="bi bi-exclamation-triangle" style="color: #f59e0b;"></i>
+            <span>Error al cargar comprobante</span>
+            <small>${error.message}</small>
+          </div>
+        `;
+      });
+    }
+
+    function getMonthName(date) {
+      const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      return `${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    function getEstadoBadge(estado) {
+      const badges = {
+        'Pendiente': '<span style="background: #f59e0b; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Pendiente</span>',
+        'Aprobado': '<span style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Aprobado</span>',
+        'Rechazado': '<span style="background: #ef4444; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Rechazado</span>'
+      };
+      
+      return badges[estado] || estado;
+    }
+
+    function setupDownloadButton(facturaId) {
+      const downloadBtn = document.getElementById('downloadBtn');
+      const downloadBtnMobile = document.getElementById('downloadBtnMobile');
+      
+      function downloadComprobante() {
+        showToast('Iniciando descarga...', 'info');
+        
+        const token = localStorage.getItem('access_token');
+        
+        fetch(API_URLS.cooperativa.comprobante(facturaId) + '?download=true', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': '*/*'
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Error ${response.status}: No se pudo descargar el comprobante`);
+          }
+          
+          const contentDisposition = response.headers.get('content-disposition');
+          let filename = `comprobante_${facturaId}`;
+          
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename[^;=\\n]*=((['"]).*?\\2|[^;\\n]*)/);
+            if (filenameMatch) {
+              filename = filenameMatch[1].replace(/['"]/g, '');
+            }
+          }
+          
+          if (!filename.includes('.')) {
+            const contentType = response.headers.get('content-type');
+            if (contentType) {
+              if (contentType.includes('pdf')) {
+                filename += '.pdf';
+              } else if (contentType.includes('image')) {
+                if (contentType.includes('jpeg') || contentType.includes('jpg')) {
+                  filename += '.jpg';
+                } else if (contentType.includes('png')) {
+                  filename += '.png';
+                } else {
+                  filename += '.jpg';
+                }
+              }
+            }
+          }
+          
+          return response.blob().then(blob => ({ blob, filename }));
+        })
+        .then(({ blob, filename }) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = filename;
+          
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          
+          window.URL.revokeObjectURL(url);
+          showToast('Comprobante descargado correctamente', 'success');
+        })
+        .catch(error => {
+          console.error('Error al descargar comprobante:', error);
+          showToast('Error al descargar el comprobante', 'error');
+        });
+      }
+      
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadComprobante);
+      }
+      
+      if (downloadBtnMobile) {
+        downloadBtnMobile.addEventListener('click', downloadComprobante);
+      }
+    }
+
+    function openImageModal(imageSrc) {
+      // Create modal for full-size image viewing
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      `;
+      
+      const img = document.createElement('img');
+      img.src = imageSrc;
+      img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      `;
+      
+      modal.appendChild(img);
+      document.body.appendChild(modal);
+      
+      modal.addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+    }
+  </script>
 </body>
 </html>

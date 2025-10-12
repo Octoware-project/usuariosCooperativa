@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // Cargar datos actuales
   try {
-    const res = await fetch(API_URLS.usuarios.validate(), {
+    const res = await fetch(API_URLS.cooperativa.datosUsuario(), {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json'
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const body = {};
     formData.forEach((v, k) => body[k] = v);
     try {
-      const res = await fetch(API_URLS.usuarios.editarDatos(), {
+      const res = await fetch(API_URLS.cooperativa.editarDatos(), {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + token,
