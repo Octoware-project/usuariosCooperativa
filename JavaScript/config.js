@@ -34,7 +34,12 @@ const API_URLS = {
         facturasById: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}`,
         comprobante: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}/comprobante`,
         planesTrabajoList: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo`,
-        planesTrabajoProgreso: (id) => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/${id}/progreso`
+        planesTrabajoProgreso: (id) => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/${id}/progreso`,
+        // Nuevas URLs para gestión de usuarios (ahora desde cooperativa)
+        completarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/completar-datos`,
+        editarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/editar-datos-persona`,
+        datosUsuario: () => `${API_CONFIG.API_COOPERATIVA}/api/datos-usuario`,
+        cambiarContrasena: () => `${API_CONFIG.API_COOPERATIVA}/api/cambiar-contrasena`
     }
 };
 

@@ -19,58 +19,6 @@ async function loadNavbar() {
     const navbarHTML = await response.text();
     navbarContainer.innerHTML = navbarHTML;
     attachNavbarEvents();
-    // Inyectar modal global si no existe
-    if (!document.getElementById('modalBg')) {
-      const modalDiv = document.createElement('div');
-      modalDiv.innerHTML = `
-        <div class="modal-bg" id="modalBg">
-          <div class="modal">
-            <h3>Datos del Usuario</h3>
-            <div id="modalContent"><p>Cargando...</p></div>
-            <div class="modal-buttons" id="modalButtons">
-              <button class="btn-edit" id="editBtn">Editar</button>
-              <button class="btn-close" id="closeModalBtn">Cerrar</button>
-            </div>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modalDiv.firstElementChild);
-    }
-    // Inicializar eventos del modal si dashboard.js no está presente
-    if (typeof cargarDatosUsuario !== 'function') {
-      window.cargarDatosUsuario = function() {
-        const modalContent = document.getElementById('modalContent');
-        const modalButtons = document.getElementById('modalButtons');
-        if (modalContent) {
-          modalContent.innerHTML = `
-            <div id="cartelNoDisponible" style="display:flex;justify-content:center;align-items:center;height:80px;">
-              <span style="background:#ffe0e0;color:#b71c1c;padding:8px 18px;border-radius:8px;font-size:0.98rem;cursor:pointer;box-shadow:0 2px 8px #b71c1c22;">Funcionalidad no disponible en esta página</span>
-            </div>
-          `;
-          const cartel = document.getElementById('cartelNoDisponible');
-          if (cartel) {
-            cartel.onclick = function() {
-              cartel.style.display = 'none';
-              // Cerrar el modal también
-              const modalBg = document.getElementById('modalBg');
-              if (modalBg) modalBg.classList.remove('show');
-            };
-          }
-        }
-        if (modalButtons) modalButtons.style.display = 'none';
-      };
-    }
-    // Botones cerrar/esc
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalBg = document.getElementById('modalBg');
-    if (closeModalBtn && modalBg) {
-      closeModalBtn.onclick = () => modalBg.classList.remove('show');
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalBg.classList.contains('show')) {
-          modalBg.classList.remove('show');
-        }
-      });
-    }
   }
 }
 
@@ -85,25 +33,42 @@ function attachNavbarEvents() {
     window.location.href = 'index.html';
   }
 
-  userMenuBtn.addEventListener('click', () => {
-    userDropdown.classList.toggle('show');
+  userMenuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const isOpen = userDropdown.classList.contains('show');
+    
+    if (isOpen) {
+      userDropdown.classList.remove('show');
+      userMenuBtn.classList.remove('menu-open');
+    } else {
+      userDropdown.classList.add('show');
+      userMenuBtn.classList.add('menu-open');
+    }
   });
 
   document.addEventListener('click', (e) => {
-    if (!userMenuBtn.contains(e.target)) {
+    // Solo cerrar el dropdown si el click no es en el menú de usuario ni en sus elementos
+    if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
       userDropdown.classList.remove('show');
+      userMenuBtn.classList.remove('menu-open');
     }
   });
 
   logoutBtn.addEventListener('click', redirectToLogin);
 
-  verDatosBtn.addEventListener('click', () => {
-    if (typeof cargarDatosUsuario === "function") {
-      cargarDatosUsuario();
-    }
-    document.getElementById('modalBg').classList.add('show');
-    userDropdown.classList.remove('show');
-  });
+  // El enlace del dropdown solo necesita cerrar el menú cuando se hace click
+  if (verDatosBtn) {
+    verDatosBtn.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevenir navegación por defecto
+      console.log('Click en Ver datos detectado');
+      userDropdown.classList.remove('show');
+      userMenuBtn.classList.remove('menu-open');
+      
+      // Navegar inmediatamente
+      window.location.href = 'EditarPerfilModerno.html';
+    });
+  }
 }
 
 window.addEventListener("DOMContentLoaded", loadNavbar);
