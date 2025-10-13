@@ -75,11 +75,25 @@
       box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
       transition: all 0.2s ease;
       cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      border: none;
+      outline: none;
     }
     
     .user-icon-mobile:hover {
       transform: scale(1.05);
       box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+    }
+    
+    .user-icon-mobile:active {
+      transform: scale(0.98);
+      transition: all 0.1s ease;
+    }
+    
+    .user-icon-mobile:focus {
+      outline: none;
+      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
     }
     
     /* Sidebar Menu */
@@ -1142,7 +1156,7 @@
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   padding: 24px 32px 24px 32px;
   min-width: 350px;
-  max-width: 1200px;
+  max-width: 1400px;
   width: 100%;
     }
     .facturas-header {

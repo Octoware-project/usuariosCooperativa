@@ -1,96 +1,230 @@
 // planes_trabajo_usuario.js
-// Muestra todos los planes de trabajo del usuario y su progreso
+// VERSIÓN SÚPER OPTIMIZADA - Dashboard todo-en-uno
 
 document.addEventListener('DOMContentLoaded', async function() {
   const token = localStorage.getItem('access_token');
-  const tbody = document.getElementById('tabla-planes-tbody');
-  if (!token || !tbody) return;
+  if (!token) return;
 
-  // Mostrar skeleton loader
-  mostrarSkeletonsTabla('tabla-planes-tbody');
+  // Usar sistema de compatibilidad
+  await initPlanesDashboard();
+});
 
+// NUEVA FUNCIÓN OPTIMIZADA: Carga todo en una sola llamada
+async function loadPlanesDashboard() {
+  const token = localStorage.getItem('access_token');
+  
   try {
-    // Obtener planes de trabajo del usuario
-    const respPlanes = await fetch(API_URLS.cooperativa.planesTrabajoList(), {
+    // Mostrar skeleton loaders
+    mostrarSkeletons();
+    
+    console.log('🚀 Cargando dashboard optimizado...');
+    const startTime = performance.now();
+    
+    // UNA SOLA LLAMADA AL BACKEND
+    const response = await fetch(API_URLS.cooperativa.planesTrabajoDashboard(), {
       headers: { 'Authorization': 'Bearer ' + token }
     });
-    let planes = [];
-    if (respPlanes.ok) {
-      planes = await respPlanes.json();
-    }
-    // Si no hay planes, mostrar mensaje
-    if (!Array.isArray(planes) || planes.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;font-size:1.1rem;padding:32px 0;">No tienes planes de trabajo asignados.</td></tr>';
-      return;
-    }
-
-    // Limpiar skeleton
-    ocultarSkeletonsTabla('tabla-planes-tbody');
-    // Renderizar filas
-    tbody.innerHTML = '';
     
-    // Para cada plan, obtener su progreso desde el backend
-    for (const plan of planes) {
-      try {
-        // Obtener progreso del plan desde el backend
-        const respProgreso = await fetch(API_URLS.cooperativa.planesTrabajoProgreso(plan.id), {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        
-        let progreso = {
-          horas_requeridas: plan.horas_requeridas,
-          horas_cumplidas: 0,
-          porcentaje: 0
-        };
-        
-        if (respProgreso.ok) {
-          progreso = await respProgreso.json();
-        }
-        
-        const porcentaje = Math.min(Math.round(progreso.porcentaje), 100);
-        const esCompleto = porcentaje >= 100;
-        
-        // Crear el texto de horas trabajadas con desglose si hay justificadas
-        let horasTexto = '';
-        if (progreso.horas_justificadas && progreso.horas_justificadas > 0) {
-          horasTexto = `
-            <div>
-              <strong>${progreso.horas_cumplidas}h</strong>
-            </div>
-            <div class="horas-desglose">
-              ${progreso.horas_reales}h reales + ${progreso.horas_justificadas}h justif.
-            </div>
-          `;
-        } else {
-          horasTexto = `<strong>${progreso.horas_cumplidas}h</strong>`;
-        }
-        
-        const claseRow = esCompleto ? ' class="horas-completo"' : '';
-        
-        tbody.innerHTML += `
-          <tr${claseRow}>
-            <td>${plan.mes}</td>
-            <td>${plan.anio}</td>
-            <td>${progreso.horas_requeridas}h</td>
-            <td>${horasTexto}</td>
-            <td><span style="font-weight:600;color:${esCompleto ? '#27ae60' : '#1976d2'}">${porcentaje}%</span></td>
-          </tr>
-        `;
-      } catch (error) {
-        // Si falla el progreso de un plan específico, mostrar valores por defecto
-        tbody.innerHTML += `
-          <tr>
-            <td>${plan.mes}</td>
-            <td>${plan.anio}</td>
-            <td>${plan.horas_requeridas}</td>
-            <td>-</td>
-            <td><span style="font-weight:600;color:#e74c3c">Error</span></td>
-          </tr>
-        `;
-      }
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-  } catch {
-    ocultarSkeletonsTabla('tabla-planes-tbody');
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#d81b60;font-size:1.1rem;padding:32px 0;">Error al cargar los planes de trabajo.</td></tr>';
+    
+    const dashboardData = await response.json();
+    const endTime = performance.now();
+    
+    console.log('✅ Dashboard cargado en:', Math.round(endTime - startTime), 'ms');
+    console.log('📊 Datos recibidos:', dashboardData);
+    
+    // Ocultar skeletons
+    ocultarSkeletons();
+    
+    // Renderizar planes con progreso incluido
+    renderPlanesOptimizado(dashboardData.planes);
+    
+    // Actualizar estadísticas globales
+    updateEstadisticasGlobales(dashboardData.estadisticas);
+    
+    // Mostrar información de performance
+    if (dashboardData.meta && dashboardData.meta.query_time_ms) {
+      console.log(`⚡ Query optimizada ejecutada en: ${dashboardData.meta.query_time_ms}ms`);
+    }
+    
+  } catch (error) {
+    console.error('❌ Error cargando dashboard:', error);
+    ocultarSkeletons();
+    mostrarErrorMessage('Error al cargar los planes de trabajo');
   }
-});
+}
+
+// Renderizar planes con todos los datos ya incluidos
+function renderPlanesOptimizado(planes) {
+  const tbody = document.getElementById('tabla-planes-tbody');
+  if (!tbody) return;
+  
+  if (!Array.isArray(planes) || planes.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align:center;color:#888;font-size:1.1rem;padding:32px 0;">
+          No tienes planes de trabajo asignados.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tbody.innerHTML = '';
+  
+  planes.forEach(plan => {
+    const progreso = plan.progreso;
+    const porcentaje = Math.min(Math.round(progreso.porcentaje), 100);
+    const esCompleto = progreso.completado;
+    
+    // Crear el texto de horas trabajadas con desglose si hay justificadas
+    let horasTexto = '';
+    if (progreso.horas_justificadas && progreso.horas_justificadas > 0) {
+      horasTexto = `
+        <div>
+          <strong>${progreso.horas_cumplidas}h</strong>
+        </div>
+        <div class="horas-desglose">
+          ${progreso.horas_reales}h reales + ${progreso.horas_justificadas}h justif.
+        </div>
+      `;
+    } else {
+      horasTexto = `<strong>${progreso.horas_cumplidas}h</strong>`;
+    }
+    
+    const claseRow = esCompleto ? ' class="horas-completo"' : '';
+    const estadoBadge = esCompleto ? 
+      '<span class="badge-completado">✅ Completado</span>' : 
+      '<span class="badge-activo">🔄 Activo</span>';
+    
+    tbody.innerHTML += `
+      <tr${claseRow}>
+        <td>${plan.mes}</td>
+        <td>${plan.anio}</td>
+        <td>${plan.horas_requeridas}h</td>
+        <td>${horasTexto}</td>
+        <td>
+          <span style="font-weight:600;color:${esCompleto ? '#27ae60' : '#1976d2'}">${porcentaje}%</span>
+          ${estadoBadge}
+        </td>
+      </tr>
+    `;
+  });
+}
+// Actualizar estadísticas globales (si existen elementos en el HTML)
+function updateEstadisticasGlobales(estadisticas) {
+  // Actualizar elementos de estadísticas si existen
+  const statTotal = document.getElementById('stat-total-planes');
+  const statCompletados = document.getElementById('stat-planes-completados');
+  const statActivos = document.getElementById('stat-planes-activos');
+  const statProgreso = document.getElementById('stat-progreso-global');
+  
+  if (statTotal) statTotal.textContent = estadisticas.total_planes;
+  if (statCompletados) statCompletados.textContent = estadisticas.planes_completados;
+  if (statActivos) statActivos.textContent = estadisticas.planes_activos;
+  if (statProgreso) statProgreso.textContent = `${estadisticas.porcentaje_global}%`;
+  
+  console.log('📈 Estadísticas actualizadas:', estadisticas);
+}
+
+// Funciones auxiliares para skeletons y errores
+function mostrarSkeletons() {
+  mostrarSkeletonsTabla('tabla-planes-tbody');
+  
+  // Mostrar skeletons de estadísticas si existen
+  const statsContainer = document.querySelector('.stats-overview');
+  if (statsContainer) {
+    const statCards = statsContainer.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+      card.style.opacity = '0.6';
+      card.style.pointerEvents = 'none';
+    });
+  }
+}
+
+function ocultarSkeletons() {
+  ocultarSkeletonsTabla('tabla-planes-tbody');
+  
+  // Restaurar estadísticas
+  const statsContainer = document.querySelector('.stats-overview');
+  if (statsContainer) {
+    const statCards = statsContainer.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+      card.style.opacity = '1';
+      card.style.pointerEvents = 'auto';
+    });
+  }
+}
+
+function mostrarErrorMessage(mensaje) {
+  const tbody = document.getElementById('tabla-planes-tbody');
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align:center;color:#d81b60;font-size:1.1rem;padding:32px 0;">
+          ❌ ${mensaje}
+          <br><br>
+          <button onclick="loadPlanesDashboard()" style="
+            background: #1976d2; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            cursor: pointer;
+          ">Reintentar</button>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// Función auxiliar para crear tabla si no existe el sistema de cards
+function createTableIfNeeded() {
+  const tbody = document.getElementById('tabla-planes-tbody');
+  if (tbody) return tbody; // Ya existe tabla
+  
+  // Si no hay tabla pero hay grid de cards, crear tabla dinámicamente
+  const planesGrid = document.getElementById('planesGrid');
+  if (planesGrid) {
+    const tableHTML = `
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Mes</th>
+              <th>Año</th>
+              <th>Horas Requeridas</th>
+              <th>Horas Completadas</th>
+              <th>Progreso</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-planes-tbody"></tbody>
+        </table>
+      </div>
+    `;
+    
+    planesGrid.innerHTML = tableHTML;
+    return document.getElementById('tabla-planes-tbody');
+  }
+  
+  return null;
+}
+
+// Función de compatibilidad para sistemas mixtos
+function initPlanesDashboard() {
+  // Si existe el sistema de cards HTML embebido, usar loadPlanesData
+  if (document.getElementById('planesGrid') && window.loadPlanesData) {
+    console.log('🎯 Usando sistema de cards HTML embebido');
+    window.loadPlanesData();
+  } else {
+    // Sino, usar el sistema de tabla optimizado
+    console.log('🎯 Usando sistema de tabla optimizado');
+    loadPlanesDashboard();
+  }
+}
+
+// Exponer funciones globales
+window.loadPlanesDashboard = loadPlanesDashboard;
+window.initPlanesDashboard = initPlanesDashboard;

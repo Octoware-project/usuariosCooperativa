@@ -13,6 +13,9 @@
   
   <!-- Google Fonts - Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Common Styles -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <style>
@@ -154,77 +157,9 @@
       visibility: visible;
     }
 
-    /* Desktop Navigation - Hidden on Mobile */
-    .desktop-nav {
-      display: none;
-    }
-
     @media (min-width: 768px) {
       .mobile-nav {
         display: none;
-      }
-      
-      .desktop-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1000;
-        box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
-        border-bottom: 1px solid rgba(249, 168, 212, 0.1);
-      }
-      
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-      
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-      }
-      
-      .nav-links a {
-        color: var(--text-primary);
-        text-decoration: none;
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-      }
-      
-      .nav-links a:hover {
-        background: rgba(236, 72, 153, 0.1);
-        color: var(--primary);
-      }
-      
-      .user-menu {
-        position: relative;
-        cursor: pointer;
-      }
-      
-      .user-icon {
-        width: 40px;
-        height: 40px;
-        background: var(--primary);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-      }
-      
-      body {
-        padding-top: 70px;
       }
     }
     
@@ -267,27 +202,8 @@
     <div></div>
   </div>
 
-  <!-- Desktop Navigation -->
-  <nav class="desktop-nav d-none d-md-flex">
-    <div class="nav-brand">
-      <img src="img/Logo.jpg" alt="Logo" style="height: 40px; width: auto;">
-      <span style="font-weight: 600; color: var(--primary);">Cooperativa</span>
-    </div>
-    <div class="nav-links">
-      <a href="dashboard.html">
-        <i class="bi bi-house me-1"></i>Dashboard
-      </a>
-      <a href="HorasMensuales.html">
-        <i class="bi bi-clock me-1"></i>Horas Mensuales
-      </a>
-      <a href="Comprobantes.html" class="active">
-        <i class="bi bi-receipt me-1"></i>Comprobantes
-      </a>
-    </div>
-    <div class="user-menu" id="userMenuDesktop">
-      <div class="user-icon">U</div>
-    </div>
-  </nav>
+  <!-- Desktop Navbar (common) -->
+  <div id="navbar"></div>
 
   <!-- Sidebar Menu -->
   <div class="sidebar-menu" id="sidebarMenu">
@@ -774,6 +690,8 @@
   
   <!-- Config -->
   <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
 
   <script>
     // Mobile menu functionality
