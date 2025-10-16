@@ -16,276 +16,461 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
+    /* CSS Variables - Tema principal */
+    :root {
+      --primary: #6792fd;
+      --primary-light: #8ba6ff;
+      --primary-dark: #4c6fd1;
+      --secondary: #f8fafc;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --light: #f1f5f9;
+      --white: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius-sm: 0.5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+    }
+
     html, body {
       overflow-x: hidden;
       height: 100%;
+      width: 100%;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
     
     main {
-      padding: 2rem;
-      margin-top: 0;
+      padding: 2rem 3rem;
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
-    
-    .section-card {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-      border: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    /* Layout Principal - Dos Columnas */
+    .dashboard-container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 24px 32px 24px 32px;
+      min-width: 350px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
     }
-    
-    .section-card:hover {
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      height: auto;
+      align-items: start;
+    }
+
+    /* Columna Principal (Izquierda) */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Sidebar (Derecha) */
+    .dashboard-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Cards Base */
+    .card-base {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+    }
+
+    .card-base:hover {
+      box-shadow: var(--shadow-lg);
       transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
     }
-    
-    .section-card h2 {
-      color: #334155;
+
+    .card-title {
+      font-size: 1.25rem;
       font-weight: 600;
+      color: var(--text-primary);
       margin-bottom: 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    
-    .section-card h2 i {
-      color: #f9a8d4;
-      font-size: 1.3rem;
+
+    .card-title i {
+      color: var(--primary);
+      font-size: 1.1em;
+    }
+
+    /* Sección Evolución */
+    .evolution-section {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
     }
     
-    .section-card p {
-      color: #64748b;
-      line-height: 1.6;
-      margin: 0;
+    .evolution-section:hover {
+      box-shadow: var(--shadow-lg);
     }
-    
-    /* Mobile Navigation - Same as other pages */
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
-      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+
+    .evolution-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
     }
-    
-    .menu-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: #ec4899;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-    
-    .menu-btn:hover {
-      background: rgba(236, 72, 153, 0.1);
-      transform: scale(1.05);
-    }
-    
-    .user-icon-mobile {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    
-    .user-icon-mobile:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
-    }
-    
-    /* Sidebar Menu */
-    .sidebar-menu {
-      position: fixed;
-      top: 0;
-      left: -300px;
-      width: 280px;
-      height: 100vh;
-      background: white;
-      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-      z-index: 1001;
-      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow-y: auto;
-    }
-    
-    .sidebar-menu.open {
-      left: 0;
-    }
-    
-    .sidebar-header {
-      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+
+    .evolution-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: var(--radius-md);
       padding: 2rem 1.5rem;
-      color: white;
+      color: var(--white);
       text-align: center;
+      transition: all 0.3s ease;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    
-    .sidebar-header h3 {
-      margin: 0;
-      font-size: 1.3rem;
-      font-weight: 600;
+
+    .evolution-card:hover {
+      transform: scale(1.05);
     }
-    
-    .sidebar-header p {
-      margin: 0.5rem 0 0 0;
-      opacity: 0.9;
+
+    .evolution-card h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .evolution-card p {
       font-size: 0.9rem;
+      opacity: 0.9;
+      margin: 0;
     }
-    
-    .sidebar-nav {
-      padding: 1rem 0;
+
+    /* Mission & Vision Cards */
+    .mission-vision-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .mission-card, .vision-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+      min-height: 180px;
       display: flex;
       flex-direction: column;
     }
+
+    .mission-card:hover, .vision-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .mission-card .card-title {
+      color: var(--success);
+    }
+
+    .vision-card .card-title {
+      color: var(--warning);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--text-primary) 100%);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      color: var(--white);
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
     
-    .sidebar-nav a {
+    .contact-section:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-item {
       display: flex;
       align-items: center;
-      padding: 1rem 1.5rem;
-      color: #334155;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
-      width: 100%;
-      box-sizing: border-box;
+      gap: 0.75rem;
+    }
+
+    .contact-item i {
+      font-size: 1.2rem;
+      color: var(--primary-light);
+    }
+
+    /* Widgets del Sidebar */
+    .widget {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s ease;
     }
     
-    .sidebar-nav a:last-child {
-      border-bottom: none;
+    .widget:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
     }
-    
-    .sidebar-nav a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
-      transform: translateX(5px);
+
+    .widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
     }
-    
-    .sidebar-nav a i {
-      width: 20px;
-      margin-right: 1rem;
+
+    .widget-title {
       font-size: 1.1rem;
-    }
-    
-    .sidebar-nav .divider {
-      height: 1px;
-      background: #e2e8f0;
-      margin: 0.5rem 1.5rem;
-      flex-shrink: 0;
-    }
-    
-    /* Overlay */
-    .menu-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    /* User dropdown mobile */
-    .user-dropdown-mobile {
-      position: absolute;
-      top: 60px;
-      right: 1rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      min-width: 180px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1002;
-    }
-    
-    .user-dropdown-mobile.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    
-    .user-dropdown-mobile a {
+      font-weight: 600;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
-      padding: 0.75rem 1rem;
-      color: #334155;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      gap: 0.5rem;
     }
-    
-    .user-dropdown-mobile a:last-child {
+
+    .widget-title i {
+      color: var(--primary);
+    }
+
+    /* Widget: Novedades */
+    .news-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .news-item:last-child {
       border-bottom: none;
-      border-radius: 0 0 12px 12px;
+    }
+
+    .news-title {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .news-date {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Widget: Horas Mensuales */
+    .hours-display {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .hours-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: block;
+    }
+
+    .hours-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    .hours-progress {
+      background: var(--light);
+      border-radius: 50px;
+      height: 8px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .hours-progress-bar {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+
+
+    /* Loading & Error States */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-text {
+      height: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skeleton-title {
+      height: 1.5rem;
+      width: 60%;
+      margin-bottom: 1rem;
+    }
+
+    .skeleton-card {
+      height: 120px;
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .error-state i {
+      font-size: 3rem;
+      color: var(--danger);
+      margin-bottom: 1rem;
+    }
+
+    .retry-btn {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 1rem;
+    }
+
+    .retry-btn:hover {
+      background: var(--primary-dark);
     }
     
-    .user-dropdown-mobile a:first-child {
-      border-radius: 12px 12px 0 0;
-    }
-    
-    .user-dropdown-mobile a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
-    }
-    
-    .user-dropdown-mobile a i {
-      width: 16px;
-      margin-right: 0.75rem;
-    }
-    
-    /* Mobile Responsive */
+    /* Mejoras adicionales para desktop */
     @media (min-width: 768px) {
-      .mobile-nav {
-        display: none;
+      .widget {
+        min-height: 140px;
       }
       
-      .sidebar-menu,
-      .menu-overlay,
-      .user-dropdown-mobile {
-        display: none;
+      .card-title, .widget-title {
+        line-height: 1.2;
+      }
+    }
+    
+    /* Responsive Design */
+    @media (min-width: 768px) {
+      main {
+        padding: 2rem 4rem;
       }
       
+      .dashboard-grid {
+        gap: 3rem;
+      }
+    }
+    
+    /* Desktop grande */
+    @media (min-width: 1200px) {
+      main {
+        padding: 3rem 6rem;
+      }
+      
+      .dashboard-grid {
+        gap: 4rem;
+      }
+    }
+    
+    /* Pantallas muy grandes */
+    @media (min-width: 1600px) {
+      main {
+        padding: 3rem 8rem;
+      }
+      
+      .dashboard-container {
+        max-width: 1600px;
+      }
+      
+      .dashboard-grid {
+        gap: 5rem;
+      }
+    }
+    
+    @media (max-width: 1024px) and (min-width: 768px) {
       main {
         padding: 2rem 3rem;
       }
+      
+      .dashboard-grid {
+        grid-template-columns: 1.8fr 1fr;
+        gap: 2rem;
+      }
+      
+      .evolution-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      
+      .evolution-card {
+        padding: 1.5rem;
+        min-height: 100px;
+      }
+      
+      .mission-card, .vision-card {
+        padding: 2rem;
+        min-height: 160px;
+      }
     }
     
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
       #navbar {
         display: none;
       }
@@ -295,111 +480,513 @@
       }
       
       main {
-        padding: 1rem;
+        padding: 1rem 1.5rem;
       }
       
-      .section-card {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .dashboard-sidebar {
+        position: static;
+        order: 2;
+      }
+      
+      .evolution-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .mission-vision-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .contact-info {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .evolution-section,
+      .mission-card,
+      .vision-card,
+      .contact-section,
+      .widget {
         padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border-radius: 16px;
-      }
-      
-      .section-card h2 {
-        font-size: 1.3rem;
       }
     }
     
     @media (max-width: 480px) {
-      .section-card {
-        padding: 1rem;
-        margin-bottom: 1rem;
+      main {
+        padding: 1rem 1.25rem;
       }
       
-      .section-card h2 {
-        font-size: 1.2rem;
+      .evolution-section,
+      .mission-card,
+      .vision-card,
+      .contact-section,
+      .widget {
+        padding: 1rem;
       }
       
       .sidebar-menu {
         width: 260px;
       }
+      
+      .evolution-card {
+        padding: 1rem;
+      }
+      
+      .evolution-card h3 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav">
-    <button class="menu-btn" onclick="toggleMenu()">
-      <i class="bi bi-list"></i>
-    </button>
-    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
-    <!-- User Dropdown Mobile -->
-    <div class="user-dropdown-mobile" id="userDropdownMobile">
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Ver Perfil
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </div>
-  </nav>
-  
-  <!-- Sidebar Menu -->
-  <div class="sidebar-menu" id="sidebarMenu">
-    <div class="sidebar-header">
-      <h3>Menú Principal</h3>
-      <p>Navegación</p>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="dashboard.html">
-        <i class="bi bi-house"></i>Dashboard
-      </a>
-      <a href="Comprobantes.html">
-        <i class="bi bi-credit-card"></i>Pagos
-      </a>
-      <a href="HorasMensuales.html">
-        <i class="bi bi-clock"></i>Horas Mensuales
-      </a>
-      <a href="PlanesTrabajoUsuario.html">
-        <i class="bi bi-calendar-check"></i>Planes de Trabajo
-      </a>
-      <div class="divider"></div>
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Mi Perfil
-      </a>
-      <a href="configuracion.html">
-        <i class="bi bi-gear"></i>Configuración
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </nav>
-  </div>
-  
-  <!-- Menu Overlay -->
-  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+  <!-- Mobile Navbar Container -->
+  <div id="mobile-navbar-container"></div>
   
   <!-- Desktop Navbar (existing) -->
   <div id="navbar"></div>
 
   <main>
-    <div class="section-card">
-      <h2><i class="bi bi-bell"></i>Novedades</h2>
-      <p>Aquí estarán los mensajes y novedades de la asamblea. Mantente al día con las últimas actualizaciones y comunicados importantes.</p>
-    </div>
-    <div class="section-card">
-      <h2><i class="bi bi-flag"></i>Misión, Visión y Valores</h2>
-      <p>
-        <strong>Nuestra misión:</strong> Promover la participación activa y transparente de todos los asociados.<br><br>
-        <strong>Nuestra visión:</strong> Ser un referente de gestión comunitaria eficiente y justa.<br><br>
-        <strong>Nuestros valores:</strong> Transparencia, Compromiso, Respeto y Solidaridad.
-      </p>
+    <div class="dashboard-container">
+      <div class="dashboard-grid">
+        
+        <!-- Columna Principal (Izquierda) -->
+        <div class="main-content">
+          
+          <!-- Sección Evolución -->
+          <section class="evolution-section" id="evolutionSection">
+            <h2 class="card-title">
+              <i class="bi bi-graph-up-arrow"></i>
+              Evolución
+            </h2>
+            <div class="evolution-grid" id="evolutionGrid">
+              <!-- Loading skeletons -->
+              <div class="skeleton skeleton-card"></div>
+              <div class="skeleton skeleton-card"></div>
+              <div class="skeleton skeleton-card"></div>
+            </div>
+          </section>
+
+          <!-- Misión y Visión -->
+          <div class="mission-vision-grid">
+            
+            <!-- Misión -->
+            <div class="mission-card" id="missionCard">
+              <h3 class="card-title">
+                <i class="bi bi-bullseye"></i>
+                Nuestra Misión
+              </h3>
+              <div id="missionContent">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+              </div>
+            </div>
+
+            <!-- Visión -->
+            <div class="vision-card" id="visionCard">
+              <h3 class="card-title">
+                <i class="bi bi-eye"></i>
+                Nuestra Visión
+              </h3>
+              <div id="visionContent">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- Sidebar (Derecha) -->
+        <aside class="dashboard-sidebar">
+          
+          <!-- Widget: Novedades -->
+          <div class="widget" id="newsWidget">
+            <div class="widget-header">
+              <h3 class="widget-title">
+                <i class="bi bi-bell"></i>
+                Novedades
+              </h3>
+              <a href="Novedades.html" class="text-primary small">Ver todas</a>
+            </div>
+            <div id="newsContent">
+              <!-- Loading skeletons -->
+              <div class="news-item">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text" style="width: 40%;"></div>
+              </div>
+              <div class="news-item">
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text" style="width: 60%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Horas Mensuales -->
+          <div class="widget" id="hoursWidget">
+            <div class="widget-header">
+              <h3 class="widget-title">
+                <i class="bi bi-clock"></i>
+                Horas Mensuales
+              </h3>
+              <a href="HorasMensuales.html" class="text-primary small">Ver detalle</a>
+            </div>
+            <div id="hoursContent">
+              <div class="hours-display">
+                <span class="hours-number" id="hoursNumber">--</span>
+                <div class="hours-label">horas registradas</div>
+                <div class="hours-progress">
+                  <div class="hours-progress-bar" id="hoursProgress" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </aside>
+      </div>
     </div>
   </main>
 
     <script src="JavaScript/config.js"></script>
     <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/navbar-loader.js"></script>
   <script>
+    /**
+     * Dashboard Data Management
+     * Hooks para consumir APIs y manejar estados de loading/error
+     */
+    
+    // API Endpoints
+    const DASHBOARD_API = {
+      evolution: '/api/dashboard/evolution',
+      missionVision: '/api/dashboard/mission-vision', 
+      news: '/api/dashboard/news',
+      hours: API_URLS.cooperativa.dashboardHoras() // Usar endpoint real
+    };
+
+    /**
+     * Utility function para hacer requests con manejo de errores
+     */
+    async function fetchWithAuth(url, options = {}) {
+      const token = localStorage.getItem('access_token');
+      const defaultOptions = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          ...options.headers
+        },
+        ...options
+      };
+
+      try {
+        const response = await fetch(url, defaultOptions);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+      }
+    }
+
+    /**
+     * Hook: Cargar datos de evolución
+     */
+    async function loadEvolutionData() {
+      const container = document.getElementById('evolutionGrid');
+      
+      try {
+        // Simular delay para mostrar loading
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // En un entorno real, descomentar esta línea:
+        // const data = await fetchWithAuth(DASHBOARD_API.evolution);
+        
+        // Datos mock para demostración
+        const data = {
+          metrics: [
+            { title: '2,450', subtitle: 'Asociados Activos', icon: 'people' },
+            { title: '156', subtitle: 'Proyectos', icon: 'briefcase' },
+            { title: '98%', subtitle: 'Satisfacción', icon: 'award' }
+          ]
+        };
+
+        container.innerHTML = data.metrics.map(metric => `
+          <div class="evolution-card">
+            <h3>${metric.title}</h3>
+            <p>${metric.subtitle}</p>
+          </div>
+        `).join('');
+
+      } catch (error) {
+        showError(container, 'Error al cargar datos de evolución', () => loadEvolutionData());
+      }
+    }
+
+    /**
+     * Hook: Cargar misión y visión
+     */
+    async function loadMissionVisionData() {
+      const missionContent = document.getElementById('missionContent');
+      const visionContent = document.getElementById('visionContent');
+      
+      try {
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // const data = await fetchWithAuth(DASHBOARD_API.missionVision);
+        
+        // Datos mock
+        const data = {
+          mission: 'Promover la participación activa y transparente de todos los asociados, fomentando el desarrollo económico y social de nuestra comunidad.',
+          vision: 'Ser un referente de gestión comunitaria eficiente y justa, contribuyendo al bienestar y progreso de nuestros miembros.'
+        };
+
+        missionContent.innerHTML = `<p>${data.mission}</p>`;
+        visionContent.innerHTML = `<p>${data.vision}</p>`;
+
+      } catch (error) {
+        showError(missionContent, 'Error al cargar misión', () => loadMissionVisionData());
+        showError(visionContent, 'Error al cargar visión', () => loadMissionVisionData());
+      }
+    }
+
+    /**
+     * Hook: Cargar novedades
+     */
+    async function loadNewsData() {
+      const container = document.getElementById('newsContent');
+      
+      try {
+        await new Promise(resolve => setTimeout(resolve, 600));
+        
+        // const data = await fetchWithAuth(DASHBOARD_API.news);
+        
+        // Datos mock
+        const data = {
+          news: [
+            { 
+              title: 'Asamblea General Ordinaria',
+              date: '2025-10-20',
+              summary: 'Convocatoria para el 25 de octubre'
+            },
+            { 
+              title: 'Nuevo Sistema de Pagos',
+              date: '2025-10-15',
+              summary: 'Implementación de pagos digitales'
+            },
+            { 
+              title: 'Capacitación Digital',
+              date: '2025-10-10',
+              summary: 'Curso gratuito para asociados'
+            }
+          ]
+        };
+
+        container.innerHTML = data.news.map(item => `
+          <div class="news-item">
+            <div class="news-title">${item.title}</div>
+            <div class="news-date">${formatDate(item.date)}</div>
+          </div>
+        `).join('');
+
+      } catch (error) {
+        showError(container, 'Error al cargar novedades', () => loadNewsData());
+      }
+    }
+
+    /**
+     * Hook: Cargar horas mensuales - CONECTADO A API REAL
+     */
+    async function loadHoursData() {
+      const hoursNumber = document.getElementById('hoursNumber');
+      const hoursProgress = document.getElementById('hoursProgress');
+      const container = document.getElementById('hoursContent');
+      
+      try {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+          throw new Error('No hay token de autenticación');
+        }
+
+        const now = new Date();
+        const mes = now.getMonth() + 1;
+        const anio = now.getFullYear();
+
+        // Llamar al endpoint optimizado de dashboard-horas
+        const response = await fetch(API_URLS.cooperativa.dashboardHoras(mes, anio), {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const dashboardData = await response.json();
+        console.log('Dashboard horas cargado:', dashboardData);
+
+        // Extraer datos del resumen
+        const resumen = dashboardData.resumen || {};
+        const progreso = dashboardData.progreso;
+
+        // Actualizar widget de horas
+        const totalHoras = resumen.total_horas || 0;
+        const horasReales = resumen.horas_reales || 0;
+        const horasJustificadas = resumen.horas_justificadas || 0;
+        const horasRequeridas = progreso ? progreso.horas_requeridas : null;
+        const porcentaje = progreso ? progreso.porcentaje : 0;
+
+        // Actualizar interfaz
+        if (hoursNumber) {
+          hoursNumber.textContent = Math.round(totalHoras);
+          
+          // Agregar tooltip con desglose si hay horas justificadas
+          if (horasJustificadas > 0) {
+            hoursNumber.title = `${Math.round(horasReales)}h trabajadas + ${Math.round(horasJustificadas)}h justificadas`;
+          } else {
+            hoursNumber.title = `${Math.round(horasReales)}h trabajadas`;
+          }
+        }
+        
+        if (hoursProgress) {
+          hoursProgress.style.width = `${Math.min(porcentaje, 100)}%`;
+        }
+
+        // Actualizar texto del progreso
+        const progressText = document.querySelector('.hours-label');
+        if (progressText) {
+          if (progreso) {
+            if (progreso.completado) {
+              progressText.textContent = '¡Meta completada!';
+              progressText.style.color = 'var(--success)';
+              progressText.style.fontWeight = '600';
+            } else {
+              const horasRestantes = Math.max(0, horasRequeridas - totalHoras);
+              progressText.textContent = `de ${horasRequeridas}h • Faltan ${Math.round(horasRestantes)}h`;
+              progressText.style.color = 'var(--text-secondary)';
+              progressText.style.fontWeight = 'normal';
+            }
+          } else {
+            progressText.textContent = 'horas registradas este mes';
+            progressText.style.color = 'var(--text-secondary)';
+            progressText.style.fontWeight = 'normal';
+          }
+        }
+
+        // Cambiar color de la barra según progreso
+        if (hoursProgress && progreso) {
+          if (progreso.completado) {
+            hoursProgress.style.background = 'linear-gradient(90deg, var(--success) 0%, #22c55e 100%)';
+          } else if (porcentaje >= 75) {
+            hoursProgress.style.background = 'linear-gradient(90deg, var(--info) 0%, #60a5fa 100%)';
+          } else if (porcentaje >= 50) {
+            hoursProgress.style.background = 'linear-gradient(90deg, var(--warning) 0%, #fbbf24 100%)';
+          } else {
+            hoursProgress.style.background = 'linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%)';
+          }
+        }
+
+        console.log('Widget horas actualizado:', {
+          totalHoras,
+          horasRequeridas,
+          porcentaje: Math.round(porcentaje)
+        });
+
+      } catch (error) {
+        console.error('Error al cargar horas del dashboard:', error);
+        
+        // Mostrar valores por defecto en caso de error
+        if (hoursNumber) {
+          hoursNumber.textContent = '--';
+          hoursNumber.title = 'Error al cargar datos';
+        }
+        
+        if (hoursProgress) {
+          hoursProgress.style.width = '0%';
+        }
+        
+        const progressText = document.querySelector('.hours-label');
+        if (progressText) {
+          progressText.textContent = 'Error al cargar datos';
+          progressText.style.color = 'var(--danger)';
+        }
+        
+        // Log detallado para debugging
+        console.error('Detalles del error:', {
+          message: error.message,
+          stack: error.stack,
+          endpoint: API_URLS.cooperativa.dashboardHoras(new Date().getMonth() + 1, new Date().getFullYear())
+        });
+        
+        showError(container, `No se pudieron cargar las horas: ${error.message}`, () => loadHoursData());
+      }
+    }
+
+
+
+    /**
+     * Mostrar estado de error con botón reintentar
+     */
+    function showError(container, message, retryCallback) {
+      container.innerHTML = `
+        <div class="error-state">
+          <i class="bi bi-exclamation-triangle"></i>
+          <p>${message}</p>
+          <button class="retry-btn" onclick="retryCallback()">
+            <i class="bi bi-arrow-clockwise"></i> Reintentar
+          </button>
+        </div>
+      `;
+      
+      // Hacer la función de reintento disponible globalmente
+      window.retryCallback = retryCallback;
+    }
+
+    /**
+     * Utilities para formateo
+     */
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('es-AR', { 
+        day: 'numeric', 
+        month: 'short', 
+        year: 'numeric' 
+      });
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('es-AR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
+    /**
+     * Inicialización del Dashboard
+     */
+    async function initDashboard() {
+      // Cargar todos los datos en paralelo
+      await Promise.allSettled([
+        loadEvolutionData(),
+        loadMissionVisionData(), 
+        loadNewsData(),
+        loadHoursData()
+      ]);
+    }
+
     // Validación de token y estado de usuario al cargar el dashboard
     document.addEventListener('DOMContentLoaded', async function() {
       const token = localStorage.getItem('access_token');
@@ -407,6 +994,7 @@
         window.location.href = 'index.html';
         return;
       }
+      
       try {
         const res = await fetch(API_URLS.usuarios.validate(), {
           headers: {
@@ -416,83 +1004,30 @@
         });
         if (!res.ok) throw new Error('No se pudo validar el token');
         const data = await res.json();
+        
         // Si el usuario tiene estadoRegistro 'Inactivo', muestra alerta y redirige
         if (data.persona && data.persona.estadoRegistro === 'Inactivo') {
           alert('Debes completar todos tus datos');
           window.location.href = 'completarDatos.html';
           return;
         }
+        
         // Si el usuario no está aceptado, redirige a login
         if (data.persona && data.persona.estadoRegistro !== 'Aceptado') {
           window.location.href = 'index.html';
           return;
         }
-        // Puedes guardar los datos en localStorage si lo necesitas
-        // localStorage.setItem('user', JSON.stringify(data.user));
-        // localStorage.setItem('persona', JSON.stringify(data.persona));
+        
+        // Inicializar dashboard después de validar usuario
+        await initDashboard();
+        
       } catch (err) {
+        console.error('Error validating user:', err);
         window.location.href = 'index.html';
       }
     });
     
-    // Mobile menu functionality
-    function toggleMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      // Close user dropdown if open
-      userDropdown.classList.remove('show');
-      
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
-    }
-    
-    function closeMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-    
-    function toggleUserDropdown() {
-      const dropdown = document.getElementById('userDropdownMobile');
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      // Close sidebar if open
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-      
-      dropdown.classList.toggle('show');
-    }
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-      const userIcon = document.getElementById('userIconMobile');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      const menuBtn = document.querySelector('.menu-btn');
-      
-      if (!userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-        userDropdown.classList.remove('show');
-      }
-    });
-    
-    // Initialize user icon
-    function initUserIcon() {
-      const userIcon = document.getElementById('userIconMobile');
-      const token = localStorage.getItem('access_token');
-      
-      if (token) {
-        userIcon.textContent = 'U'; // Default, can be updated when user data loads
-      }
-    }
-    
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initUserIcon);
-    
-    // Logout function
+    // Logout function (mantenida para compatibilidad)
     function logout() {
       localStorage.removeItem('access_token');
       window.location.href = 'index.html';
