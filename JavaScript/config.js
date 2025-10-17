@@ -35,6 +35,7 @@ const API_URLS = {
         comprobante: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}/comprobante`,
         planesTrabajoList: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo`,
         planesTrabajoProgreso: (id) => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/${id}/progreso`,
+        planesTrabajoDashboard: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/dashboard`,
         // Nuevas URLs para gestión de usuarios (ahora desde cooperativa)
         completarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/completar-datos`,
         editarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/editar-datos-persona`,

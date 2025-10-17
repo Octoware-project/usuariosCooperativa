@@ -17,9 +17,6 @@ async function loadPlanesDashboard() {
     // Mostrar skeleton loaders
     mostrarSkeletons();
     
-    console.log('🚀 Cargando dashboard optimizado...');
-    const startTime = performance.now();
-    
     // UNA SOLA LLAMADA AL BACKEND
     const response = await fetch(API_URLS.cooperativa.planesTrabajoDashboard(), {
       headers: { 'Authorization': 'Bearer ' + token }
@@ -30,10 +27,6 @@ async function loadPlanesDashboard() {
     }
     
     const dashboardData = await response.json();
-    const endTime = performance.now();
-    
-    console.log('✅ Dashboard cargado en:', Math.round(endTime - startTime), 'ms');
-    console.log('📊 Datos recibidos:', dashboardData);
     
     // Ocultar skeletons
     ocultarSkeletons();
@@ -44,13 +37,7 @@ async function loadPlanesDashboard() {
     // Actualizar estadísticas globales
     updateEstadisticasGlobales(dashboardData.estadisticas);
     
-    // Mostrar información de performance
-    if (dashboardData.meta && dashboardData.meta.query_time_ms) {
-      console.log(`⚡ Query optimizada ejecutada en: ${dashboardData.meta.query_time_ms}ms`);
-    }
-    
   } catch (error) {
-    console.error('❌ Error cargando dashboard:', error);
     ocultarSkeletons();
     mostrarErrorMessage('Error al cargar los planes de trabajo');
   }
@@ -125,8 +112,6 @@ function updateEstadisticasGlobales(estadisticas) {
   if (statCompletados) statCompletados.textContent = estadisticas.planes_completados;
   if (statActivos) statActivos.textContent = estadisticas.planes_activos;
   if (statProgreso) statProgreso.textContent = `${estadisticas.porcentaje_global}%`;
-  
-  console.log('📈 Estadísticas actualizadas:', estadisticas);
 }
 
 // Funciones auxiliares para skeletons y errores
@@ -214,13 +199,11 @@ function createTableIfNeeded() {
 
 // Función de compatibilidad para sistemas mixtos
 function initPlanesDashboard() {
-  // Si existe el sistema de cards HTML embebido, usar loadPlanesData
-  if (document.getElementById('planesGrid') && window.loadPlanesData) {
-    console.log('🎯 Usando sistema de cards HTML embebido');
-    window.loadPlanesData();
+  // Si existe el sistema de cards HTML embebido, usar loadPlanesDataHtml
+  if (document.getElementById('planesGrid') && window.loadPlanesDataHtml) {
+    window.loadPlanesDataHtml();
   } else {
     // Sino, usar el sistema de tabla optimizado
-    console.log('🎯 Usando sistema de tabla optimizado');
     loadPlanesDashboard();
   }
 }
