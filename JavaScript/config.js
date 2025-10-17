@@ -30,13 +30,10 @@ const API_URLS = {
         horasById: (id) => `${API_CONFIG.API_COOPERATIVA}/api/horas/${id}`,
         horasCalcular: () => `${API_CONFIG.API_COOPERATIVA}/api/horas/calcular`,
         horasJustificacion: () => `${API_CONFIG.API_COOPERATIVA}/api/horas/justificacion`,
-        dashboardHoras: (mes, anio) => `${API_CONFIG.API_COOPERATIVA}/api/dashboard-horas${mes && anio ? `?mes=${mes}&anio=${anio}` : ''}`, // NUEVO ENDPOINT OPTIMIZADO
         facturas: () => `${API_CONFIG.API_COOPERATIVA}/api/facturas`,
         facturasById: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}`,
         comprobante: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}/comprobante`,
         planesTrabajoList: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo`,
-        planesTrabajoOptimizado: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo-optimizado`, // NUEVO ENDPOINT AGREGADO
-        planesTrabajoDashboard: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo-dashboard`, // ENDPOINT TODO-EN-UNO SÚPER OPTIMIZADO
         planesTrabajoProgreso: (id) => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/${id}/progreso`,
         // Nuevas URLs para gestión de usuarios (ahora desde cooperativa)
         completarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/completar-datos`,

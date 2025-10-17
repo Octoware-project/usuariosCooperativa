@@ -17,31 +17,6 @@
     
     <title>Agregar Horas</title>
     <style>
-      /* Prevent horizontal scroll */
-      html, body {
-        overflow-x: hidden;
-        max-width: 100%;
-      }
-      
-      /* Color Variables */
-      :root {
-        --primary: #ec4899;
-        --secondary: #c084fc;
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --surface: #ffffff;
-        --surface-variant: #f8fafc;
-        --surface-hover: #f8fafc;
-        --text-primary: #1e293b;
-        --text-secondary: #64748b;
-        --text-muted: #94a3b8;
-        --border: #e2e8f0;
-        --border-hover: #cbd5e1;
-        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-      }
-
       /* Mobile Navigation Styles */
       .mobile-nav {
         position: fixed;
@@ -89,25 +64,11 @@
         box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
         transition: all 0.2s ease;
         cursor: pointer;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        border: none;
-        outline: none;
       }
       
       .user-icon-mobile:hover {
         transform: scale(1.05);
         box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
-      }
-      
-      .user-icon-mobile:active {
-        transform: scale(0.98);
-        transition: all 0.1s ease;
-      }
-      
-      .user-icon-mobile:focus {
-        outline: none;
-        box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
       }
       
       /* Sidebar Menu */
@@ -259,244 +220,33 @@
         width: 16px;
         margin-right: 0.75rem;
       }
-
-      /* Modern Form Container */
-      .modern-form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
+      
+      .btn-guardar:hover {
+        color: #fff !important;
       }
       
-      .form-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid var(--border);
+      body {
+        background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
       }
       
-      .back-button {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--surface-variant);
-        border: 1px solid var(--border);
-        color: var(--text-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 1.2rem;
-        text-decoration: none;
-      }
-      
-      .back-button:hover {
-        background: var(--primary);
-        color: white;
-        transform: translateX(-2px);
-      }
-      
-      .form-title h2 {
-        margin: 0;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-      
-      .form-title h2 i {
-        color: #667eea;
-      }
-      
-      .form-title p {
-        margin: 0.5rem 0 0 0;
-        color: var(--text-secondary);
-      }
-
-      /* Form Card */
-      .form-card {
-        background: var(--surface);
-        border-radius: 20px;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid var(--border);
-        overflow: hidden;
-      }
-
-      .form-content {
-        padding: 2.5rem;
-      }
-
-      /* Date Selection Grid */
-      .date-selection-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: rgba(102, 126, 234, 0.05);
-        border-radius: 16px;
-        border: 2px dashed rgba(102, 126, 234, 0.2);
-      }
-
-      .input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .form-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .form-label i {
-        color: #667eea;
-        font-size: 1rem;
-      }
-
-      .form-input {
-        padding: 0.875rem 1rem;
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        font-size: 1rem;
-        background: var(--surface);
-        transition: all 0.3s ease;
-        outline: none;
-      }
-
-      .form-input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      .form-container {
         background: #fff;
-      }
-
-      .form-input:hover:not(:focus) {
-        border-color: var(--border-hover);
-      }
-
-      .input-group.focused .form-label {
-        color: #667eea;
-      }
-
-      .input-group.focused .form-label i {
-        transform: scale(1.1);
-      }
-
-      /* Floating Labels */
-      .floating-label {
-        position: relative;
-        margin-bottom: 2rem;
-      }
-      
-      .floating-label input,
-      .floating-label select {
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        padding: 32px 32px 24px 32px;
+        min-width: 350px;
+        max-width: 600px;
         width: 100%;
-        padding: 1.2rem 1rem 0.8rem 1rem;
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        font-size: 1rem;
-        background: var(--surface);
-        transition: all 0.3s ease;
-        outline: none;
+        margin: 48px auto 0 auto;
       }
       
-      .floating-label input:focus,
-      .floating-label select:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      .header {
+        text-align: center;
+        margin-top: 32px;
+        margin-bottom: 16px;
       }
       
-      .floating-text {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        font-size: 1rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        pointer-events: none;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      
-      .floating-text i {
-        font-size: 1.1rem;
-      }
-      
-      .floating-label input:focus + .floating-text,
-      .floating-label input:valid + .floating-text,
-      .floating-label select:focus + .floating-text,
-      .floating-label select:valid + .floating-text {
-        top: 0.75rem;
-        font-size: 0.85rem;
-        color: #667eea;
-        transform: translateY(0);
-      }
-
-      /* Form Navigation */
-      .form-navigation {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem 2.5rem;
-        background: #f8fafc;
-        border-top: 1px solid var(--border);
-      }
-      
-      .btn {
-        padding: 0.875rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-        min-width: 120px;
-        justify-content: center;
-      }
-      
-      .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-      }
-      
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-      }
-      
-      .btn-secondary {
-        background: var(--surface);
-        color: var(--text-secondary);
-        border: 2px solid var(--border);
-      }
-      
-      .btn-secondary:hover {
-        border-color: var(--border-hover);
-        color: var(--text-primary);
-        transform: translateY(-1px);
-      }
-      
-      /* Responsive Adjustments */
+      /* Mobile Responsive */
       @media (min-width: 768px) {
         .mobile-nav {
           display: none;
@@ -515,49 +265,81 @@
         }
         
         body {
-          padding-top: 80px;
+          padding-top: 70px;
         }
         
-        .modern-form-container {
+        .header {
           padding: 1rem;
+          text-align: center;
           margin-top: 1rem;
         }
         
-        .form-header {
+        .header h2 {
+          font-size: 1.4rem;
+        }
+        
+        .form-container {
+          padding: 1rem;
+          margin: 0.5rem;
+          min-width: unset;
+          max-width: 100%;
+        }
+        
+        .add-hours-form {
+          padding: 1rem;
+        }
+        
+        .add-hours-form label {
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+        }
+        
+        .add-hours-form input,
+        .add-hours-form select,
+        .add-hours-form textarea {
+          padding: 0.75rem;
+          font-size: 0.9rem;
           margin-bottom: 1rem;
         }
         
-        .form-title h2 {
-          font-size: 1.5rem;
+        .btn {
+          padding: 0.75rem 1.5rem;
+          font-size: 0.9rem;
+          width: 100%;
+          margin-top: 1rem;
+        }
+      }
+      
+      @media (max-width: 600px) {
+        .form-container {
+          padding: 16px 4px 12px 4px;
+          min-width: unset;
+          max-width: 100vw;
+          margin: 0.25rem;
         }
         
-        .form-content {
-          padding: 1.5rem;
+        .header h2 {
+          font-size: 1.3rem;
         }
         
-        .form-navigation {
-          padding: 1rem 1.5rem;
-          flex-direction: column;
-          gap: 1rem;
+        .add-hours-form {
+          padding: 0.75rem;
+        }
+        
+        .add-hours-form label {
+          font-size: 0.85rem;
+        }
+        
+        .add-hours-form input,
+        .add-hours-form select,
+        .add-hours-form textarea {
+          padding: 0.6rem;
+          font-size: 0.85rem;
         }
         
         .btn {
-          width: 100%;
-        }
-        
-        .floating-label {
-          margin-bottom: 1.5rem;
-        }
-
-        .date-selection-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-          padding: 1rem;
-        }
-
-        .form-input {
-          padding: 0.75rem;
-          font-size: 0.95rem;
+          padding: 0.6rem 1rem;
+          font-size: 0.85rem;
         }
       }
       
@@ -566,39 +348,13 @@
           width: 260px;
         }
         
-        .modern-form-container {
+        .header h2 {
+          font-size: 1.2rem;
+        }
+        
+        .form-container {
           padding: 0.5rem;
-        }
-        
-        .form-title h2 {
-          font-size: 1.3rem;
-        }
-        
-        .form-content {
-          padding: 1rem;
-        }
-        
-        .floating-label input,
-        .floating-label select {
-          padding: 1rem 0.75rem 0.6rem 0.75rem;
-          font-size: 0.95rem;
-        }
-        
-        .floating-text {
-          font-size: 0.9rem;
-        }
-
-        .date-selection-grid {
-          padding: 0.75rem;
-        }
-
-        .form-label {
-          font-size: 0.85rem;
-        }
-
-        .form-input {
-          padding: 0.6rem 0.75rem;
-          font-size: 0.9rem;
+          margin: 0.25rem;
         }
       }
     </style>
@@ -640,6 +396,9 @@
         <a href="PlanesTrabajoUsuario.html">
           <i class="bi bi-calendar-check"></i>Planes de Trabajo
         </a>
+        <a href="Asambleas.html">
+          <i class="bi bi-people-fill"></i>Asambleas
+        </a>
         <div class="divider"></div>
         <a href="EditarPerfilModerno.html">
           <i class="bi bi-person-circle"></i>Mi Perfil
@@ -658,169 +417,81 @@
     
     <!-- Desktop Navbar (existing) -->
     <div id="navbar"></div>
-    
-    <!-- Modern Form Container -->
-    <div class="modern-form-container">
-      <!-- Header with Back Button -->
-      <div class="form-header">
-        <a href="HorasMensuales.html" class="back-button">
-          <i class="bi bi-arrow-left"></i>
-        </a>
-        <div class="form-title">
-          <h2><i class="bi bi-clock"></i> Agregar Horas</h2>
-          <p>Registra las horas trabajadas para la fecha seleccionada</p>
-        </div>
-      </div>
-      
-      <!-- Form Card -->
-      <div class="form-card">
-        <form id="addHoursForm">
-          <div class="form-content">
-            <!-- Date Selection Grid -->
-            <div class="date-selection-grid">
-              <!-- Year Input -->
-              <div class="input-group">
-                <label for="anio" class="form-label">
-                  <i class="bi bi-calendar4-range"></i>
-                  Año
-                </label>
-                <input type="number" id="anio" name="anio" min="2000" max="2100" required class="form-input">
-              </div>
+  <div class="header">
+    <h2>Agregar Horas</h2>
+  </div>
+  <div class="form-container">
+    <form class="add-hours-form" id="addHoursForm">
+      <label for="anio">Año:</label>
+      <input type="number" id="anio" name="anio" min="2000" max="2100" required>
 
-              <!-- Month Select -->
-              <div class="input-group">
-                <label for="mes" class="form-label">
-                  <i class="bi bi-calendar3"></i>
-                  Mes
-                </label>
-                <select id="mes" name="mes" required class="form-input">
-                  <option value="">Seleccione mes</option>
-                  <option value="1">Enero</option>
-                  <option value="2">Febrero</option>
-                  <option value="3">Marzo</option>
-                  <option value="4">Abril</option>
-                  <option value="5">Mayo</option>
-                  <option value="6">Junio</option>
-                  <option value="7">Julio</option>
-                  <option value="8">Agosto</option>
-                  <option value="9">Septiembre</option>
-                  <option value="10">Octubre</option>
-                  <option value="11">Noviembre</option>
-                  <option value="12">Diciembre</option>
-                </select>
-              </div>
 
-              <!-- Day Input -->
-              <div class="input-group">
-                <label for="dia" class="form-label">
-                  <i class="bi bi-calendar-date"></i>
-                  Día
-                </label>
-                <input type="number" id="dia" name="dia" min="1" max="31" required class="form-input">
-              </div>
-            </div>
+      <label for="mes">Mes:</label>
+      <select id="mes" name="mes" required>
+        <option value="">Seleccione un mes</option>
+        <option value="1">Enero</option>
+        <option value="2">Febrero</option>
+        <option value="3">Marzo</option>
+        <option value="4">Abril</option>
+        <option value="5">Mayo</option>
+        <option value="6">Junio</option>
+        <option value="7">Julio</option>
+        <option value="8">Agosto</option>
+        <option value="9">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+      </select>
 
-            <!-- Hours Input -->
-            <div class="floating-label">
-              <input type="number" id="Cantidad_Horas" name="Cantidad_Horas" step="0.1" required>
-              <label class="floating-text">
-                <i class="bi bi-stopwatch"></i>
-                Cantidad de Horas
-              </label>
-            </div>
-          </div>
-          
-          <!-- Navigation Buttons -->
-          <div class="form-navigation">
-            <button type="button" class="btn btn-secondary" id="btnJustificacion">
-              <i class="bi bi-file-earmark-text"></i>
-              Subir Justificación
-            </button>
-            <button type="submit" class="btn btn-primary">
-              <i class="bi bi-check-lg"></i>
-              Guardar Horas
-            </button>
-          </div>
-        </form>
-      </div>
+      <label for="dia">Día:</label>
+      <input type="number" id="dia" name="dia" min="1" max="31" required>
+
+      <label for="Cantidad_Horas">Cantidad de Horas:</label>
+  <input type="number" id="Cantidad_Horas" name="Cantidad_Horas" step="0.1" required>
+
+      <button type="submit" class="btn">Guardar</button>
+    </form>
+    <div class="justificacion-container">
+      <button id="btnJustificacion" class="btn btn-justificar">Subir Justificación</button>
     </div>
+    <style>
+      .btn-guardar {
+        border-radius: 24px !important;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+      }
+      .justificacion-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 32px;
+      }
+      .btn-justificar {
+        background: #1976d2 !important;
+        color: #fff !important;
+        border-radius: 18px !important;
+        font-size: 0.95rem !important;
+        padding: 8px 20px !important;
+        min-width: 0;
+        box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+        border: none;
+      }
+      .btn-justificar:hover {
+        background: #115293 !important;
+      }
+    </style>
+  </div>
     <script src="JavaScript/config.js"></script>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
-      // Initialize form on page load
-      document.addEventListener('DOMContentLoaded', function() {
-        setDefaultYearMonthDay();
-        initFloatingLabels();
-        initDateFields();
-      });
-
       // Set default year and month
-      function setDefaultYearMonthDay() {
+
+      (function setDefaultYearMonthDay() {
         const now = new Date();
         document.getElementById('anio').value = now.getFullYear();
         document.getElementById('mes').value = (now.getMonth() + 1).toString();
         document.getElementById('dia').value = now.getDate();
-        
-        // Trigger floating label animation
-        triggerFloatingLabels();
-      }
-
-      // Initialize floating labels (only for non-date fields)
-      function initFloatingLabels() {
-        const inputs = document.querySelectorAll('.floating-label input, .floating-label select');
-        inputs.forEach(input => {
-          // Check if input has value on load
-          if (input.value) {
-            input.parentElement.classList.add('has-value');
-          }
-          
-          // Add event listeners
-          input.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-          });
-          
-          input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('focused');
-            if (this.value) {
-              this.parentElement.classList.add('has-value');
-            } else {
-              this.parentElement.classList.remove('has-value');
-            }
-          });
-          
-          input.addEventListener('input', function() {
-            if (this.value) {
-              this.parentElement.classList.add('has-value');
-            } else {
-              this.parentElement.classList.remove('has-value');
-            }
-          });
-        });
-      }
-
-      function triggerFloatingLabels() {
-        const inputs = document.querySelectorAll('.floating-label input, .floating-label select');
-        inputs.forEach(input => {
-          if (input.value) {
-            input.parentElement.classList.add('has-value');
-          }
-        });
-      }
-
-      // Initialize date field enhancements
-      function initDateFields() {
-        const dateInputs = document.querySelectorAll('.form-input');
-        dateInputs.forEach(input => {
-          input.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-          });
-          
-          input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('focused');
-          });
-        });
-      }
+      })();
 
 
       document.getElementById('addHoursForm').onsubmit = async function(e) {

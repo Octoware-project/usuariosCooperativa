@@ -269,9 +269,7 @@
       margin-right: 0.75rem;
     }
     
-    /* ============================================
-       MODERN HORAS MENSUALES STYLES
-    ============================================ */
+    /* HORAS MENSUALES STYLES */
 
     /* Global Styles */
     body {
@@ -1399,7 +1397,6 @@
   <script src="JavaScript/dashboard.js?v=2"></script>
   <script src="JavaScript/loader.js?v=2"></script>
   <script src="JavaScript/config.js"></script>
-  <script src="JavaScript/horasmensuales.js?v=2"></script>
   <script>
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -1501,7 +1498,7 @@
     // DYNAMIC HORAS LOADING
     // ============================================
 
-    // Load horas from API and render as cards - USANDO ENDPOINT OPTIMIZADO
+    // Load horas from API and render as cards
     async function loadHoras() {
       try {
         mostrarSkeletons();
@@ -1512,84 +1509,82 @@
           return;
         }
 
-        // Usar el nuevo endpoint optimizado que trae todo en una sola llamada
         const now = new Date();
         const mes = now.getMonth() + 1;
         const anio = now.getFullYear();
 
-        // Usar la función dashboardHoras del config.js
-        const dashboardUrl = API_URLS.cooperativa.dashboardHoras(mes, anio);
-        console.log('Llamando endpoint optimizado:', dashboardUrl);
-        
-        const response = await fetch(dashboardUrl, {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-          }
-        });
+        // Cargar datos desde endpoints existentes
+        const [horasResponse, calcularResponse, planesResponse] = await Promise.all([
+          fetch(API_URLS.cooperativa.horas(), {
+            headers: {
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json'
+            }
+          }),
+          fetch(API_URLS.cooperativa.horasCalcular(), {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mes, anio })
+          }),
+          fetch(API_URLS.cooperativa.planesTrabajoList(), {
+            headers: {
+              'Authorization': 'Bearer ' + token
+            }
+          })
+        ]);
 
-        if (!response.ok) {
-          throw new Error('Error al cargar dashboard: ' + response.status);
+        if (!horasResponse.ok) {
+          throw new Error('Error al cargar horas: ' + horasResponse.status);
         }
 
-        const dashboardData = await response.json();
-        console.log('Dashboard data cargado:', dashboardData);
+        const horasData = await horasResponse.json();
+        
+        let estadisticas = { horas_reales: 0, horas_justificadas: 0, total_horas: 0 };
+        if (calcularResponse.ok) {
+          estadisticas = await calcularResponse.json();
+        }
+
+        let planActual = null;
+        if (planesResponse.ok) {
+          const planes = await planesResponse.json();
+          if (Array.isArray(planes)) {
+            planActual = planes.find(p => p.mes == mes && p.anio == anio);
+          }
+        }
 
         // Hide skeleton loaders
         ocultarSkeletons();
 
-        // Render horas as cards usando los datos optimizados
-        renderHorasOptimized(dashboardData.registros);
+        // Render horas as cards usando los datos cargados
+        renderHoras(horasData);
 
-        // Update stats usando el resumen pre-calculado
-        updateStatsOptimized(dashboardData.resumen);
+        // Calcular estadísticas localmente como fallback
+        const estadisticasLocales = calcularEstadisticasLocales(horasData, mes, anio);
+        const statsToUse = estadisticas.total_horas > 0 ? estadisticas : estadisticasLocales;
+        updateStatsFromData(statsToUse);
 
-        // Update progress usando datos pre-calculados
-        updateProgressOptimized(dashboardData.progreso);
+        // Update progress usando el plan actual y estadísticas
+        updateProgressFromData(planActual, statsToUse);
 
       } catch (error) {
-        console.error('Error loading dashboard:', error);
+        console.error('Error loading horas:', error);
         ocultarSkeletons();
-        showNoHorasMessage('Error al cargar el dashboard de horas');
+        showNoHorasMessage('Error al cargar las horas mensuales: ' + error.message);
       }
     }
 
-    // Render horas as cards - VERSIÓN OPTIMIZADA
-    function renderHorasOptimized(registros) {
-      const container = document.getElementById('horasGrid');
-      
-      // Clear existing dynamic cards but keep skeleton
-      const existingCards = container.querySelectorAll('.hora-card:not(.skeleton)');
-      existingCards.forEach(card => card.remove());
-
-      if (!registros || registros.length === 0) {
-        showNoHorasMessage('No hay registros de horas para mostrar');
-        return;
-      }
-
-      registros.forEach((registro, index) => {
-        const card = createHoraCardOptimized(registro);
-        container.appendChild(card);
-        
-        // Animate card entrance
-        setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
-    }
-
-    // Render horas as cards - MANTENER COMPATIBILIDAD CON VERSIÓN ANTERIOR
+    // Render horas as cards
     function renderHoras(horas) {
-      console.warn('Usando renderHoras legacy - considera migrar a renderHorasOptimized');
-      
       const container = document.getElementById('horasGrid');
       
       // Clear existing dynamic cards but keep skeleton
       const existingCards = container.querySelectorAll('.hora-card:not(.skeleton)');
       existingCards.forEach(card => card.remove());
 
-      // Convertir formato legacy a optimizado si es necesario
+      // Extract array of horas from response
       let registros = [];
       if (horas && horas.horas && Array.isArray(horas.horas)) {
         registros = horas.horas;
@@ -1614,40 +1609,37 @@
       });
     }
 
-    // Create a single hora card - VERSIÓN OPTIMIZADA
-    function createHoraCardOptimized(registro) {
+    function createHoraCard(hora) {
       const card = document.createElement('div');
       card.className = 'hora-card';
       card.style.opacity = '0';
       card.style.transform = 'translateY(20px)';
       card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
 
-      // Los datos ya vienen procesados del backend optimizado
-      const typeInfo = {
-        key: registro.tipo,
-        title: registro.tipo_nombre,
-        subtitle: registro.tipo_descripcion,
-        badge: getBadgeText(registro.tipo),
-        icon: getIconForType(registro.tipo)
-      };
+      // Determine type and styling
+      const typeInfo = getHoraTypeInfo(hora);
+      const formattedDate = formatDate(hora);
+      const formattedHours = formatHours(hora);
 
-      card.setAttribute('data-type', registro.tipo);
+      card.setAttribute('data-type', typeInfo.key);
       
       // Calcular tiempo restante para eliminar
-      const createdAt = new Date(registro.created_at || registro.fecha);
+      const createdAt = new Date(hora.created_at || hora.fecha);
       const now = new Date();
       const hoursElapsed = Math.floor((now - createdAt) / (1000 * 60 * 60));
       const hoursRemaining = 24 - hoursElapsed;
       
-      // Determinar estado de alerta
+      // Determinar si puede cancelar y alertas
+      const puedeCancelar = hoursElapsed < 24;
       let alertInfo = null;
-      if (registro.puede_cancelar && hoursRemaining <= 6) {
+      
+      if (puedeCancelar && hoursRemaining <= 6) {
         alertInfo = {
           type: 'warning',
           message: `⚠️ Se puede eliminar por ${hoursRemaining}h más`,
           class: 'alert-warning'
         };
-      } else if (!registro.puede_cancelar) {
+      } else if (!puedeCancelar) {
         alertInfo = {
           type: 'expired',
           message: '🔒 No se puede eliminar (más de 24h)',
@@ -1655,9 +1647,9 @@
         };
       }
 
-      // Botón de eliminar habilitado/deshabilitado según puede_cancelar
-      const deleteButtonClass = registro.puede_cancelar ? 'action-btn delete-btn' : 'action-btn delete-btn disabled';
-      const deleteButtonProps = registro.puede_cancelar ? '' : 'disabled title="No se puede eliminar (más de 24h)"';
+      // Botón de eliminar habilitado/deshabilitado
+      const deleteButtonClass = puedeCancelar ? 'action-btn delete-btn' : 'action-btn delete-btn disabled';
+      const deleteButtonProps = puedeCancelar ? '' : 'disabled title="No se puede eliminar (más de 24h)"';
       
       // Agregar clase de alerta a la tarjeta si existe
       if (alertInfo) {
@@ -1669,56 +1661,6 @@
           <i class="bi ${alertInfo.type === 'warning' ? 'bi-exclamation-triangle' : 'bi-lock'}"></i>
           <span>${alertInfo.message}</span>
         </div>` : ''}
-        <div class="card-header">
-          <div class="hora-icon ${registro.tipo}">
-            <i class="${typeInfo.icon}"></i>
-          </div>
-          <div class="hora-info">
-            <h4 class="hora-title">${typeInfo.title}</h4>
-            <p class="hora-subtitle">${typeInfo.subtitle}</p>
-          </div>
-          <div class="hora-badge badge-${registro.tipo}">
-            ${typeInfo.badge}
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="hora-amount">${registro.total_horas}h</div>
-          <div class="hora-details">
-            <div class="detail-date">
-              <i class="bi bi-calendar3"></i>
-              ${registro.fecha}
-            </div>
-            <div class="detail-actions">
-              <button class="action-btn" onclick="editHora(${registro.id})" title="Editar">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="${deleteButtonClass}" onclick="deleteHora(${registro.id})" ${deleteButtonProps} title="Eliminar">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      return card;
-    }
-
-    // Create a single hora card - MANTENER COMPATIBILIDAD
-    function createHoraCard(hora) {
-      const card = document.createElement('div');
-      card.className = 'hora-card';
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-
-      // Determine type and styling
-      const typeInfo = getHoraTypeInfo(hora);
-      const formattedDate = formatDate(hora.fecha);
-      const formattedHours = formatHours(hora.horas_reales, hora.horas_justificadas);
-
-      card.setAttribute('data-type', typeInfo.key);
-      
-      card.innerHTML = `
         <div class="card-header">
           <div class="hora-icon ${typeInfo.key}">
             <i class="${typeInfo.icon}"></i>
@@ -1742,7 +1684,7 @@
               <button class="action-btn" onclick="editHora(${hora.id})" title="Editar">
                 <i class="bi bi-pencil"></i>
               </button>
-              <button class="action-btn delete-btn" onclick="deleteHora(${hora.id})" title="Eliminar">
+              <button class="${deleteButtonClass}" onclick="deleteHora(${hora.id})" title="Eliminar" ${deleteButtonProps}>
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -1755,10 +1697,15 @@
 
     // Helper functions
     function getHoraTypeInfo(hora) {
-      const horasReales = parseFloat(hora.horas_reales) || 0;
-      const horasJustificadas = parseFloat(hora.horas_justificadas) || 0;
+      // Manejar diferentes formatos de datos de la API
+      const horasReales = parseFloat(hora.Cantidad_Horas || hora.horas_reales) || 0;
+      const esJustificacion = (hora.Monto_Compensario && hora.Monto_Compensario > 0) || 
+                             (hora.horas_justificadas && parseFloat(hora.horas_justificadas) > 0);
+      const horasJustificadas = hora.horas_equivalentes_calculadas ? 
+                               parseFloat(hora.horas_equivalentes_calculadas) : 
+                               (hora.Monto_Compensario ? (hora.Monto_Compensario / (hora.valor_hora_al_momento || 1000)) : parseFloat(hora.horas_justificadas) || 0);
 
-      if (horasReales > 0 && horasJustificadas > 0) {
+      if (horasReales > 0 && esJustificacion) {
         return {
           key: 'mixtas',
           title: 'Horas Mixtas',
@@ -1766,7 +1713,7 @@
           badge: 'Mixta',
           icon: 'bi-layers'
         };
-      } else if (horasJustificadas > 0) {
+      } else if (esJustificacion) {
         return {
           key: 'justificacion',
           title: 'Justificación',
@@ -1785,17 +1732,22 @@
       }
     }
 
-    function formatHours(horasReales, horasJustificadas) {
-      const reales = parseFloat(horasReales) || 0;
-      const justificadas = parseFloat(horasJustificadas) || 0;
-      const total = reales + justificadas;
+    function formatHours(hora) {
+      // Manejar diferentes formatos de datos de la API
+      const reales = parseFloat(hora.Cantidad_Horas || hora.horas_reales) || 0;
+      const esJustificacion = (hora.Monto_Compensario && hora.Monto_Compensario > 0) || 
+                             (hora.horas_justificadas && parseFloat(hora.horas_justificadas) > 0);
+      const justificadas = hora.horas_equivalentes_calculadas ? 
+                          parseFloat(hora.horas_equivalentes_calculadas) : 
+                          (hora.Monto_Compensario ? (hora.Monto_Compensario / (hora.valor_hora_al_momento || 1000)) : parseFloat(hora.horas_justificadas) || 0);
+      const total = reales + (esJustificacion ? justificadas : 0);
 
-      if (reales > 0 && justificadas > 0) {
+      if (reales > 0 && esJustificacion) {
         return {
           display: `${total.toFixed(1)}h`,
-          detail: `${reales}h + ${justificadas}h`
+          detail: `${reales}h + ${justificadas.toFixed(1)}h`
         };
-      } else if (justificadas > 0) {
+      } else if (esJustificacion) {
         return {
           display: `${justificadas.toFixed(1)}h`,
           detail: 'Justificadas'
@@ -1808,7 +1760,14 @@
       }
     }
 
-    function formatDate(dateString) {
+    function formatDate(hora) {
+      // La API devuelve día, mes, año por separado
+      if (hora.dia && hora.mes && hora.anio) {
+        return `${hora.dia.toString().padStart(2, '0')}/${hora.mes.toString().padStart(2, '0')}/${hora.anio}`;
+      }
+      
+      // Fallback para otros formatos
+      const dateString = hora.fecha || hora.created_at;
       if (!dateString) return 'N/A';
       
       try {
@@ -1845,29 +1804,66 @@
       container.appendChild(noDataCard);
     }
 
-    // Update statistics in right panel - VERSIÓN OPTIMIZADA
-    function updateStatsOptimized(resumen) {
-      // Los datos ya vienen calculados del backend
-      animateNumber('stat-horas-reales', resumen.horas_reales);
-      animateNumber('stat-justificaciones', resumen.horas_justificadas);
+
+
+    // Calcular estadísticas localmente desde los datos de horas
+    function calcularEstadisticasLocales(horasData, mes, anio) {
+      let horasReales = 0;
+      let horasJustificadas = 0;
+      
+      if (horasData && horasData.horas && Array.isArray(horasData.horas)) {
+        horasData.horas.forEach(hora => {
+          // Solo contar horas del mes/año especificado
+          if (hora.mes === mes && hora.anio === anio) {
+            // Horas reales
+            const reales = parseFloat(hora.Cantidad_Horas) || 0;
+            horasReales += reales;
+            
+            // Horas justificadas
+            if (hora.Monto_Compensario && hora.Monto_Compensario > 0) {
+              const justificadas = hora.horas_equivalentes_calculadas ? 
+                                 parseFloat(hora.horas_equivalentes_calculadas) : 
+                                 (hora.Monto_Compensario / (hora.valor_hora_al_momento || 1000));
+              horasJustificadas += justificadas;
+            }
+          }
+        });
+      }
+      
+      return {
+        horas_reales: horasReales,
+        horas_justificadas: horasJustificadas,
+        total_horas: horasReales + horasJustificadas
+      };
     }
 
-    // Update progress with pre-calculated data - VERSIÓN OPTIMIZADA  
-    function updateProgressOptimized(progreso) {
-      if (!progreso) {
-        // No hay plan de trabajo
+    function updateStatsFromData(estadisticas) {
+      animateNumber('stat-horas-reales', estadisticas.horas_reales || 0);
+      animateNumber('stat-justificaciones', estadisticas.horas_justificadas || 0);
+    }
+
+    function updateProgressFromData(planActual, estadisticas) {
+      if (!planActual) {
         const values = document.getElementById('progress-values');
         if (values) {
           values.innerHTML = `
             <div style="color: var(--text-secondary); font-style: italic;">
-              No hay plan de trabajo vigente
+              No hay plan de trabajo activo para este mes
             </div>
           `;
         }
         return;
       }
 
-      // Actualizar elementos del progreso usando datos pre-calculados
+      // Calcular progreso basado en los datos
+      const horasRequeridas = parseFloat(planActual.horas_requeridas) || 0;
+      const horasCumplidas = estadisticas.total_horas || 0;
+      const horasReales = estadisticas.horas_reales || 0;
+      const horasJustificadas = estadisticas.horas_justificadas || 0;
+      const porcentaje = horasRequeridas > 0 ? Math.min(100, (horasCumplidas / horasRequeridas) * 100) : 0;
+      const completado = horasCumplidas >= horasRequeridas;
+
+      // Actualizar elementos del progreso
       const progressBar = document.getElementById('progress-bar');
       const progressText = document.getElementById('progress-percentage');
       const values = document.getElementById('progress-values');
@@ -1877,26 +1873,26 @@
       // Actualizar barra de progreso con animación
       if (progressBar) {
         setTimeout(() => {
-          progressBar.style.width = progreso.porcentaje + '%';
+          progressBar.style.width = porcentaje + '%';
         }, 100);
       }
 
       // Actualizar porcentaje en el centro de la barra
       if (progressText) {
         setTimeout(() => {
-          progressText.textContent = Math.round(progreso.porcentaje) + '%';
+          progressText.textContent = Math.round(porcentaje) + '%';
         }, 100);
       }
       
-      // Mostrar desglose detallado usando datos pre-calculados
-      if (progreso.horas_justificadas > 0) {
+      // Mostrar desglose detallado
+      if (horasJustificadas > 0) {
         if (values) {
           values.innerHTML = `
             <div style="font-size: 0.9rem; margin-bottom: 0.25rem;">
-              ${progreso.horas_reales}h reales + ${progreso.horas_justificadas}h justif.
+              ${horasReales}h reales + ${horasJustificadas}h justificadas
             </div>
             <div style="font-weight: 700; color: var(--primary);">
-              ${progreso.horas_cumplidas} / ${progreso.horas_requeridas} horas
+              ${horasCumplidas} / ${horasRequeridas} horas
             </div>
           `;
         }
@@ -1904,14 +1900,14 @@
         if (values) {
           values.innerHTML = `
             <div style="font-weight: 700; color: var(--primary);">
-              ${progreso.horas_reales} / ${progreso.horas_requeridas} horas
+              ${horasCumplidas} / ${horasRequeridas} horas
             </div>
           `;
         }
       }
       
       // Actualizar icono y mensaje de finalización
-      if (progreso.completado) {
+      if (completado) {
         if (icono) icono.src = 'img/approved_icon.svg';
         if (finishedMsg) finishedMsg.style.display = 'flex';
       } else {
@@ -1920,43 +1916,9 @@
       }
     }
 
-    // Update statistics in right panel - MANTENER COMPATIBILIDAD
-    function updateStats(horas) {
-      let totalReales = 0;
-      let totalJustificaciones = 0;
 
-      if (horas && horas.horas && Array.isArray(horas.horas)) {
-        horas = horas.horas;
-      }
 
-      if (Array.isArray(horas)) {
-        horas.forEach(hora => {
-          totalReales += parseFloat(hora.horas_reales) || 0;
-          totalJustificaciones += parseFloat(hora.horas_justificadas) || 0;
-        });
-      }
 
-      // Update stat numbers with animation
-      animateNumber('stat-horas-reales', totalReales.toFixed(1));
-      animateNumber('stat-justificaciones', totalJustificaciones.toFixed(1));
-    }
-
-    // Helper functions para la versión optimizada
-    function getBadgeText(tipo) {
-      const badges = {
-        'horas-reales': 'Reales',
-        'justificacion': 'Justificación'
-      };
-      return badges[tipo] || 'Desconocido';
-    }
-
-    function getIconForType(tipo) {
-      const icons = {
-        'horas-reales': 'bi-clock',
-        'justificacion': 'bi-file-earmark-text'
-      };
-      return icons[tipo] || 'bi-clock';
-    }
 
     function animateNumber(elementId, finalValue) {
       const element = document.getElementById(elementId);
@@ -2113,79 +2075,7 @@
       }
     }
 
-    // Cargar progreso - MANTENER PARA COMPATIBILIDAD PERO YA NO SE USA CON ENDPOINT OPTIMIZADO
-    async function cargarProgreso() {
-      console.warn('cargarProgreso() llamado - con endpoint optimizado esto ya no es necesario');
-      
-      // Ocultar skeleton del progreso
-      const barSkeleton = document.getElementById('progress-bar-bg-skeleton');
-      const barContainer = document.getElementById('progress-bar-container');
-      if (barSkeleton) barSkeleton.style.display = 'none';
-      if (barContainer) barContainer.style.display = 'block';
 
-      // Si se llama esta función, usar el método legacy
-      const token = localStorage.getItem('access_token');
-      if (!token) return;
-      
-      const now = new Date();
-      const mes = now.getMonth() + 1;
-      const anio = now.getFullYear();
-      let horasTrabajadas = 0;
-      let horasReales = 0;
-      let horasJustificadas = 0;
-      let horasPlan = 0;
-      let hayPlan = false;
-
-      try {
-        // Obtener horas trabajadas del mes actual (con desglose)
-        const respHoras = await fetch(API_URLS.cooperativa.horasCalcular(), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          },
-          body: JSON.stringify({ mes, anio })
-        });
-        
-        if (respHoras.ok) {
-          const data = await respHoras.json();
-          horasTrabajadas = data.total_horas || 0;
-          horasReales = data.horas_reales || 0;
-          horasJustificadas = data.horas_justificadas || 0;
-        }
-
-        // Obtener plan de trabajo actual del usuario
-        const respPlan = await fetch(API_URLS.cooperativa.planesTrabajoList(), {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        
-        if (respPlan.ok) {
-          const planes = await respPlan.json();
-          if (Array.isArray(planes)) {
-            const plan = planes.find(p => p.mes == mes && p.anio == anio);
-            if (plan) {
-              horasPlan = plan.horas_requeridas || 0;
-              hayPlan = true;
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error loading progress:', error);
-      }
-
-      // Crear objeto de progreso compatible
-      const progreso = hayPlan ? {
-        horas_requeridas: horasPlan,
-        horas_cumplidas: horasTrabajadas,
-        horas_reales: horasReales,
-        horas_justificadas: horasJustificadas,
-        porcentaje: horasPlan > 0 ? Math.min(100, (horasTrabajadas / horasPlan) * 100) : 0,
-        completado: horasPlan > 0 && horasTrabajadas >= horasPlan
-      } : null;
-
-      // Usar la función optimizada
-      updateProgressOptimized(progreso);
-    }
     // ============================================
     // MOBILE NAVIGATION FUNCTIONS
     // ============================================
