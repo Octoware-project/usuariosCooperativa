@@ -59,89 +59,95 @@ nav {
 
 /* User dropdown */
 .user-menu {
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-  margin-left: 1.5rem;
+  position: relative !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  margin-left: 1.5rem !important;
 }
 .user-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #de5f88;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 8px rgba(222, 95, 136, 0.7);
-  transition: all 0.3s ease;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: #de5f88 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 1px !important;
+  box-shadow: 0 2px 8px rgba(222, 95, 136, 0.7) !important;
+  transition: all 0.3s ease !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  border: none !important;
+  outline: none !important;
 }
 .user-icon:hover {
-  background-color: #c94f76;
-  box-shadow: 0 4px 12px rgba(201, 79, 118, 0.8);
+  background-color: #c94f76 !important;
+  box-shadow: 0 4px 12px rgba(201, 79, 118, 0.8) !important;
 }
 .user-icon:active {
-  background-color: #b8456a;
-  transform: scale(0.98);
-  box-shadow: 0 2px 6px rgba(184, 69, 106, 0.6);
-  transition: all 0.1s ease;
+  background-color: #b8456a !important;
+  transform: scale(0.98) !important;
+  box-shadow: 0 2px 6px rgba(184, 69, 106, 0.6) !important;
+  transition: all 0.1s ease !important;
 }
 .user-icon:focus {
-  outline: none;
+  outline: none !important;
+  box-shadow: 0 2px 8px rgba(222, 95, 136, 0.7) !important;
 }
 .user-menu:focus {
-  outline: none;
+  outline: none !important;
 }
 .user-menu.menu-open .user-icon {
-  background-color: #c94f76;
-  box-shadow: 0 4px 12px rgba(201, 79, 118, 0.8);
+  background-color: #c94f76 !important;
+  box-shadow: 0 4px 12px rgba(201, 79, 118, 0.8) !important;
 }
 .user-menu.menu-open .user-icon:active {
-  transform: none;
-  background-color: #c94f76;
+  transform: none !important;
+  background-color: #c94f76 !important;
 }
 .dropdown {
-  position: absolute;
-  right: 0;
-  top: 44px;
-  background: white;
-  box-shadow: 0 6px 12px rgba(222, 95, 136, 0.3);
-  border-radius: 8px;
-  display: none;
-  flex-direction: column;
-  min-width: 150px;
-  z-index: 150;
+  position: absolute !important;
+  right: 0 !important;
+  top: 44px !important;
+  background: white !important;
+  box-shadow: 0 6px 12px rgba(222, 95, 136, 0.3) !important;
+  border-radius: 8px !important;
+  display: none !important;
+  flex-direction: column !important;
+  min-width: 150px !important;
+  z-index: 150 !important;
+  border: none !important;
+  overflow: hidden !important;
 }
 .dropdown.show {
-  display: flex;
+  display: flex !important;
 }
 .dropdown button,
 .dropdown a {
-  border: none;
-  background: none;
-  padding: 12px 18px;
-  font-size: 1rem;
-  text-align: left;
-  color: #555;
-  cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
-  font-weight: 600;
-  user-select: none;
-  text-decoration: none;
-  display: block;
-  width: 100%;
+  border: none !important;
+  background: none !important;
+  padding: 12px 18px !important;
+  font-size: 1rem !important;
+  text-align: left !important;
+  color: #555 !important;
+  cursor: pointer !important;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease !important;
+  font-weight: 600 !important;
+  user-select: none !important;
+  text-decoration: none !important;
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 .dropdown button:hover,
 .dropdown a:hover {
-  background: #ffc1e3;
-  color: #de5f88;
-  font-weight: 700;
-  transform: scale(1.05);
+  background: #ffc1e3 !important;
+  color: #de5f88 !important;
+  font-weight: 700 !important;
+  transform: scale(1.05) !important;
 }
 
 /* Contenido principal */
