@@ -46,6 +46,42 @@
       --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     }
 
+    /* Mobile Navigation Styles */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+    }
+    
+    .menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #ec4899;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-btn:hover {
+      background: rgba(236, 72, 153, 0.1);
+    }
+    
+    .logo-mobile {
+      height: 40px;
+      width: auto;
+    }
 
     /* Sidebar Menu Styles */
     .sidebar-menu {
@@ -210,19 +246,7 @@
       padding-bottom: 2rem;
     }
     
-    @media (min-width: 768px) {
-      /* Hide mobile navbar container on desktop */
-      #mobile-navbar-container {
-        display: none;
-      }
-    }
-    
     @media (max-width: 767px) {
-      /* Hide desktop navbar on mobile */
-      #navbar {
-        display: none !important;
-      }
-      
       body {
         padding-top: 70px;
       }
@@ -234,11 +258,65 @@
     }
   </style>
 
-  <!-- Mobile Navbar Container -->
-  <div id="mobile-navbar-container"></div>
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav d-md-none">
+    <button class="menu-btn" id="menuBtn">
+      <i class="bi bi-list"></i>
+    </button>
+    <img src="img/Logo.jpg" alt="Logo" class="logo-mobile">
+    <div></div>
+  </div>
 
-  <!-- Desktop Navbar (common) -->
-  <div id="navbar"></div>
+  <!-- Desktop Navigation -->
+  <nav class="desktop-nav d-none d-md-flex">
+    <div class="nav-brand">
+      <img src="img/Logo.jpg" alt="Logo" style="height: 40px; width: auto;">
+      <span style="font-weight: 600; color: var(--primary);">Cooperativa</span>
+    </div>
+    <div class="nav-links">
+      <a href="dashboard.html">
+        <i class="bi bi-house me-1"></i>Dashboard
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock me-1"></i>Horas Mensuales
+      </a>
+      <a href="Comprobantes.html" class="active">
+        <i class="bi bi-receipt me-1"></i>Comprobantes
+      </a>
+    </div>
+    <div class="user-menu" id="userMenuDesktop">
+      <div class="user-icon">U</div>
+    </div>
+  </nav>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <img src="img/Logo.jpg" alt="Logo" style="height: 40px; width: auto;">
+      <span style="font-weight: 600; color: var(--primary);">Cooperativa</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">
+        <i class="bi bi-house"></i>Dashboard
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock"></i>Horas Mensuales
+      </a>
+      <a href="Comprobantes.html" class="active">
+        <i class="bi bi-receipt"></i>Comprobantes
+      </a>
+      <hr class="my-3">
+      <a href="#" id="verDatosBtn">
+        <i class="bi bi-person"></i>Ver Datos
+      </a>
+      <a href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
   <div class="container">
     <div class="row justify-content-center w-100">
       <div class="col-12 col-lg-10 col-xl-8">
@@ -696,13 +774,41 @@
   
   <!-- Config -->
   <script src="JavaScript/config.js"></script>
-  <script src="JavaScript/dashboard.js"></script>
-  <script src="JavaScript/loader.js"></script>
-  <script src="JavaScript/navbar-loader.js"></script>
 
   <script>
-    // Initialize page functionality
+    // Mobile menu functionality
     document.addEventListener('DOMContentLoaded', function() {
+      const menuBtn = document.getElementById('menuBtn');
+      const sidebarMenu = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('overlay');
+
+      function openMenu() {
+        sidebarMenu.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        sidebarMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (menuBtn) {
+        menuBtn.addEventListener('click', openMenu);
+      }
+
+      if (overlay) {
+        overlay.addEventListener('click', closeMenu);
+      }
+
+      // Close menu on escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeMenu();
+        }
+      });
+
       // Load factura detail
       loadFacturaDetail();
     });
@@ -1085,13 +1191,6 @@
       modal.addEventListener('click', () => {
         document.body.removeChild(modal);
       });
-    }
-
-    // Logout function (mantenida para compatibilidad)
-    function logout() {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user_data');
-      window.location.href = 'index.html';
     }
   </script>
 </body>

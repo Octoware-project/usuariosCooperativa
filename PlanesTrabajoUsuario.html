@@ -8,139 +8,11 @@
   <link rel="stylesheet" href="styles_tabla.css">
 </head>
 <body>
-  <!-- Mobile Navbar Container -->
-  <div id="mobile-navbar-container"></div>
-
-  <!-- Desktop Navbar (existing) -->
   <div id="navbar"></div>
-  
-  <!-- Main Content Container -->
-  <div class="main-container">
-    <div class="content-wrapper">
-      
-      <!-- Page Header -->
-      <div class="page-header">
-        <div class="header-content">
-          <div class="page-title">
-            <i class="bi bi-calendar-check page-icon"></i>
-            <div class="title-text">
-              <h1>Planes de Trabajo</h1>
-              <p>Gestiona y supervisa tus planes de trabajo asignados</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Plans Content -->
-      <div class="plans-content">
-        
-        <!-- Stats Overview -->
-        <div class="stats-overview" id="statsOverview">
-          <!-- Skeleton Stats -->
-          <div class="stat-card skeleton" id="stat-total-skeleton">
-            <div class="stat-icon skeleton-shimmer"></div>
-            <div class="stat-content">
-              <div class="skeleton-line" style="width: 60px; height: 24px;"></div>
-              <div class="skeleton-line" style="width: 120px; height: 16px; margin-top: 8px;"></div>
-            </div>
-          </div>
-          
-          <div class="stat-card skeleton" id="stat-active-skeleton">
-            <div class="stat-icon skeleton-shimmer"></div>
-            <div class="stat-content">
-              <div class="skeleton-line" style="width: 60px; height: 24px;"></div>
-              <div class="skeleton-line" style="width: 120px; height: 16px; margin-top: 8px;"></div>
-            </div>
-          </div>
-          
-          <div class="stat-card skeleton" id="stat-completed-skeleton">
-            <div class="stat-icon skeleton-shimmer"></div>
-            <div class="stat-content">
-              <div class="skeleton-line" style="width: 60px; height: 24px;"></div>
-              <div class="skeleton-line" style="width: 120px; height: 16px; margin-top: 8px;"></div>
-            </div>
-          </div>
-
-          <!-- Real Stats (hidden initially) -->
-          <div class="stat-card" id="stat-total" style="display: none;">
-            <div class="stat-icon total">
-              <i class="bi bi-calendar2-week"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-number" id="totalPlanes">0</div>
-              <div class="stat-label">Planes Totales</div>
-            </div>
-          </div>
-
-          <div class="stat-card" id="stat-active" style="display: none;">
-            <div class="stat-icon active">
-              <i class="bi bi-play-circle"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-number" id="planesActivos">0</div>
-              <div class="stat-label">Planes Activos</div>
-            </div>
-          </div>
-
-          <div class="stat-card" id="stat-completed" style="display: none;">
-            <div class="stat-icon completed">
-              <i class="bi bi-check-circle"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-number" id="planesCompletados">0</div>
-              <div class="stat-label">Completados</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Plans Grid -->
-        <div class="plans-grid" id="planesGrid">
-          
-          <!-- Skeleton Plans -->
-          <div class="plan-card skeleton" id="plan-skeleton-1">
-            <div class="plan-header">
-              <div class="skeleton-line" style="width: 80px; height: 20px;"></div>
-              <div class="skeleton-line" style="width: 60px; height: 16px; margin-top: 8px;"></div>
-            </div>
-            <div class="plan-body">
-              <div class="skeleton-line" style="width: 100px; height: 32px; margin-bottom: 16px;"></div>
-              <div class="skeleton-line" style="width: 100%; height: 8px; border-radius: 4px;"></div>
-              <div class="skeleton-line" style="width: 150px; height: 14px; margin-top: 12px;"></div>
-            </div>
-          </div>
-
-          <div class="plan-card skeleton" id="plan-skeleton-2">
-            <div class="plan-header">
-              <div class="skeleton-line" style="width: 80px; height: 20px;"></div>
-              <div class="skeleton-line" style="width: 60px; height: 16px; margin-top: 8px;"></div>
-            </div>
-            <div class="plan-body">
-              <div class="skeleton-line" style="width: 100px; height: 32px; margin-bottom: 16px;"></div>
-              <div class="skeleton-line" style="width: 100%; height: 8px; border-radius: 4px;"></div>
-              <div class="skeleton-line" style="width: 150px; height: 14px; margin-top: 12px;"></div>
-            </div>
-          </div>
-
-          <div class="plan-card skeleton" id="plan-skeleton-3">
-            <div class="plan-header">
-              <div class="skeleton-line" style="width: 80px; height: 20px;"></div>
-              <div class="skeleton-line" style="width: 60px; height: 16px; margin-top: 8px;"></div>
-            </div>
-            <div class="plan-body">
-              <div class="skeleton-line" style="width: 100px; height: 32px; margin-bottom: 16px;"></div>
-              <div class="skeleton-line" style="width: 100%; height: 8px; border-radius: 4px;"></div>
-              <div class="skeleton-line" style="width: 150px; height: 14px; margin-top: 12px;"></div>
-            </div>
-          </div>
-
-          <!-- No Data Message (hidden initially) -->
-          <div class="no-data-message" id="noDataMessage" style="display: none;">
-            <i class="bi bi-calendar-x"></i>
-            <h3>No hay planes de trabajo</h3>
-            <p>No tienes planes de trabajo asignados en este momento.</p>
-          </div>
-        </div>
-
+  <div class="facturas-container">
+    <div class="facturas-box">
+      <div class="facturas-header">
+        <h2>Planes de Trabajo Asignados</h2>
       </div>
   <table class="hours-table facturas-table" style="width:100%;max-width:1200px;margin:0 auto;">
         <thead>
@@ -177,8 +49,6 @@
   <script src="JavaScript/loader.js"></script>
   <script src="JavaScript/config.js"></script>
   <script src="JavaScript/planes_trabajo_usuario.js"></script>
-  <script src="JavaScript/navbar-loader.js"></script>
-  
   <style>
     .skeleton-box {
       background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);

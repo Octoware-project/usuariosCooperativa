@@ -689,8 +689,57 @@
   </style>
 </head>
 <body>
-  <!-- Mobile Navbar Container -->
-  <div id="mobile-navbar-container"></div>
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav">
+    <button class="menu-btn" onclick="toggleMenu()">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
+    <!-- User Dropdown Mobile -->
+    <div class="user-dropdown-mobile" id="userDropdownMobile">
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Ver Perfil
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </div>
+  </nav>
+  
+  <!-- Sidebar Menu -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3>Menú Principal</h3>
+      <p>Navegación</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">
+        <i class="bi bi-house"></i>Dashboard
+      </a>
+      <a href="Comprobantes.html">
+        <i class="bi bi-credit-card"></i>Pagos
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock"></i>Horas Mensuales
+      </a>
+      <a href="PlanesTrabajoUsuario.html">
+        <i class="bi bi-calendar-check"></i>Planes de Trabajo
+      </a>
+      <div class="divider"></div>
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Mi Perfil
+      </a>
+      <a href="configuracion.html">
+        <i class="bi bi-gear"></i>Configuración
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+  
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
   
   <!-- Desktop Navbar (existing) -->
   <div id="navbar"></div>
@@ -876,7 +925,6 @@
   <script src="JavaScript/config.js"></script>
   <script src="JavaScript/loader.js"></script>
   <script src="JavaScript/editarPerfilModerno.js"></script>
-  <script src="JavaScript/navbar-loader.js"></script>
   
   <script>
     // Validación de token al cargar la página
