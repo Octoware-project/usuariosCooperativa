@@ -40,7 +40,12 @@ const API_URLS = {
         completarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/completar-datos`,
         editarDatos: () => `${API_CONFIG.API_COOPERATIVA}/api/editar-datos-persona`,
         datosUsuario: () => `${API_CONFIG.API_COOPERATIVA}/api/datos-usuario`,
-        cambiarContrasena: () => `${API_CONFIG.API_COOPERATIVA}/api/cambiar-contrasena`
+        cambiarContrasena: () => `${API_CONFIG.API_COOPERATIVA}/api/cambiar-contrasena`,
+        // URLs para Asambleas
+        asambleas: () => `${API_CONFIG.API_COOPERATIVA}/api/asambleas`,
+        asambleasById: (id) => `${API_CONFIG.API_COOPERATIVA}/api/asambleas/${id}`,
+        asambleasFuturas: () => `${API_CONFIG.API_COOPERATIVA}/api/asambleas-futuras`,
+        asambleasPasadas: () => `${API_CONFIG.API_COOPERATIVA}/api/asambleas-pasadas`
     }
 };
 

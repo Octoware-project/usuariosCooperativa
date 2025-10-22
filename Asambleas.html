@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Asambleas - Cooperativa</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_tabla.css">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <!-- Google Fonts - Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Global Box Sizing */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    /* ============================================
+       MOBILE NAVIGATION STYLES
+    ============================================ */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+    }
+    
+    .menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #ec4899;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-btn:hover {
+      background: rgba(236, 72, 153, 0.1);
+      transform: scale(1.05);
+    }
+    
+    .user-icon-mobile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      border: none;
+      outline: none;
+    }
+    
+    .user-icon-mobile:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+    }
+    
+    .user-icon-mobile:active {
+      transform: scale(0.98);
+      transition: all 0.1s ease;
+    }
+    
+    /* Sidebar Menu */
+    .sidebar-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100vh;
+      background: white;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 1001;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+    
+    .sidebar-menu.open {
+      left: 0;
+    }
+    
+    .sidebar-header {
+      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+      padding: 2rem 1.5rem;
+      color: white;
+      text-align: center;
+    }
+    
+    .sidebar-header h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .sidebar-header p {
+      margin: 0.5rem 0 0 0;
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    .sidebar-nav {
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f1f5f9;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .sidebar-nav a:last-child {
+      border-bottom: none;
+    }
+    
+    .sidebar-nav a:hover {
+      background: #ffc1e3;
+      color: #ec4899;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-nav a i {
+      width: 20px;
+      margin-right: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .sidebar-nav .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 0.5rem 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    /* Overlay */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* User dropdown mobile */
+    .user-dropdown-mobile {
+      position: absolute;
+      top: 60px;
+      right: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1002;
+    }
+    
+    .user-dropdown-mobile.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .user-dropdown-mobile a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .user-dropdown-mobile a:last-child {
+      border-bottom: none;
+      border-radius: 0 0 12px 12px;
+    }
+    
+    .user-dropdown-mobile a:first-child {
+      border-radius: 12px 12px 0 0;
+    }
+    
+    .user-dropdown-mobile a:hover {
+      background: #ffc1e3;
+      color: #ec4899;
+    }
+    
+    .user-dropdown-mobile a i {
+      width: 16px;
+      margin-right: 0.75rem;
+    }
+    
+    /* Mobile Responsive adjustments */
+    @media (min-width: 768px) {
+      .mobile-nav {
+        display: none;
+      }
+      
+      .sidebar-menu,
+      .menu-overlay,
+      .user-dropdown-mobile {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      #navbar {
+        display: none;
+      }
+      
+      body {
+        padding-top: 70px;
+      }
+      
+      .asambleas-container {
+        padding: 0.5rem;
+      }
+      
+      .asambleas-box {
+        margin: 0.5rem 0;
+        border-radius: 12px;
+      }
+      
+      .modern-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+      }
+      
+      .filter-tabs {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .asambleas-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    /* ============================================
+       CSS CUSTOM PROPERTIES - MODERN COLOR SYSTEM
+    ============================================ */
+    :root {
+      --primary: #ec4899;
+      --secondary: #c084fc;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #3b82f6;
+      --surface: #ffffff;
+      --surface-variant: #f8fafc;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-tertiary: #9ca3af;
+      --text-disabled: #d1d5db;
+      --border: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ============================================
+       ASAMBLEAS SPECIFIC STYLES
+    ============================================ */
+    .asambleas-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px 0 48px 0;
+    }
+
+    .asambleas-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 24px 32px 24px 32px;
+      min-width: 350px;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    /* Modern Header */
+    .modern-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .header-title h2 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header-title h2 i {
+      color: var(--primary);
+    }
+    
+    .header-subtitle {
+      color: var(--text-secondary);
+      margin: 0.5rem 0 0 0;
+      font-size: 1rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 12px 24px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .filter-tab:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .asambleas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      min-height: 200px;
+    }
+
+    .asamblea-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 0;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .asamblea-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .asamblea-header {
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .asamblea-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .fecha-badge {
+      background: var(--primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      white-space: nowrap;
+    }
+
+    .fecha-badge.futura {
+      background: var(--success);
+    }
+
+    .fecha-badge.pasada {
+      background: var(--text-tertiary);
+    }
+
+    .asamblea-body {
+      padding: 0 1.5rem 1rem 1.5rem;
+    }
+
+    .lugar-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .fecha-info {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .detalle-text {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .asamblea-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface-variant);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: var(--text-tertiary);
+    }
+
+    .btn-resolucion {
+      background: linear-gradient(135deg, var(--info), var(--primary));
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-resolucion:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      color: white;
+    }
+
+    /* Global Styles */
+    #navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    body {
+      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+      overflow-x: hidden;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 767px) {
+      body {
+        padding-top: 70px; /* Para el navbar móvil */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar-menu {
+        width: 260px;
+      }
+      
+      .asambleas-box {
+        padding: 16px;
+        min-width: unset;
+        max-width: 100vw;
+      }
+      
+      .header-title h2 {
+        font-size: 1.5rem;
+      }
+      
+      .asamblea-header {
+        padding: 1rem;
+      }
+      
+      .asamblea-body {
+        padding: 0 1rem 1rem 1rem;
+      }
+      
+      .asamblea-footer {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav">
+    <button class="menu-btn" onclick="toggleMenu()">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
+    <!-- User Dropdown Mobile -->
+    <div class="user-dropdown-mobile" id="userDropdownMobile">
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Ver Perfil
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </div>
+  </nav>
+
+  <!-- Navbar Container (includes desktop navbar) -->
+  <div id="navbar"></div>
+  
+  <!-- Sidebar Menu -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3>Menú Principal</h3>
+      <p>Navegación</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">
+        <i class="bi bi-house"></i>Dashboard
+      </a>
+      <a href="Comprobantes.html">
+        <i class="bi bi-credit-card"></i>Pagos
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock"></i>Horas Mensuales
+      </a>
+      <a href="PlanesTrabajoUsuario.html">
+        <i class="bi bi-calendar-check"></i>Planes de Trabajo
+      </a>
+      <a href="Asambleas.html">
+        <i class="bi bi-people-fill"></i>Asambleas
+      </a>
+      <div class="divider"></div>
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Mi Perfil
+      </a>
+      <a href="configuracion.html">
+        <i class="bi bi-gear"></i>Configuración
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+  
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+  <div class="asambleas-container">
+    <div class="asambleas-box">
+      <!-- Modern Header -->
+      <div class="modern-header">
+        <div class="header-title">
+          <h2><i class="bi bi-people-fill"></i>Asambleas</h2>
+          <p class="header-subtitle">Consulta las asambleas programadas y pasadas de la cooperativa</p>
+        </div>
+      </div>
+
+
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <div class="filter-tab active" data-filter="todas">
+        <i class="bi bi-list-ul me-2"></i>Todas las Asambleas
+      </div>
+      <div class="filter-tab" data-filter="futuras">
+        <i class="bi bi-calendar-plus me-2"></i>Próximas
+      </div>
+      <div class="filter-tab" data-filter="pasadas">
+        <i class="bi bi-calendar-check me-2"></i>Realizadas
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading-spinner">
+      <div class="spinner-border text-primary me-3" role="status"></div>
+      Cargando asambleas...
+    </div>
+
+    <!-- Asambleas Grid -->
+    <div id="asambleas-grid" class="asambleas-grid" style="display: none;"></div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state" style="display: none;">
+      <i class="bi bi-calendar-x"></i>
+      <h3>No hay asambleas</h3>
+      <p>No se encontraron asambleas que mostrar en este momento.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
+
+  <script>
+    // Global variables
+    let allAsambleas = [];
+    let currentFilter = 'todas';
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      loadNavbar(); // From loader.js
+      // initUserIcon() is called automatically by navbar-functions.js
+      loadAsambleas();
+      initFilters();
+    });
+    
+    // Initialize filter tabs
+    function initFilters() {
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          filterTabs.forEach(t => t.classList.remove('active'));
+          // Add active class to clicked tab
+          this.classList.add('active');
+          // Get filter type
+          currentFilter = this.getAttribute('data-filter');
+          // Filter asambleas
+          filterAsambleas(currentFilter);
+        });
+      });
+    }
+    
+    // Load asambleas from API
+    async function loadAsambleas() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      const loadingEl = document.getElementById('loading');
+      const gridEl = document.getElementById('asambleas-grid');
+      
+      try {
+        loadingEl.style.display = 'flex';
+        gridEl.style.display = 'none';
+        
+        const response = await fetch(API_URLS.cooperativa.asambleas ? API_URLS.cooperativa.asambleas() : 'http://127.0.0.1:8001/api/asambleas', {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error al cargar asambleas');
+        }
+        
+        const data = await response.json();
+        console.log('Response from API:', data); // Debug
+        
+        // El backend devuelve { success: true, data: [...] }
+        allAsambleas = Array.isArray(data) ? data : (data.data || data.asambleas || []);
+        
+        console.log('Asambleas loaded:', allAsambleas.length); // Debug
+        
+        loadingEl.style.display = 'none';
+        gridEl.style.display = 'grid';
+        
+        filterAsambleas(currentFilter);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        loadingEl.innerHTML = '<div class="alert alert-danger">Error al cargar las asambleas. Por favor, recarga la página.</div>';
+      }
+    }
+    
+    // Filter asambleas
+    function filterAsambleas(filter) {
+      const now = new Date();
+      let filtered = [];
+      
+      if (filter === 'todas') {
+        filtered = allAsambleas;
+      } else if (filter === 'futuras') {
+        filtered = allAsambleas.filter(a => new Date(a.fecha_raw) >= now);
+      } else if (filter === 'pasadas') {
+        filtered = allAsambleas.filter(a => new Date(a.fecha_raw) < now);
+      }
+      
+      renderAsambleas(filtered);
+    }
+    
+    // Render asambleas
+    function renderAsambleas(asambleas) {
+      const gridEl = document.getElementById('asambleas-grid');
+      
+      if (!asambleas || asambleas.length === 0) {
+        gridEl.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #6b7280;"><i class="bi bi-inbox" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i><p>No hay asambleas para mostrar</p></div>';
+        return;
+      }
+      
+      gridEl.innerHTML = asambleas.map(asamblea => createAsambleaCard(asamblea)).join('');
+    }
+    
+    // Create asamblea card
+    function createAsambleaCard(asamblea) {
+      // Usar fecha_raw (formato YYYY-MM-DD) para que JavaScript pueda parsearla correctamente
+      const fecha = new Date(asamblea.fecha_raw);
+      const now = new Date();
+      const isFutura = fecha >= now;
+      const statusClass = isFutura ? 'badge bg-primary' : 'badge bg-secondary';
+      const statusText = isFutura ? 'Próxima' : 'Realizada';
+      
+      // Usar la fecha ya formateada que viene del backend (formato dd/mm/yyyy)
+      const fechaFormateada = asamblea.fecha;
+      
+      const horaFormateada = asamblea.hora || fecha.toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      return `
+        <div class="card" style="border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden;">
+          <div class="card-body" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+              <h5 class="card-title" style="margin: 0; color: #1f2937; font-weight: 600;">${asamblea.titulo || 'Asamblea'}</h5>
+              <span class="${statusClass}" style="font-size: 0.75rem;">${statusText}</span>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; color: #6b7280;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="bi bi-calendar3" style="color: #ec4899;"></i>
+                <span>${fechaFormateada}</span>
+              </div>
+              
+              ${asamblea.hora ? `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="bi bi-clock" style="color: #ec4899;"></i>
+                  <span>${horaFormateada}</span>
+                </div>
+              ` : ''}
+              
+              ${asamblea.lugar ? `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="bi bi-geo-alt" style="color: #ec4899;"></i>
+                  <span>${asamblea.lugar}</span>
+                </div>
+              ` : ''}
+              
+              ${asamblea.descripcion ? `
+                <p style="margin: 0.5rem 0 0 0; color: #4b5563; font-size: 0.9rem;">${asamblea.descripcion}</p>
+              ` : ''}
+            </div>
+            
+            ${asamblea.temas && asamblea.temas.length > 0 ? `
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: #374151; font-size: 0.85rem;">Temas a tratar:</p>
+                <ul style="margin: 0; padding-left: 1.5rem; color: #6b7280; font-size: 0.85rem;">
+                  ${asamblea.temas.map(tema => `<li>${tema}</li>`).join('')}
+                </ul>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+
+</html>
