@@ -64,7 +64,9 @@
       margin: 0;
     }
     
-    /* Mobile Navigation - Same as other pages */
+    /* ============================================
+       MOBILE NAVIGATION STYLES
+    ============================================ */
     .mobile-nav {
       position: fixed;
       top: 0;
@@ -125,11 +127,6 @@
     .user-icon-mobile:active {
       transform: scale(0.98);
       transition: all 0.1s ease;
-    }
-    
-    .user-icon-mobile:focus {
-      outline: none;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
     }
     
     /* Sidebar Menu */
@@ -357,6 +354,9 @@
     </div>
   </nav>
   
+  <!-- Desktop Navbar Container -->
+  <div id="navbar"></div>
+  
   <!-- Sidebar Menu -->
   <div class="sidebar-menu" id="sidebarMenu">
     <div class="sidebar-header">
@@ -376,6 +376,9 @@
       <a href="PlanesTrabajoUsuario.html">
         <i class="bi bi-calendar-check"></i>Planes de Trabajo
       </a>
+      <a href="Asambleas.html">
+        <i class="bi bi-people-fill"></i>Asambleas
+      </a>
       <div class="divider"></div>
       <a href="EditarPerfilModerno.html">
         <i class="bi bi-person-circle"></i>Mi Perfil
@@ -391,9 +394,6 @@
   
   <!-- Menu Overlay -->
   <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-  
-  <!-- Desktop Navbar (existing) -->
-  <div id="navbar"></div>
 
   <main>
     <div class="section-card">
@@ -411,9 +411,15 @@
   </main>
 
     <script src="JavaScript/config.js"></script>
+    <script src="JavaScript/navbar-functions.js"></script>
     <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
   <script>
+    // Load navbar after page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadNavbar();
+    });
+    
     // Validación de token y estado de usuario al cargar el dashboard
     document.addEventListener('DOMContentLoaded', async function() {
       const token = localStorage.getItem('access_token');
@@ -448,69 +454,6 @@
         window.location.href = 'index.html';
       }
     });
-    
-    // Mobile menu functionality
-    function toggleMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      // Close user dropdown if open
-      userDropdown.classList.remove('show');
-      
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
-    }
-    
-    function closeMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-    
-    function toggleUserDropdown() {
-      const dropdown = document.getElementById('userDropdownMobile');
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      // Close sidebar if open
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-      
-      dropdown.classList.toggle('show');
-    }
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-      const userIcon = document.getElementById('userIconMobile');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      const menuBtn = document.querySelector('.menu-btn');
-      
-      if (!userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-        userDropdown.classList.remove('show');
-      }
-    });
-    
-    // Initialize user icon
-    function initUserIcon() {
-      const userIcon = document.getElementById('userIconMobile');
-      const token = localStorage.getItem('access_token');
-      
-      if (token) {
-        userIcon.textContent = 'U'; // Default, can be updated when user data loads
-      }
-    }
-    
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initUserIcon);
-    
-    // Logout function
-    function logout() {
-      localStorage.removeItem('access_token');
-      window.location.href = 'index.html';
-    }
   </script>
 
 </body>

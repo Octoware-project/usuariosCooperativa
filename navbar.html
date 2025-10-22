@@ -1,3 +1,467 @@
+<style>
+  /* ============================================
+     MOBILE NAVIGATION STYLES
+  ============================================ */
+  .mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+    border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+  }
+  
+  .menu-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ec4899;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .menu-btn:hover {
+    background: rgba(236, 72, 153, 0.1);
+    transform: scale(1.05);
+  }
+  
+  .user-icon-mobile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    outline: none;
+  }
+  
+  .user-icon-mobile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+  }
+  
+  .user-icon-mobile:active {
+    transform: scale(0.98);
+    transition: all 0.1s ease;
+  }
+  
+  .user-icon-mobile:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+  }
+  
+  /* Sidebar Menu */
+  .sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+  
+  .sidebar-menu.open {
+    left: 0;
+  }
+  
+  .sidebar-header {
+    background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+    padding: 2rem 1.5rem;
+    color: white;
+    text-align: center;
+  }
+  
+  .sidebar-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  
+  .sidebar-header p {
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+  }
+  
+  .sidebar-nav {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .sidebar-nav a:last-child {
+    border-bottom: none;
+  }
+  
+  .sidebar-nav a:hover {
+    background: #ffc1e3;
+    color: #ec4899;
+    transform: translateX(5px);
+  }
+  
+  .sidebar-nav a i {
+    width: 20px;
+    margin-right: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .sidebar-nav .divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 0.5rem 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  /* Overlay */
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* User dropdown mobile */
+  .user-dropdown-mobile {
+    position: absolute;
+    top: 60px;
+    right: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1002;
+  }
+  
+  .user-dropdown-mobile.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .user-dropdown-mobile a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .user-dropdown-mobile a:last-child {
+    border-bottom: none;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .user-dropdown-mobile a:first-child {
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .user-dropdown-mobile a:hover {
+    background: #ffc1e3;
+    color: #ec4899;
+  }
+  
+  .user-dropdown-mobile a i {
+    width: 16px;
+    margin-right: 0.75rem;
+  }
+  
+  .user-dropdown-mobile button {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 0 0 12px 12px;
+  }
+  
+  .user-dropdown-mobile button:hover {
+    background: #ffc1e3;
+    color: #ec4899;
+  }
+  
+  .user-dropdown-mobile button i {
+    width: 16px;
+    margin-right: 0.75rem;
+  }
+  
+  /* ============================================
+     DESKTOP NAVBAR STYLES
+  ============================================ */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+    border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: #374151;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .nav-links a:hover {
+    color: #ec4899;
+    background: rgba(249, 168, 212, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .user-menu {
+    position: relative;
+  }
+
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+    transition: all 0.2s ease;
+  }
+
+  .user-icon:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+  }
+
+  .dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .dropdown a:last-child {
+    border-bottom: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .dropdown a:first-child {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .dropdown a:hover {
+    background: #ffc1e3;
+    color: #ec4899;
+  }
+
+  .dropdown button {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .dropdown button:hover {
+    background: #ffc1e3;
+    color: #ec4899;
+  }
+  
+  /* Mobile Responsive */
+  @media (min-width: 768px) {
+    .mobile-nav {
+      display: none;
+    }
+    
+    .sidebar-menu,
+    .menu-overlay,
+    .user-dropdown-mobile {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    nav {
+      display: none;
+    }
+  }
+</style>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <button class="menu-btn" onclick="toggleMenu()">
+    <i class="bi bi-list"></i>
+  </button>
+  <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
+  <!-- User Dropdown Mobile -->
+  <div class="user-dropdown-mobile" id="userDropdownMobile">
+    <a href="EditarPerfilModerno.html">
+      <i class="bi bi-person-circle"></i>
+      Ver datos
+    </a>
+    <button onclick="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      Cerrar sesión
+    </button>
+  </div>
+</nav>
+
+<!-- Sidebar Menu -->
+<div class="sidebar-menu" id="sidebarMenu">
+  <div class="sidebar-header">
+    <h3>Cooperativa</h3>
+    <p>Panel de Usuario</p>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html">
+      <i class="bi bi-house-door"></i>
+      Dashboard
+    </a>
+    <a href="HorasMensuales.html">
+      <i class="bi bi-clock-history"></i>
+      Horas Mensuales
+    </a>
+    <a href="PlanesTrabajoUsuario.html">
+      <i class="bi bi-calendar-check"></i>
+      Planes de Trabajo
+    </a>
+    <a href="Comprobantes.html">
+      <i class="bi bi-receipt"></i>
+      Pagos
+    </a>
+    <a href="Asambleas.html">
+      <i class="bi bi-people-fill"></i>
+      Asambleas
+    </a>
+    <div class="divider"></div>
+    <a href="EditarPerfilModerno.html">
+      <i class="bi bi-person-circle"></i>
+      Ver datos
+    </a>
+    <a href="#" onclick="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      Cerrar sesión
+    </a>
+  </nav>
+</div>
+
+<!-- Menu Overlay -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<!-- Desktop Navbar -->
 <nav>
   <a href="dashboard.html" class="logo" aria-label="Ir a página principal">
     <img src="img/Logo.jpg" alt="Logo de Cooperativa - Pulpo" style="height: 40px; width: auto;">
@@ -6,12 +470,15 @@
     <a href="HorasMensuales.html">Horas Mensuales</a>
     <a href="PlanesTrabajoUsuario.html">Planes de Trabajo</a>
     <a href="Comprobantes.html">Pagos</a>
+    <a href="Asambleas.html">Asambleas</a>
   </div>
   <div class="user-menu" id="userMenuBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Menú usuario">
     <div class="user-icon" title="Menú usuario">U</div>
     <div class="dropdown" id="userDropdown" role="menu" aria-label="Menú usuario">
       <a href="EditarPerfilModerno.html" id="verDatosBtn" role="menuitem">Ver datos</a>
-      <button id="logoutBtn" role="menuitem">Cerrar sesión</button>
+      <button id="logoutBtn" role="menuitem" onclick="logout()">Cerrar sesión</button>
     </div>
   </div>
 </nav>
+
+

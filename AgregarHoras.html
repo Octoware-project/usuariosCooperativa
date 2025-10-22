@@ -16,8 +16,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <title>Agregar Horas</title>
-    <style>
-      /* Mobile Navigation Styles */
+    <style>      
+      html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      
+      /* ============================================
+         MOBILE NAVIGATION STYLES
+      ============================================ */
       .mobile-nav {
         position: fixed;
         top: 0;
@@ -64,11 +71,20 @@
         box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
         transition: all 0.2s ease;
         cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        border: none;
+        outline: none;
       }
       
       .user-icon-mobile:hover {
         transform: scale(1.05);
         box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+      }
+      
+      .user-icon-mobile:active {
+        transform: scale(0.98);
+        transition: all 0.1s ease;
       }
       
       /* Sidebar Menu */
@@ -227,6 +243,7 @@
       
       body {
         background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+        padding-top: 80px;
       }
       
       .form-container {
@@ -237,7 +254,7 @@
         min-width: 350px;
         max-width: 600px;
         width: 100%;
-        margin: 48px auto 0 auto;
+        margin: 20px auto 48px auto;
       }
       
       .header {
@@ -262,10 +279,6 @@
       @media (max-width: 767px) {
         #navbar {
           display: none;
-        }
-        
-        body {
-          padding-top: 70px;
         }
         
         .header {
@@ -377,6 +390,9 @@
       </div>
     </nav>
     
+    <!-- Desktop Navbar Container -->
+    <div id="navbar"></div>
+    
     <!-- Sidebar Menu -->
     <div class="sidebar-menu" id="sidebarMenu">
       <div class="sidebar-header">
@@ -415,8 +431,6 @@
     <!-- Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
     
-    <!-- Desktop Navbar (existing) -->
-    <div id="navbar"></div>
   <div class="header">
     <h2>Agregar Horas</h2>
   </div>
@@ -481,11 +495,16 @@
     </style>
   </div>
     <script src="JavaScript/config.js"></script>
+    <script src="JavaScript/navbar-functions.js"></script>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
+      // Load navbar after page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        loadNavbar();
+      });
+      
       // Set default year and month
-
       (function setDefaultYearMonthDay() {
         const now = new Date();
         document.getElementById('anio').value = now.getFullYear();
@@ -555,49 +574,6 @@
       document.getElementById('btnJustificacion').onclick = function() {
         window.location.href = 'AgregarJustificacion.html';
       };
-      
-      // Mobile Navigation Functions
-      function toggleMenu() {
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-        
-        sidebarMenu.classList.toggle('open');
-        menuOverlay.classList.toggle('active');
-      }
-      
-      function closeMenu() {
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-        
-        sidebarMenu.classList.remove('open');
-        menuOverlay.classList.remove('active');
-      }
-      
-      function toggleUserDropdown() {
-        const dropdown = document.getElementById('userDropdownMobile');
-        dropdown.classList.toggle('show');
-      }
-      
-      function logout() {
-        alert('Cerrando sesión...');
-        // Aquí iría la lógica de logout
-        window.location.href = 'login.html';
-      }
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(event) {
-        const userIcon = document.getElementById('userIconMobile');
-        const dropdown = document.getElementById('userDropdownMobile');
-        
-        if (!userIcon.contains(event.target) && !dropdown.contains(event.target)) {
-          dropdown.classList.remove('show');
-        }
-      });
-      
-      // Close menu when clicking menu links
-      document.querySelectorAll('.sidebar-nav a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-      });
     </script>
     
     <!-- Bootstrap JS -->

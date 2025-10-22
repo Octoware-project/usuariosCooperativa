@@ -46,9 +46,253 @@
       --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
       --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     }
-
+    
+    /* ============================================
+       MOBILE NAVIGATION STYLES
+    ============================================ */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
+      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+    }
+    
+    .menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #ec4899;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-btn:hover {
+      background: rgba(236, 72, 153, 0.1);
+      transform: scale(1.05);
+    }
+    
+    .user-icon-mobile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      border: none;
+      outline: none;
+    }
+    
+    .user-icon-mobile:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+    }
+    
+    .user-icon-mobile:active {
+      transform: scale(0.98);
+      transition: all 0.1s ease;
+    }
+    
+    /* Sidebar Menu */
+    .sidebar-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100vh;
+      background: white;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 1001;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+    
+    .sidebar-menu.open {
+      left: 0;
+    }
+    
+    .sidebar-header {
+      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+      padding: 2rem 1.5rem;
+      color: white;
+      text-align: center;
+    }
+    
+    .sidebar-header h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .sidebar-header p {
+      margin: 0.5rem 0 0 0;
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    .sidebar-nav {
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f1f5f9;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .sidebar-nav a:last-child {
+      border-bottom: none;
+    }
+    
+    .sidebar-nav a:hover {
+      background: #ffc1e3;
+      color: #ec4899;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-nav a i {
+      width: 20px;
+      margin-right: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .sidebar-nav .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 0.5rem 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    /* Overlay */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* User dropdown mobile */
+    .user-dropdown-mobile {
+      position: absolute;
+      top: 60px;
+      right: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1002;
+    }
+    
+    .user-dropdown-mobile.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .user-dropdown-mobile a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .user-dropdown-mobile a:last-child {
+      border-bottom: none;
+      border-radius: 0 0 12px 12px;
+    }
+    
+    .user-dropdown-mobile a:first-child {
+      border-radius: 12px 12px 0 0;
+    }
+    
+    .user-dropdown-mobile a:hover {
+      background: #ffc1e3;
+      color: #ec4899;
+    }
+    
+    .user-dropdown-mobile a i {
+      width: 16px;
+      margin-right: 0.75rem;
+    }
+    
+    /* Mobile Responsive */
+    @media (min-width: 768px) {
+      .mobile-nav,
+      .sidebar-menu,
+      .menu-overlay,
+      .user-dropdown-mobile {
+        display: none;
+      }
+      
+      #navbar {
+        display: block !important;
+      }
+      
+      .container {
+        padding-top: 76px; /* Espacio para navbar fijo */
+      }
+    }
+    
+    @media (max-width: 767px) {
+      #navbar {
+        display: none;
+      }
+      
+      body {
+        padding-top: 70px;
+      }
+    }
+    
+    /* Main Content Styles */
     /* Mobile Navigation Styles */
     .mobile-nav {
       position: fixed;
@@ -149,20 +393,6 @@
       z-index: 999;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    @media (min-width: 768px) {
-      .mobile-nav {
-        display: none;
-      }
-    }
-    
     /* Main Content Styles */
     body {
       background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
@@ -173,66 +403,74 @@
     }
     
     .container {
-      padding-top: 80px;
+      padding-top: 20px;
       min-height: 100vh;
       display: flex;
       align-items: flex-start;
       justify-content: center;
       padding-bottom: 2rem;
     }
-    
-    @media (max-width: 767px) {
-      body {
-        padding-top: 70px;
-      }
-      
-      .container {
-        padding: 1rem;
-        padding-top: 80px;
-      }
-    }
   </style>
 
   <!-- Mobile Navigation -->
-  <div class="mobile-nav d-md-none">
-    <button class="menu-btn" id="menuBtn">
+  <nav class="mobile-nav">
+    <button class="menu-btn" onclick="toggleMenu()">
       <i class="bi bi-list"></i>
     </button>
-    <img src="img/Logo.jpg" alt="Logo" class="logo-mobile">
-    <div></div>
-  </div>
-
-  <!-- Desktop Navbar (common) -->
+    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
+    <!-- User Dropdown Mobile -->
+    <div class="user-dropdown-mobile" id="userDropdownMobile">
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Ver Perfil
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </div>
+  </nav>
+  
+  <!-- Desktop Navbar Container -->
   <div id="navbar"></div>
-
+  
   <!-- Sidebar Menu -->
   <div class="sidebar-menu" id="sidebarMenu">
     <div class="sidebar-header">
-      <img src="img/Logo.jpg" alt="Logo" style="height: 40px; width: auto;">
-      <span style="font-weight: 600; color: var(--primary);">Cooperativa</span>
+      <h3>Menú Principal</h3>
+      <p>Navegación</p>
     </div>
     <nav class="sidebar-nav">
       <a href="dashboard.html">
         <i class="bi bi-house"></i>Dashboard
       </a>
+      <a href="Comprobantes.html">
+        <i class="bi bi-credit-card"></i>Pagos
+      </a>
       <a href="HorasMensuales.html">
         <i class="bi bi-clock"></i>Horas Mensuales
       </a>
-      <a href="Comprobantes.html" class="active">
-        <i class="bi bi-receipt"></i>Comprobantes
+      <a href="PlanesTrabajoUsuario.html">
+        <i class="bi bi-calendar-check"></i>Planes de Trabajo
       </a>
-      <hr class="my-3">
-      <a href="#" id="verDatosBtn">
-        <i class="bi bi-person"></i>Ver Datos
+      <a href="Asambleas.html">
+        <i class="bi bi-people-fill"></i>Asambleas
       </a>
-      <a href="#" id="logoutBtn">
+      <div class="divider"></div>
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Mi Perfil
+      </a>
+      <a href="configuracion.html">
+        <i class="bi bi-gear"></i>Configuración
+      </a>
+      <a href="#" onclick="logout()">
         <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
       </a>
     </nav>
   </div>
+  
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
-  <!-- Overlay -->
-  <div class="overlay" id="overlay"></div>
+  <!-- Main Container -->
   <div class="container">
     <div class="row justify-content-center w-100">
       <div class="col-12 col-lg-10 col-xl-8">
@@ -690,44 +928,25 @@
   
   <!-- Config -->
   <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
   <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
 
   <script>
-    // Mobile menu functionality
+    // Load navbar and initialize page
     document.addEventListener('DOMContentLoaded', function() {
-      const menuBtn = document.getElementById('menuBtn');
-      const sidebarMenu = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('overlay');
-
-      function openMenu() {
-        sidebarMenu.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeMenu() {
-        sidebarMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      if (menuBtn) {
-        menuBtn.addEventListener('click', openMenu);
-      }
-
-      if (overlay) {
-        overlay.addEventListener('click', closeMenu);
-      }
-
-      // Close menu on escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          closeMenu();
-        }
-      });
-
-      // Load factura detail
+      console.log('DOM loaded, calling loadNavbar...');
+      loadNavbar();
+      
+      // Debug: Check if navbar loaded after 1 second
+      setTimeout(() => {
+        const navbar = document.getElementById('navbar');
+        console.log('Navbar element:', navbar);
+        console.log('Navbar HTML:', navbar ? navbar.innerHTML.substring(0, 200) : 'NOT FOUND');
+        console.log('Navbar display style:', navbar ? window.getComputedStyle(navbar).display : 'N/A');
+      }, 1000);
+      
+      // Get factura ID from URL and load detail
       loadFacturaDetail();
     });
 
