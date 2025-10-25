@@ -83,7 +83,7 @@ async function loadNavbar() {
         }
       }, 100);
     } catch (error) {
-      console.error('Error cargando navbar:', error);
+      // Error cargando navbar
     }
   }
 }
@@ -186,7 +186,6 @@ function attachNavbarEvents() {
   if (verDatosBtn) {
     verDatosBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Click en Ver datos detectado');
       if (userDropdown) {
         userDropdown.classList.remove('show');
       }
