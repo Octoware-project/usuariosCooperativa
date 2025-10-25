@@ -23,26 +23,9 @@
         max-width: 100%;
       }
       
-      /* Color Variables */
-      :root {
-        --primary: #ec4899;
-        --secondary: #c084fc;
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --surface: #ffffff;
-        --surface-variant: #f8fafc;
-        --surface-hover: #f8fafc;
-        --text-primary: #1e293b;
-        --text-secondary: #64748b;
-        --text-muted: #94a3b8;
-        --border: #e2e8f0;
-        --border-hover: #cbd5e1;
-        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Mobile Navigation Styles */
+      /* ============================================
+         MOBILE NAVIGATION STYLES
+      ============================================ */
       .mobile-nav {
         position: fixed;
         top: 0;
@@ -103,11 +86,6 @@
       .user-icon-mobile:active {
         transform: scale(0.98);
         transition: all 0.1s ease;
-      }
-      
-      .user-icon-mobile:focus {
-        outline: none;
-        box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
       }
       
       /* Sidebar Menu */
@@ -258,6 +236,31 @@
       .user-dropdown-mobile a i {
         width: 16px;
         margin-right: 0.75rem;
+      }
+      
+      /* Color Variables */
+      :root {
+        --primary: #ec4899;
+        --secondary: #c084fc;
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --surface: #ffffff;
+        --surface-variant: #f8fafc;
+        --surface-hover: #f8fafc;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --text-muted: #94a3b8;
+        --border: #e2e8f0;
+        --border-hover: #cbd5e1;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        padding-top: 80px;
+        background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+        min-height: 100vh;
       }
 
       /* Modern Form Container */
@@ -519,10 +522,6 @@
           display: none;
         }
         
-        body {
-          padding-top: 80px;
-        }
-        
         .modern-form-container {
           padding: 1rem;
           margin-top: 1rem;
@@ -627,6 +626,9 @@
       </div>
     </nav>
     
+    <!-- Desktop Navbar Container -->
+    <div id="navbar"></div>
+    
     <!-- Sidebar Menu -->
     <div class="sidebar-menu" id="sidebarMenu">
       <div class="sidebar-header">
@@ -646,6 +648,9 @@
         <a href="PlanesTrabajoUsuario.html">
           <i class="bi bi-calendar-check"></i>Planes de Trabajo
         </a>
+        <a href="Asambleas.html">
+          <i class="bi bi-people-fill"></i>Asambleas
+        </a>
         <div class="divider"></div>
         <a href="EditarPerfilModerno.html">
           <i class="bi bi-person-circle"></i>Mi Perfil
@@ -661,9 +666,6 @@
     
     <!-- Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-    
-    <!-- Desktop Navbar (existing) -->
-    <div id="navbar"></div>
     
     <!-- Modern Form Container -->
     <div class="modern-form-container">
@@ -769,11 +771,13 @@
       </div>
     </div>
     <script src="JavaScript/config.js"></script>
+    <script src="JavaScript/navbar-functions.js"></script>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
     <script>
       // Initialize form on page load
       document.addEventListener('DOMContentLoaded', function() {
+        loadNavbar();
         setDefaultYearMonthDay();
         initFloatingLabels();
         initDateFields();
@@ -845,49 +849,6 @@
           });
         });
       }
-
-      // Mobile Navigation Functions
-      function toggleMenu() {
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-        
-        sidebarMenu.classList.toggle('open');
-        menuOverlay.classList.toggle('active');
-      }
-      
-      function closeMenu() {
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-        
-        sidebarMenu.classList.remove('open');
-        menuOverlay.classList.remove('active');
-      }
-      
-      function toggleUserDropdown() {
-        const dropdown = document.getElementById('userDropdownMobile');
-        dropdown.classList.toggle('show');
-      }
-      
-      function logout() {
-        alert('Cerrando sesión...');
-        // Aquí iría la lógica de logout
-        window.location.href = 'login.html';
-      }
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(event) {
-        const userIcon = document.getElementById('userIconMobile');
-        const dropdown = document.getElementById('userDropdownMobile');
-        
-        if (!userIcon.contains(event.target) && !dropdown.contains(event.target)) {
-          dropdown.classList.remove('show');
-        }
-      });
-      
-      // Close menu when clicking menu links
-      document.querySelectorAll('.sidebar-nav a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-      });
 
       document.getElementById('addJustificacionForm').onsubmit = async function(e) {
         e.preventDefault();

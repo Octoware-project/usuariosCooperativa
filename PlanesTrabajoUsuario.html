@@ -51,6 +51,9 @@
       <a href="PlanesTrabajoUsuario.html">
         <i class="bi bi-calendar-check"></i>Planes de Trabajo
       </a>
+      <a href="Asambleas.html">
+        <i class="bi bi-people-fill"></i>Asambleas
+      </a>
       <div class="divider"></div>
       <a href="EditarPerfilModerno.html">
         <i class="bi bi-person-circle"></i>Mi Perfil
@@ -199,6 +202,8 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js?v=2"></script>
   <script src="JavaScript/planes_trabajo_usuario.js"></script>
   
@@ -630,14 +635,6 @@
 
     .sidebar-menu.open {
       left: 0;
-    }
-
-    .sidebar-header {
-      padding: 1.5rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
 
     .sidebar-logo {
@@ -1294,13 +1291,16 @@
     /* MOBILE RESPONSIVE - same as HorasMensuales */
     /* ============================================ */
     @media (min-width: 768px) {
-      .mobile-nav {
-        display: none;
-      }
-      
+      .mobile-nav,
       .sidebar-menu,
       .menu-overlay,
       .user-dropdown-mobile {
+        display: none !important;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      #navbar {
         display: none;
       }
     }
@@ -1315,57 +1315,9 @@
 
     // Initialize page on load
     document.addEventListener('DOMContentLoaded', function() {
-      initUserIcon();
+      loadNavbar();
+      // initUserIcon() is called automatically by navbar-functions.js
       loadPlanesDataHtml();
-    });
-
-    // Initialize user icon
-    function initUserIcon() {
-      const userIcon = document.getElementById('userIconMobile');
-      const token = localStorage.getItem('access_token');
-      
-      if (token) {
-        userIcon.textContent = 'U';
-      }
-    }
-
-    // Mobile menu functions
-    function toggleMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      sidebar.classList.add('open');
-      overlay.classList.add('active');
-    }
-    
-    function closeMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-    
-    function toggleUserDropdown() {
-      const dropdown = document.getElementById('userDropdownMobile');
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      // Close sidebar if open
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-      
-      dropdown.classList.toggle('show');
-    }
-
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-      const userIcon = document.getElementById('userIconMobile');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      if (!userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-        userDropdown.classList.remove('show');
-      }
     });
 
     // FUNCIÓN SÚPER OPTIMIZADA: Dashboard Todo-en-Uno

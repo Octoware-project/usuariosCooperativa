@@ -51,7 +51,9 @@
       width: 100%;
     }
 
-    /* Mobile Navigation Styles */
+    /* ============================================
+       MOBILE NAVIGATION STYLES
+    ============================================ */
     .mobile-nav {
       position: fixed;
       top: 0;
@@ -112,11 +114,6 @@
     .user-icon-mobile:active {
       transform: scale(0.98);
       transition: all 0.1s ease;
-    }
-    
-    .user-icon-mobile:focus {
-      outline: none;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
     }
     
     /* Sidebar Menu */
@@ -269,6 +266,29 @@
       margin-right: 0.75rem;
     }
     
+    /* Mobile Responsive */
+    @media (min-width: 768px) {
+      .mobile-nav {
+        display: none;
+      }
+      
+      .sidebar-menu,
+      .menu-overlay,
+      .user-dropdown-mobile {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      #navbar {
+        display: none;
+      }
+      
+      body {
+        padding-top: 70px;
+      }
+    }
+
     /* HORAS MENSUALES STYLES */
 
     /* Global Styles */
@@ -1178,6 +1198,9 @@
     </div>
   </nav>
   
+  <!-- Desktop Navbar Container -->
+  <div id="navbar"></div>
+  
   <!-- Sidebar Menu -->
   <div class="sidebar-menu" id="sidebarMenu">
     <div class="sidebar-header">
@@ -1197,6 +1220,9 @@
       <a href="PlanesTrabajoUsuario.html">
         <i class="bi bi-calendar-check"></i>Planes de Trabajo
       </a>
+      <a href="Asambleas.html">
+        <i class="bi bi-people-fill"></i>Asambleas
+      </a>
       <div class="divider"></div>
       <a href="EditarPerfilModerno.html">
         <i class="bi bi-person-circle"></i>Mi Perfil
@@ -1212,9 +1238,6 @@
   
   <!-- Menu Overlay -->
   <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-  
-  <!-- Desktop Navbar (existing) -->
-  <div id="navbar"></div>
 
   <div class="horas-container">
     <div class="horas-content">
@@ -1394,13 +1417,13 @@
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
   <script src="JavaScript/dashboard.js?v=2"></script>
   <script src="JavaScript/loader.js?v=2"></script>
-  <script src="JavaScript/config.js"></script>
   <script>
-
     document.addEventListener('DOMContentLoaded', function() {
-      initUserIcon();
+      loadNavbar();
       initFilters();
       initSkeletonLoader();
       
@@ -2074,71 +2097,6 @@
         mostrarMensaje(errorMessage, 'error');
       }
     }
-
-
-    // ============================================
-    // MOBILE NAVIGATION FUNCTIONS
-    // ============================================
-
-    // Mobile menu functionality
-    function toggleMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      // Close user dropdown if open
-      userDropdown.classList.remove('show');
-      
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
-    }
-    
-    function closeMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-    
-    function toggleUserDropdown() {
-      const dropdown = document.getElementById('userDropdownMobile');
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      // Close sidebar if open
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-      
-      dropdown.classList.toggle('show');
-    }
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-      const userIcon = document.getElementById('userIconMobile');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      if (!userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-        userDropdown.classList.remove('show');
-      }
-    });
-    
-    // Initialize user icon
-    function initUserIcon() {
-      const userIcon = document.getElementById('userIconMobile');
-      const token = localStorage.getItem('access_token');
-      
-      if (token) {
-        userIcon.textContent = 'U';
-      }
-    }
-    
-    // Logout function
-    function logout() {
-      localStorage.removeItem('access_token');
-      window.location.href = 'index.html';
-    }
-
   </script>
   <style>
     #navbar {
@@ -2174,62 +2132,6 @@
   </style>
   
   <script>
-    // Mobile menu functionality
-    function toggleMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      // Close user dropdown if open
-      userDropdown.classList.remove('show');
-      
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
-    }
-    
-    function closeMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
-    
-    function toggleUserDropdown() {
-      const dropdown = document.getElementById('userDropdownMobile');
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      // Close sidebar if open
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-      
-      dropdown.classList.toggle('show');
-    }
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-      const userIcon = document.getElementById('userIconMobile');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      if (!userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-        userDropdown.classList.remove('show');
-      }
-    });
-    
-    // Initialize user icon
-    function initUserIcon() {
-      const userIcon = document.getElementById('userIconMobile');
-      const token = localStorage.getItem('access_token');
-      
-      if (token) {
-        userIcon.textContent = 'U';
-      }
-    }
-    
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initUserIcon);
-    
     // Mostrar mensaje de notificación
     function mostrarMensaje(mensaje, tipo = 'info') {
       // Remover notificación existente si la hay
@@ -2316,6 +2218,7 @@
       document.body.appendChild(toast);
 
       // Auto-remover después de 5 segundos
+     
       setTimeout(() => {
         if (toast.parentElement) {
           toast.style.animation = 'slideInRight 0.3s ease reverse';
