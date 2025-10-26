@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Completar Datos</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
   <link rel="stylesheet" href="styles.css">
   <style>
     body {
@@ -194,7 +195,6 @@
       }
       if (!valid) {
         document.getElementById('mensaje').innerHTML = '<span style="color:red;">Debes completar todos los campos para activar tu cuenta.</span>';
-        console.error('Faltan campos obligatorios para activar la cuenta.');
         return;
       }
       const datos = {
@@ -219,7 +219,6 @@
         const data = await res.json();
         if (res.ok) {
           document.getElementById('mensaje').innerHTML = '<span style="color:green;">Datos completados correctamente. Tu cuenta será activada pronto.</span>';
-          console.log('Datos guardados correctamente:', data);
           setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
         } else {
           let errorMsg = data.message || 'Error al guardar los datos.';
@@ -227,12 +226,10 @@
             errorMsg += '<ul>' + Object.values(data.errors).map(arr => `<li>${arr[0]}</li>`).join('') + '</ul>';
           }
           document.getElementById('mensaje').innerHTML = '<span style="color:red;">' + errorMsg + '</span>';
-          console.error('Error al guardar los datos:', data);
-        }
+          }
       } catch (err) {
         document.getElementById('mensaje').innerHTML = '<span style="color:red;">Error de conexión.</span>';
-        console.error('Error de conexión:', err);
-      }
+        }
     });
   </script>
 </body>

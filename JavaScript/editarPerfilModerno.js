@@ -27,7 +27,7 @@ function saveToCache(data) {
       timestamp: cacheTimestamp
     }));
   } catch (error) {
-    console.warn('No se pudo guardar en localStorage:', error);
+    // Error guardando en localStorage
   }
 }
 
@@ -44,7 +44,7 @@ function loadFromCache() {
       }
     }
   } catch (error) {
-    console.warn('Error cargando caché:', error);
+    // Error cargando caché
   }
   return false;
 }
@@ -59,13 +59,10 @@ async function cargarDatosPerfil(forceRefresh = false) {
 
     // Verificar si tenemos datos en caché válidos y no se fuerza la actualización
     if (!forceRefresh && loadFromCache() && isCacheValid()) {
-      console.log('Cargando datos desde caché...');
       procesarDatos(dataCache);
       actualizarInterfaz();
       return;
     }
-
-    console.log('Cargando datos desde API...');
     
     // Configurar fetch con timeout y optimizaciones
     const controller = new AbortController();
@@ -104,12 +101,10 @@ async function cargarDatosPerfil(forceRefresh = false) {
     if (err.name === 'AbortError') {
       mostrarError('La conexión tardó demasiado. Intenta nuevamente.');
     } else {
-      console.error('Error cargando datos del perfil:', err);
       mostrarError('No se pudieron cargar los datos del perfil');
       
       // Intentar cargar desde caché como fallback
       if (loadFromCache()) {
-        console.log('Usando datos en caché como fallback...');
         procesarDatos(dataCache);
         actualizarInterfaz();
       }
@@ -121,9 +116,11 @@ function procesarDatos(data) {
   // Procesar datos de la respuesta de forma optimizada
   const persona = Array.isArray(data.persona) ? data.persona[0] : data.persona;
   const user = Array.isArray(data.user) ? data.user[0] : data.user;
+  const unidadHabitacional = Array.isArray(data.unidad_habitacional) ? data.unidad_habitacional[0] : data.unidad_habitacional;
   
   userData = user || {};
   personaData = persona || {};
+  userData.unidadHabitacional = unidadHabitacional || {};
 }
 
 function actualizarInterfaz() {
@@ -171,14 +168,14 @@ function actualizarInterfaz() {
   document.getElementById('nationality').textContent = 
     personaData.nacionalidad || 'No especificado';
   
-  // Card 2: Información laboral (valores por defecto ya que no están en la API)
-  document.getElementById('department').textContent = 'Cooperativa';
-  document.getElementById('position').textContent = 'Asociado';
-  document.getElementById('joinDate').textContent = 
-    formatearFecha(userData.created_at) || 'No especificado';
-  
-  // Card 3: Seguridad (valores por defecto)
-  document.getElementById('lastAccess').textContent = 'Hoy';
+  // Card 2: Información de Vivienda
+  const unidadHabitacional = userData.unidadHabitacional || {};
+  document.getElementById('unitNumber').textContent = 
+    unidadHabitacional.numero_departamento || 'No asignado';
+  document.getElementById('floor').textContent = 
+    unidadHabitacional.piso || 'No especificado';
+  document.getElementById('registrationDate').textContent = 
+    formatearFecha(personaData.fecha_asignacion_unidad || userData.created_at) || 'No especificado';
 }
 
 function formatearFecha(fechaString) {
@@ -255,11 +252,7 @@ function editPersonalInfo() {
 }
 
 function cambiarContrasena() {
-  mostrarModalEdicion('password', 'Cambiar Contraseña', {
-    current_password: { label: 'Contraseña actual', type: 'password', value: '' },
-    password: { label: 'Nueva contraseña', type: 'password', value: '' },
-    password_confirmation: { label: 'Confirmar nueva contraseña', type: 'password', value: '' }
-  });
+  window.location.href = 'CambiarContrasena.html';
 }
 
 function editAccountData() {
@@ -317,60 +310,6 @@ function editField(fieldName) {
   }
   
   mostrarModalEdicion(fieldName, `Editar ${fieldName}`, config);
-}
-
-function mostrarModalEdicion(tipo, titulo, campos) {
-  // Crear modal dinámico
-  const modalId = `editModal-${tipo}`;
-  
-  // Remover modal existente si existe
-  const existingModal = document.getElementById(modalId);
-  if (existingModal) existingModal.remove();
-  
-  let camposHtml = '';
-  for (const [key, field] of Object.entries(campos)) {
-    camposHtml += `
-      <div class="mb-3">
-        <label for="${key}" class="form-label">${field.label}</label>
-        <input type="${field.type}" class="form-control" id="${key}" name="${key}" 
-               value="${field.value || ''}" ${field.type === 'password' ? '' : ''}>
-      </div>
-    `;
-  }
-  
-  const modalHtml = `
-    <div class="modal fade" id="${modalId}" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content" style="border-radius: 20px; border: none;">
-          <div class="modal-header" style="background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%); color: white; border-radius: 20px 20px 0 0;">
-            <h5 class="modal-title">${titulo}</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <form id="form-${tipo}">
-              ${camposHtml}
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn" style="background: #f9a8d4; color: white;" 
-                    onclick="guardarCambios('${tipo}')">Guardar Cambios</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-  
-  // Mostrar modal
-  const modal = new bootstrap.Modal(document.getElementById(modalId));
-  modal.show();
-  
-  // Limpiar modal cuando se cierre
-  document.getElementById(modalId).addEventListener('hidden.bs.modal', function() {
-    this.remove();
-  });
 }
 
 async function guardarCambios(tipo) {
@@ -440,7 +379,6 @@ async function guardarCambios(tipo) {
     await cargarDatosPerfil(true); // Forzar recarga desde API
     
   } catch (error) {
-    console.error('Error guardando cambios:', error);
     mostrarError(error.message || 'Error al guardar cambios');
   }
 }

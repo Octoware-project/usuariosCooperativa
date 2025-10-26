@@ -138,3 +138,57 @@ if (document.readyState === 'loading') {
   // DOM already loaded
   setTimeout(initNavbarAfterLoad, 200);
 }
+
+// ============================================
+// CONFIGURATION MODAL FUNCTIONS
+// ============================================
+
+function openConfigModal() {
+  const modal = document.getElementById('configModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Update theme buttons state
+    updateThemeButtons();
+  }
+}
+
+function closeConfigModal() {
+  const modal = document.getElementById('configModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+function setTheme(themeName) {
+  if (window.ThemeManager) {
+    window.ThemeManager.applyTheme(themeName);
+    updateThemeButtons();
+  }
+}
+
+function updateThemeButtons() {
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  const lightBtn = document.getElementById('lightThemeBtn');
+  const darkBtn = document.getElementById('darkThemeBtn');
+  
+  if (lightBtn && darkBtn) {
+    lightBtn.classList.remove('active');
+    darkBtn.classList.remove('active');
+    
+    if (currentTheme === 'light') {
+      lightBtn.classList.add('active');
+    } else {
+      darkBtn.classList.add('active');
+    }
+  }
+}
+
+// Close modal with ESC key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeConfigModal();
+  }
+});

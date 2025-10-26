@@ -32,16 +32,18 @@
 /* Estilos para toast personalizado */
 .toast-container .toast {
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-lg);
   border: none;
+  background: var(--surface);
+  color: var(--text-primary);
 }
 
 .toast-header.bg-success {
-  background: linear-gradient(135deg, #10b981, #059669) !important;
+  background: var(--success) !important;
 }
 
 .toast-header.bg-danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  background: var(--error) !important;
 }
 
 /* Mejoras responsive adicionales */
@@ -69,7 +71,7 @@
 
 /* Estilos para estados de carga */
 .loading-skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--surface-variant) 25%, var(--border) 50%, var(--surface-variant) 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
 }
@@ -86,7 +88,7 @@
 /* Efectos de hover mejorados */
 
 .field-row:hover {
-  background: #f8fafc;
+  background: var(--surface-hover);
   border-radius: 8px;
   padding: 0.75rem 0.5rem;
   margin: 0 -0.5rem;
@@ -101,4 +103,56 @@
 
 .back-btn:hover i {
   transform: translateX(-2px);
+}
+
+/* Estilos mejorados para modal */
+.modal {
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+}
+
+.modal-backdrop {
+  background-color: rgba(17, 24, 39, 0.75) !important;
+  backdrop-filter: blur(6px);
+}
+
+.modal-backdrop.show {
+  opacity: 1 !important;
+}
+
+.modal.show {
+  background: transparent !important;
+}
+
+.modal-dialog {
+  margin: 0 auto !important;
+}
+
+.modal-content {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Animación de entrada del modal */
+.modal.fade .modal-dialog {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease-out;
+  transform: scale(0.92) translateY(-20px);
+  opacity: 0;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Eliminar scroll del modal */
+.modal-open {
+  overflow: hidden !important;
+}
+
+.modal-open .modal {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }

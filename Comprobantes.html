@@ -5,6 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Comprobantes</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
+  <style id="theme-vars">
+    :root {
+      /* Default dark theme variables - will be overridden by script if light theme */
+      --primary: #ec4899;
+      --primary-rgb: 236, 72, 153;
+      --primary-light: #f472b6;
+      --primary-dark: #db2777;
+      --surface: #1e2128;
+      --surface-variant: #282c34;
+      --surface-hover: #2d3139;
+      --bg-gradient: #404041;
+      --text-primary: #e4e4e7;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --border: #3f3f46;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #ec4899;
+      --btn-primary-bg: #ec4899;
+      --btn-primary-hover: #f472b6;
+      --navbar-bg: rgba(30, 33, 40, 0.95);
+      --navbar-border: rgba(63, 63, 70, 0.5);
+      --navbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+  </style>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') {
+        const lightTheme = {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#fafcfe',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.95)',
+          '--navbar-border': 'rgba(229, 231, 235, 0.5)',
+          '--navbar-shadow': '0 4px 12px rgba(0, 0, 0, 0.1)'
+        };
+        Object.entries(lightTheme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles_tabla.css">
   
@@ -16,6 +85,9 @@
   
   <!-- Google Fonts - Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Theme Manager - Must load first -->
+  <script src="JavaScript/theme.js"></script>
   
   <style>
     /* Global Box Sizing */
@@ -36,22 +108,22 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--navbar-bg);
       backdrop-filter: blur(20px);
       padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
-      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+      box-shadow: var(--navbar-shadow);
+      border-bottom: 1px solid var(--navbar-border);
     }
     
     .menu-btn {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #ec4899;
+      color: var(--primary);
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 8px;
@@ -67,14 +139,14 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+      background: var(--btn-primary-bg);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 700;
       font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      box-shadow: var(--shadow-md);
       transition: all 0.2s ease;
       cursor: pointer;
       user-select: none;
@@ -85,7 +157,7 @@
     
     .user-icon-mobile:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+      box-shadow: var(--shadow-lg);
     }
     
     .user-icon-mobile:active {
@@ -95,7 +167,7 @@
     
     .user-icon-mobile:focus {
       outline: none;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      box-shadow: var(--shadow-md);
     }
     
     /* Sidebar Menu */
@@ -105,7 +177,7 @@
       left: -300px;
       width: 280px;
       height: 100vh;
-      background: white;
+      background: var(--sidebar-bg);
       box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
       z-index: 1001;
       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -117,7 +189,7 @@
     }
     
     .sidebar-header {
-      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+      background: var(--sidebar-header-bg);
       padding: 2rem 1.5rem;
       color: white;
       text-align: center;
@@ -145,11 +217,11 @@
       display: flex;
       align-items: center;
       padding: 1rem 1.5rem;
-      color: #334155;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border);
       width: 100%;
       box-sizing: border-box;
     }
@@ -159,8 +231,8 @@
     }
     
     .sidebar-nav a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
+      background: var(--sidebar-hover);
+      color: var(--primary);
       transform: translateX(5px);
     }
     
@@ -172,7 +244,7 @@
     
     .sidebar-nav .divider {
       height: 1px;
-      background: #e2e8f0;
+      background: var(--border);
       margin: 0.5rem 1.5rem;
       flex-shrink: 0;
     }
@@ -201,15 +273,16 @@
       position: absolute;
       top: 60px;
       right: 1rem;
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-xl);
       min-width: 180px;
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s ease;
       z-index: 1002;
+      border: 1px solid var(--border);
     }
     
     .user-dropdown-mobile.show {
@@ -222,11 +295,11 @@
       display: flex;
       align-items: center;
       padding: 0.75rem 1rem;
-      color: #334155;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border);
     }
     
     .user-dropdown-mobile a:last-child {
@@ -239,8 +312,8 @@
     }
     
     .user-dropdown-mobile a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
+      background: var(--sidebar-hover);
+      color: var(--primary);
     }
     
     .user-dropdown-mobile a i {
@@ -363,26 +436,63 @@
        MODERN VISUAL IMPROVEMENTS - FASE 1
     ============================================ */
     
-    /* CSS Custom Properties - Modern Color System */
-    :root {
-      --primary: #ec4899;
-      --secondary: #c084fc;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
-      --info: #3b82f6;
-      --surface: #ffffff;
-      --surface-variant: #f8fafc;
-      --text-primary: #1f2937;
-      --text-secondary: #6b7280;
-      --text-tertiary: #9ca3af;
-      --border: #e5e7eb;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    /* Las variables CSS ahora son gestionadas por theme.js */
+    
+    /* ============================================
+       DARK THEME SPECIFIC ADJUSTMENTS
+    ============================================ */
+    body.theme-dark .comprobante-card {
+      border: 1px solid var(--border);
     }
     
+    body.theme-dark .comprobante-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 6px 15px rgba(59, 125, 214, 0.1);
+    }
+    
+    body.theme-dark .action-btn {
+      background: var(--surface-variant);
+    }
+    
+    body.theme-dark .action-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    body.theme-dark .search-input {
+      background: var(--surface-variant);
+      color: var(--text-primary);
+    }
+    
+    body.theme-dark .search-input::placeholder {
+      color: var(--text-tertiary);
+    }
+    
+    body.theme-dark .skeleton-avatar,
+    body.theme-dark .skeleton-line,
+    body.theme-dark .skeleton-badge {
+      background: linear-gradient(90deg, #282c34 25%, #2d3340 50%, #282c34 75%);
+      background-size: 200% 100%;
+    }
+    
+    /* Scrollbar styling for dark mode */
+    body.theme-dark ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    body.theme-dark ::-webkit-scrollbar-track {
+      background: var(--surface);
+    }
+    
+    body.theme-dark ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    
+    body.theme-dark ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-tertiary);
+    }
 
     
     /* Modern Header */
@@ -433,16 +543,34 @@
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
+      box-shadow: none;
     }
     
     .btn-filter:hover {
       background: var(--border);
       color: var(--text-primary);
       transform: translateY(-1px);
+      box-shadow: none;
+    }
+    
+    /* Versión PC - Botón de filtro con fondo blanco */
+    @media (min-width: 768px) {
+      .btn-filter {
+        background: #ffffff !important;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+      
+      .btn-filter:hover {
+        background: #f8f9fa !important;
+        color: var(--text-primary);
+        box-shadow: none;
+      }
     }
     
     .btn-primary-modern {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: var(--btn-primary-bg);
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;
@@ -459,7 +587,7 @@
     .btn-primary-modern:hover {
       transform: translateY(-1px);
       box-shadow: var(--shadow-lg);
-      background: linear-gradient(135deg, #d946ef, #a855f7);
+      background: var(--btn-primary-hover);
       color: white;
     }
     
@@ -538,7 +666,7 @@
     }
     
     .chip.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: var(--btn-primary-bg);
       color: white;
       border-color: var(--primary);
     }
@@ -603,8 +731,8 @@
     }
     
     .comprobante-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
       border-color: var(--primary);
     }
     
@@ -627,12 +755,12 @@
     }
     
     .payment-icon.success {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+      background: var(--icon-success-bg);
       color: var(--success);
     }
     
     .payment-icon.warning {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+      background: var(--icon-warning-bg);
       color: var(--warning);
     }
     
@@ -676,22 +804,22 @@
     }
     
     .status-approved {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--success);
+      background: var(--status-approved-bg);
+      color: var(--status-approved-color);
     }
     
     .status-pending {
-      background: rgba(245, 158, 11, 0.1);
-      color: var(--warning);
+      background: var(--status-pending-bg);
+      color: var(--status-pending-color);
     }
     
     .status-rejected {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--error);
+      background: var(--status-rejected-bg);
+      color: var(--status-rejected-color);
     }
     
     .payment-icon.error {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+      background: var(--icon-error-bg);
       color: var(--error);
     }
     
@@ -1151,7 +1279,7 @@
       z-index: 100;
     }
     body {
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+      background: var(--bg-gradient);
       overflow-x: hidden;
     }
     .facturas-container {
@@ -1162,13 +1290,13 @@
       padding: 20px 0 48px 0;
     }
     .facturas-box {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 24px 32px 24px 32px;
-  min-width: 350px;
-  max-width: 1400px;
-  width: 100%;
+      background: var(--surface) !important;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 24px 32px 24px 32px;
+      min-width: 350px;
+      max-width: 1400px;
+      width: 100%;
     }
     .facturas-header {
       display: flex;
@@ -1179,12 +1307,12 @@
     .facturas-header h2 {
       margin: 0;
       font-size: 2rem;
-      color: #d81b60;
+      color: var(--primary);
       font-weight: 700;
       letter-spacing: 1px;
     }
     .btn-agregar {
-      background: #d81b60;
+      background: var(--primary);
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -1192,19 +1320,20 @@
       font-size: 1rem;
       font-weight: 600;
       transition: background 0.2s;
-      box-shadow: 0 2px 8px rgba(216,27,96,0.08);
+      box-shadow: var(--shadow-sm);
     }
     .btn-agregar:hover {
-      background: #ad1457;
+      background: var(--primary);
+      filter: brightness(0.9);
     }
     .facturas-table thead {
-      background: #C8EAF1 ;
+      background: var(--surface-variant);
     }
     .facturas-table thead th {
-      color: #154360;
+      color: var(--text-primary);
       font-weight: 700;
       font-size: 1.1rem;
-      border-bottom: 2px solid #C8EAF1;
+      border-bottom: 2px solid var(--border);
       border-radius: 0 !important;
     }
     .facturas-table tbody tr {
@@ -1212,15 +1341,15 @@
       border-radius: 0 !important;
     }
     .facturas-table tbody tr:hover {
-      background: #C8EAF1;
+      background: var(--surface-hover);
     }
     .facturas-table td {
       border-radius: 0 !important;
     }
     .btn-cancelar {
-      background: #fff;
-      color: #d81b60;
-      border: 1px solid #d81b60;
+      background: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--primary);
       border-radius: 6px;
       padding: 7px 16px;
       font-size: 0.95rem;
@@ -1229,12 +1358,12 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn-cancelar:hover {
-      background: #f8bbd0;
-      color: #ad1457;
+      background: var(--surface-hover);
+      color: var(--primary);
     }
     .btn-action {
-      background: #f8bbd0;
-      color: #ad1457;
+      background: var(--surface-hover);
+      color: var(--primary);
       border: none;
       border-radius: 6px;
       padding: 7px 16px;
@@ -1244,7 +1373,7 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn-action:hover {
-      background: #d81b60;
+      background: var(--primary);
       color: #fff;
     }
     .btn-group {
@@ -1280,6 +1409,12 @@
       initFilters();
       initSkeletonLoader();
       loadComprobantes(); // Cargar comprobantes desde la API
+      
+      // Listen for theme changes
+      window.addEventListener('themeChanged', function(e) {
+        // Re-render cards with new theme colors if needed
+        console.log('Theme changed to:', e.detail.theme);
+      });
     });
     
 
@@ -1425,7 +1560,6 @@
         renderComprobantes(facturas);
         
       } catch (error) {
-        console.error('Error loading comprobantes:', error);
         showNoComprobantesMessage('Error al cargar los comprobantes. Inténtalo de nuevo.');
         
         // Hide skeleton loader on error
@@ -1522,6 +1656,8 @@
     
     // Helper functions for formatting
     function getStatusInfo(estadoPago) {
+      const isDark = document.body.classList.contains('theme-dark');
+      
       switch (estadoPago) {
         case 'Aceptado':
           return {
@@ -1697,17 +1833,13 @@
       }
       
       // Redirigir a la página de detalle
-      console.log('Viewing comprobante:', id);
       window.location.href = `FacturaDetalle.html?id=${id}`;
     }
     
     function downloadComprobante(id) {
-      console.log('Downloading comprobante:', id);
       showToast('Iniciando descarga...', 'info');
       
       const token = localStorage.getItem('access_token');
-      console.log('Token encontrado:', token ? 'Sí' : 'No');
-      console.log('URL de descarga:', API_URLS.cooperativa.comprobante(id));
       
       fetch(API_URLS.cooperativa.comprobante(id) + '?download=true', {
         method: 'GET',
@@ -1773,7 +1905,6 @@
         showToast('Comprobante descargado correctamente', 'success');
       })
       .catch(error => {
-        console.error('Error al descargar comprobante:', error);
         showToast('Error al descargar el comprobante: ' + error.message, 'error');
       });
     }

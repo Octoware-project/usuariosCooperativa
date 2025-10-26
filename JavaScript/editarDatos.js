@@ -26,7 +26,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('direccion').value = persona.direccion || '';
     document.getElementById('estadoCivil').value = persona.estadoCivil || '';
     document.getElementById('genero').value = persona.genero || '';
-    document.getElementById('fechaNacimiento').value = persona.fechaNacimiento || '';
+    
+    // Fix date format - extract only YYYY-MM-DD from datetime string
+    const fechaNacimiento = persona.fechaNacimiento || '';
+    if (fechaNacimiento) {
+      // Extract date part (YYYY-MM-DD) from datetime string
+      const datePart = fechaNacimiento.split('T')[0];
+      document.getElementById('fechaNacimiento').value = datePart;
+    }
+    
     document.getElementById('ocupacion').value = persona.ocupacion || '';
     document.getElementById('nacionalidad').value = persona.nacionalidad || '';
   } catch (err) {
@@ -37,7 +45,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     errorDiv.textContent = '';
+    errorDiv.style.display = 'none';
     successDiv.textContent = '';
+    successDiv.style.display = 'none';
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.textContent;
     // Animación de carga
@@ -64,18 +74,23 @@ document.addEventListener('DOMContentLoaded', async function() {
         } else {
           errorDiv.textContent = data.message || 'Error al actualizar.';
         }
+        errorDiv.style.display = 'block';
         successDiv.textContent = '';
+        successDiv.style.display = 'none';
         return;
       }
       // Mostrar el mensaje de la API debajo del botón en negrita
       errorDiv.textContent = '';
+      errorDiv.style.display = 'none';
       successDiv.textContent = data.message || 'Datos actualizados correctamente.';
+      successDiv.style.display = 'block';
       // Redirigir al dashboard tras 1.5s
       setTimeout(() => {
         window.location.href = 'dashboard.html';
       }, 1500);
     } catch (err) {
       errorDiv.textContent = err.message;
+      errorDiv.style.display = 'block';
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnText;
