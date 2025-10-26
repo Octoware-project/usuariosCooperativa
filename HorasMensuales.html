@@ -5,6 +5,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Horas Mensuales</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      const themes = {
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#fafcfe',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+          '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)'
+        },
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#404041',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.5)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6',
+          '--navbar-bg': 'rgba(30, 33, 40, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.3)',
+          '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+          '--sidebar-bg': '#1e2128',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #be185d 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(236, 72, 153, 0.15)'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles_tabla.css">
   
@@ -17,30 +92,10 @@
   <!-- Google Fonts - Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- Theme Manager -->
+  <script src="JavaScript/theme.js"></script>
+  
   <style>
-    /* ============================================
-       CSS CUSTOM PROPERTIES - MODERN COLOR SYSTEM
-    ============================================ */
-    :root {
-      --primary: #ec4899;
-      --secondary: #c084fc;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
-      --info: #3b82f6;
-      --surface: #ffffff;
-      --surface-variant: #f8fafc;
-      --text-primary: #1f2937;
-      --text-secondary: #6b7280;
-      --text-tertiary: #9ca3af;
-      --text-disabled: #d1d5db;
-      --border: #e5e7eb;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-
     /* Global Box Sizing and Overflow Control */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -49,6 +104,9 @@
     html, body {
       overflow-x: hidden;
       width: 100%;
+      background: var(--bg-gradient);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
     }
 
     /* ============================================
@@ -59,22 +117,22 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--navbar-bg);
       backdrop-filter: blur(20px);
       padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
-      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+      box-shadow: var(--navbar-shadow);
+      border-bottom: 1px solid var(--navbar-border);
     }
     
     .menu-btn {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #ec4899;
+      color: var(--primary);
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 8px;
@@ -82,7 +140,7 @@
     }
     
     .menu-btn:hover {
-      background: rgba(236, 72, 153, 0.1);
+      background: var(--surface-variant);
       transform: scale(1.05);
     }
     
@@ -90,14 +148,14 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+      background: var(--btn-primary-bg);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 700;
       font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      box-shadow: none;
       transition: all 0.2s ease;
       cursor: pointer;
       user-select: none;
@@ -108,7 +166,7 @@
     
     .user-icon-mobile:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+      box-shadow: none;
     }
     
     .user-icon-mobile:active {
@@ -123,7 +181,7 @@
       left: -300px;
       width: 280px;
       height: 100vh;
-      background: white;
+      background: var(--sidebar-bg);
       box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
       z-index: 1001;
       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -135,7 +193,7 @@
     }
     
     .sidebar-header {
-      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+      background: var(--sidebar-header-bg);
       padding: 2rem 1.5rem;
       color: white;
       text-align: center;
@@ -163,11 +221,11 @@
       display: flex;
       align-items: center;
       padding: 1rem 1.5rem;
-      color: #334155;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border);
       width: 100%;
       box-sizing: border-box;
     }
@@ -177,8 +235,8 @@
     }
     
     .sidebar-nav a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
+      background: var(--sidebar-hover);
+      color: var(--primary);
       transform: translateX(5px);
     }
     
@@ -190,7 +248,7 @@
     
     .sidebar-nav .divider {
       height: 1px;
-      background: #e2e8f0;
+      background: var(--border);
       margin: 0.5rem 1.5rem;
       flex-shrink: 0;
     }
@@ -219,15 +277,16 @@
       position: absolute;
       top: 60px;
       right: 1rem;
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-xl);
       min-width: 180px;
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s ease;
       z-index: 1002;
+      border: 1px solid var(--border);
     }
     
     .user-dropdown-mobile.show {
@@ -240,11 +299,11 @@
       display: flex;
       align-items: center;
       padding: 0.75rem 1rem;
-      color: #334155;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border);
     }
     
     .user-dropdown-mobile a:last-child {
@@ -257,8 +316,8 @@
     }
     
     .user-dropdown-mobile a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
+      background: var(--sidebar-hover);
+      color: var(--primary);
     }
     
     .user-dropdown-mobile a i {
@@ -293,7 +352,7 @@
 
     /* Global Styles */
     body {
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+      background: var(--bg-gradient);
       overflow-x: hidden;
     }
 
@@ -355,6 +414,21 @@
       gap: 0.75rem;
       flex-wrap: wrap;
     }
+    
+    /* Botones apilados en móvil */
+    @media (max-width: 767px) {
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .header-actions .btn,
+      .header-actions .btn-filter,
+      .header-actions .btn-primary-modern {
+        width: 100%;
+        justify-content: center;
+      }
+    }
 
     .btn-filter {
       background: var(--surface-variant);
@@ -378,7 +452,7 @@
     }
 
     .btn-primary-modern {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: var(--btn-primary-bg);
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;
@@ -389,13 +463,13 @@
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
-      box-shadow: var(--shadow-md);
+      box-shadow: none;
     }
 
     .btn-primary-modern:hover {
       transform: translateY(-1px);
-      box-shadow: var(--shadow-lg);
-      background: linear-gradient(135deg, #d946ef, #a855f7);
+      box-shadow: none;
+      background: var(--btn-primary-hover);
       color: white;
     }
 
@@ -489,7 +563,7 @@
 
     .search-input-group:focus-within {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+      box-shadow: none;
     }
 
     .search-input {
@@ -510,7 +584,7 @@
     }
 
     .search-btn:hover {
-      background: #db2777;
+      background: var(--btn-primary-hover);
     }
 
     /* Main Layout */
@@ -546,7 +620,7 @@
 
     .hora-card:hover {
       transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: none;
       border-color: var(--primary);
     }
 
@@ -574,17 +648,17 @@
     }
 
     .hora-icon.horas-reales {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+      background: var(--surface-variant);
       color: var(--success);
     }
 
     .hora-icon.justificacion {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+      background: var(--surface-variant);
       color: var(--warning);
     }
 
     .hora-icon.mixtas {
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(147, 51, 234, 0.2));
+      background: var(--surface-variant);
       color: var(--secondary);
     }
 
@@ -616,17 +690,17 @@
     }
 
     .badge-horas-reales {
-      background: rgba(16, 185, 129, 0.1);
+      background: var(--surface-variant);
       color: var(--success);
     }
 
     .badge-justificacion {
-      background: rgba(245, 158, 11, 0.1);
+      background: var(--surface-variant);
       color: var(--warning);
     }
 
     .badge-mixtas {
-      background: rgba(147, 51, 234, 0.1);
+      background: var(--surface-variant);
       color: var(--secondary);
     }
 
@@ -693,7 +767,7 @@
 
     /* Estilos para botón deshabilitado */
     .action-btn.disabled {
-      opacity: 0.4;
+      opacity: 0.25;
       cursor: not-allowed;
       pointer-events: none;
       background: var(--surface-variant) !important;
@@ -703,63 +777,19 @@
     }
 
     .action-btn.disabled:hover {
+      opacity: 0.25;
       background: var(--surface-variant) !important;
       color: var(--text-disabled) !important;
       border-color: var(--border) !important;
       transform: none !important;
     }
-
-    /* Alertas en tarjetas de horas */
-    .card-alert {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-      border-left: 4px solid #f59e0b;
-      padding: 0.75rem;
-      margin: -1rem -1rem 1rem -1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      border-radius: 16px 16px 0 0;
+    
+    /* Botón de eliminar activo - más visible */
+    .action-btn.delete-btn:not(.disabled) {
+      opacity: 1;
     }
 
-    .card-alert.alert-expired {
-      background: linear-gradient(135deg, #fee2e2, #fecaca);
-      border-left-color: #ef4444;
-    }
 
-    .card-alert.alert-warning {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-      border-left-color: #f59e0b;
-    }
-
-    .card-alert i {
-      font-size: 1rem;
-      color: #f59e0b;
-    }
-
-    .card-alert.alert-expired i {
-      color: #ef4444;
-    }
-
-    .card-alert span {
-      color: #92400e;
-    }
-
-    .card-alert.alert-expired span {
-      color: #991b1b;
-    }
-
-    /* Efecto hover para tarjetas con alerta */
-    .hora-card.alert-warning:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg), 0 0 0 1px #f59e0b22;
-    }
-
-    .hora-card.alert-expired:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md), 0 0 0 1px #ef444422;
-    }
 
     /* Right Panel - Progress Dashboard */
     .horas-right-panel {
@@ -771,7 +801,7 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 2rem;
-      box-shadow: var(--shadow-md);
+      box-shadow: none;
       position: sticky;
       top: 2rem;
     }
@@ -903,12 +933,12 @@
     }
 
     .stat-icon.success {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+      background: var(--surface-variant);
       color: var(--success);
     }
 
     .stat-icon.warning {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+      background: var(--surface-variant);
       color: var(--warning);
     }
 
@@ -932,7 +962,7 @@
     /* Action Button */
     .btn-action-modern {
       width: 100%;
-      background: linear-gradient(135deg, var(--info), #60a5fa);
+      background: var(--btn-primary-bg);
       color: white;
       border: none;
       padding: 1rem 1.5rem;
@@ -945,13 +975,13 @@
       justify-content: center;
       gap: 0.5rem;
       cursor: pointer;
-      box-shadow: var(--shadow-md);
+      box-shadow: none;
     }
 
     .btn-action-modern:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      box-shadow: none;
+      background: var(--btn-primary-hover);
     }
 
     /* Skeleton Loading */
@@ -959,7 +989,7 @@
       width: 48px;
       height: 48px;
       border-radius: 12px;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: var(--surface-variant);
       background-size: 200% 100%;
       animation: skeleton-shimmer 1.5s infinite;
     }
@@ -974,7 +1004,7 @@
     .skeleton-line {
       height: 16px;
       border-radius: 8px;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: var(--surface-variant);
       background-size: 200% 100%;
       animation: skeleton-shimmer 1.5s infinite;
     }
@@ -991,7 +1021,7 @@
       width: 80px;
       height: 24px;
       border-radius: 12px;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: var(--surface-variant);
       background-size: 200% 100%;
       animation: skeleton-shimmer 1.5s infinite;
     }
@@ -1244,18 +1274,16 @@
       
       <!-- Modern Header with Quick Actions -->
       <div class="modern-header">
-        <div class="header-left">
-          <div class="header-title">
-            <h2><i class="bi bi-clock-history"></i>Horas Mensuales</h2>
-            <p class="header-subtitle">Registra y gestiona tus horas de trabajo mensuales</p>
-          </div>
+        <div class="header-title">
+          <h2><i class="bi bi-clock-history"></i> Horas Mensuales</h2>
+          <p class="header-subtitle">Registra y gestiona tus horas de trabajo mensuales</p>
         </div>
         <div class="header-actions">
-          <button class="btn-filter" onclick="toggleFilters()">
-            <i class="bi bi-funnel"></i>Filtros
+          <button class="btn btn-filter" onclick="toggleFilters()">
+            <i class="bi bi-funnel"></i> Filtros
           </button>
-          <a href="AgregarHoras.html" class="btn-primary-modern">
-            <i class="bi bi-plus-lg"></i>Agregar Horas
+          <a href="AgregarHoras.html" class="btn btn-primary-modern">
+            <i class="bi bi-plus-circle"></i> Agregar Horas
           </a>
         </div>
       </div>
@@ -1593,7 +1621,6 @@
         updateProgressFromData(planActual, statsToUse);
 
       } catch (error) {
-        console.error('Error loading horas:', error);
         ocultarSkeletons();
         showNoHorasMessage('Error al cargar las horas mensuales: ' + error.message);
       }
@@ -1619,6 +1646,13 @@
         showNoHorasMessage('No hay registros de horas para mostrar');
         return;
       }
+
+      // Ordenar registros por fecha de creación (más recientes primero)
+      registros.sort((a, b) => {
+        const dateA = new Date(a.created_at || a.fecha);
+        const dateB = new Date(b.created_at || b.fecha);
+        return dateB - dateA; // Orden descendente (más recientes primero)
+      });
 
       registros.forEach((hora, index) => {
         const card = createHoraCard(hora);
@@ -1650,40 +1684,15 @@
       const createdAt = new Date(hora.created_at || hora.fecha);
       const now = new Date();
       const hoursElapsed = Math.floor((now - createdAt) / (1000 * 60 * 60));
-      const hoursRemaining = 24 - hoursElapsed;
       
-      // Determinar si puede cancelar y alertas
+      // Determinar si puede cancelar
       const puedeCancelar = hoursElapsed < 24;
-      let alertInfo = null;
-      
-      if (puedeCancelar && hoursRemaining <= 6) {
-        alertInfo = {
-          type: 'warning',
-          message: `⚠️ Se puede eliminar por ${hoursRemaining}h más`,
-          class: 'alert-warning'
-        };
-      } else if (!puedeCancelar) {
-        alertInfo = {
-          type: 'expired',
-          message: '🔒 No se puede eliminar (más de 24h)',
-          class: 'alert-expired'
-        };
-      }
 
       // Botón de eliminar habilitado/deshabilitado
       const deleteButtonClass = puedeCancelar ? 'action-btn delete-btn' : 'action-btn delete-btn disabled';
       const deleteButtonProps = puedeCancelar ? '' : 'disabled title="No se puede eliminar (más de 24h)"';
       
-      // Agregar clase de alerta a la tarjeta si existe
-      if (alertInfo) {
-        card.classList.add(alertInfo.class);
-      }
-      
       card.innerHTML = `
-        ${alertInfo ? `<div class="card-alert ${alertInfo.class}">
-          <i class="bi ${alertInfo.type === 'warning' ? 'bi-exclamation-triangle' : 'bi-lock'}"></i>
-          <span>${alertInfo.message}</span>
-        </div>` : ''}
         <div class="card-header">
           <div class="hora-icon ${typeInfo.key}">
             <i class="${typeInfo.icon}"></i>
@@ -1704,9 +1713,6 @@
               ${formattedDate}
             </div>
             <div class="detail-actions">
-              <button class="action-btn" onclick="editHora(${hora.id})" title="Editar">
-                <i class="bi bi-pencil"></i>
-              </button>
               <button class="${deleteButtonClass}" onclick="deleteHora(${hora.id})" title="Eliminar" ${deleteButtonProps}>
                 <i class="bi bi-trash"></i>
               </button>
@@ -1965,13 +1971,9 @@
     function filterByType(type) {
       const cards = document.querySelectorAll('#horasGrid .hora-card:not(.skeleton):not(.no-data-message)');
       
-      console.log('Filtrar por tipo:', type);
-      console.log('Tarjetas encontradas:', cards.length);
-      
       let visibleCount = 0;
       cards.forEach(card => {
         const cardType = card.getAttribute('data-type');
-        console.log('Tarjeta tipo:', cardType, 'Filtro:', type, 'Match:', (type === 'all' || cardType === type));
         
         if (type === 'all' || cardType === type) {
           card.style.display = 'block';
@@ -1987,8 +1989,7 @@
         }
       });
       
-      console.log('Tarjetas visibles después del filtro:', visibleCount);
-    }
+      }
 
     function filterHorasBySearch(searchTerm) {
       const cards = document.querySelectorAll('#horasGrid .hora-card:not(.skeleton):not(.no-data-message)');
@@ -2054,8 +2055,6 @@
           loadingCard.style.pointerEvents = 'none';
         }
 
-        console.log('Eliminando hora con ID:', id);
-
         const response = await fetch(API_URLS.cooperativa.horasById(id), {
           method: 'DELETE',
           headers: {
@@ -2078,8 +2077,6 @@
         await loadHoras();
 
       } catch (error) {
-        console.error('Error al eliminar registro:', error);
-        
         // Restaurar estado de la tarjeta
         if (loadingCard) {
           loadingCard.style.opacity = '1';
@@ -2126,7 +2123,7 @@
     }
 
     .action-btn {
-      opacity: 0.7;
+      opacity: 1;
       transition: all 0.2s ease;
     }
   </style>
@@ -2163,10 +2160,10 @@
             top: 20px;
             right: 20px;
             z-index: 9999;
-            background: white;
+            background: var(--surface);
             border-radius: 12px;
             padding: 1rem;
-            box-shadow: var(--shadow-lg);
+            box-shadow: none;
             border-left: 4px solid var(--primary);
             min-width: 300px;
             animation: slideInRight 0.3s ease;
@@ -2294,7 +2291,7 @@
               backdrop-filter: blur(4px);
             }
             .modal-content {
-              background: white;
+              background: var(--surface);
               border-radius: 16px;
               padding: 0;
               max-width: 480px;
@@ -2333,8 +2330,8 @@
               font-size: 0.9rem;
             }
             .warning-notice {
-              background: #fef3c7;
-              border: 1px solid #fcd34d;
+              background: var(--surface-variant);
+              border: 1px solid var(--border);
               border-radius: 8px;
               padding: 0.75rem;
               display: flex;
@@ -2343,11 +2340,11 @@
               margin-top: 1rem;
             }
             .warning-notice i {
-              color: #f59e0b;
+              color: var(--primary);
               font-size: 1rem;
             }
             .warning-notice span {
-              color: #92400e;
+              color: var(--text-secondary);
               font-size: 0.875rem;
             }
             .modal-actions {
@@ -2379,10 +2376,12 @@
             .btn-delete {
               background: #ef4444;
               color: white;
+              box-shadow: none;
             }
             .btn-delete:hover {
               background: #dc2626;
               transform: translateY(-1px);
+              box-shadow: none;
             }
             @keyframes modalFadeIn {
               from { opacity: 0; }

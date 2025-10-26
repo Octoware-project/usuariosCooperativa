@@ -4,6 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Detalle de Factura</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
+  <style id="theme-vars">
+    :root {
+      /* Default dark theme variables */
+      --primary: #ec4899;
+      --primary-rgb: 236, 72, 153;
+      --primary-light: #f472b6;
+      --primary-dark: #db2777;
+      --surface: #1e2128;
+      --surface-variant: #282c34;
+      --surface-hover: #2d3139;
+      --bg-gradient: linear-gradient(135deg, #1e2128 0%, #282c34 100%);
+      --text-primary: #e4e4e7;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --border: #3f3f46;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #ec4899;
+      --btn-primary-bg: #ec4899;
+      --btn-primary-hover: #f472b6;
+      --navbar-bg: rgba(30, 33, 40, 0.95);
+      --navbar-border: rgba(63, 63, 70, 0.5);
+      --navbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --header-bg: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+      --sidebar-bg: #1e2128;
+      --sidebar-header-bg: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+      --sidebar-hover: rgba(236, 72, 153, 0.15);
+    }
+  </style>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') {
+        const lightTheme = {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': 'linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%)',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+          '--shadow-xl': '0 20px 25px rgba(0, 0, 0, 0.1)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.95)',
+          '--navbar-border': 'rgba(229, 231, 235, 0.5)',
+          '--navbar-shadow': '0 4px 12px rgba(0, 0, 0, 0.1)',
+          '--header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%)',
+          '--sidebar-hover': '#fce7f3'
+        };
+        Object.entries(lightTheme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
   
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,26 +105,7 @@
     html, body {
       overflow-x: hidden;
       width: 100%;
-    }
-    
-    /* CSS Variables */
-    :root {
-      --primary: #ec4899;
-      --primary-dark: #be185d;
-      --primary-light: #f9a8d4;
-      --secondary: #64748b;
-      --surface: #ffffff;
-      --background: #fafafa;
-      --border: #e2e8f0;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --success: #10b981;
-      --error: #ef4444;
-      --warning: #f59e0b;
-      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      background: var(--bg-gradient);
     }
     
     /* ============================================
@@ -57,22 +116,22 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--navbar-bg);
       backdrop-filter: blur(20px);
       padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
-      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
+      box-shadow: var(--navbar-shadow);
+      border-bottom: 1px solid var(--navbar-border);
     }
     
     .menu-btn {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #ec4899;
+      color: var(--primary);
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 8px;
@@ -88,14 +147,14 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+      background: var(--btn-primary-bg);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 700;
       font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      box-shadow: var(--shadow-md);
       transition: all 0.2s ease;
       cursor: pointer;
       user-select: none;
@@ -106,12 +165,17 @@
     
     .user-icon-mobile:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+      box-shadow: var(--shadow-lg);
     }
     
     .user-icon-mobile:active {
       transform: scale(0.98);
       transition: all 0.1s ease;
+    }
+    
+    .user-icon-mobile:focus {
+      outline: none;
+      box-shadow: var(--shadow-md);
     }
     
     /* Sidebar Menu */
@@ -121,7 +185,7 @@
       left: -300px;
       width: 280px;
       height: 100vh;
-      background: white;
+      background: var(--sidebar-bg);
       box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
       z-index: 1001;
       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -133,7 +197,7 @@
     }
     
     .sidebar-header {
-      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+      background: var(--sidebar-header-bg);
       padding: 2rem 1.5rem;
       color: white;
       text-align: center;
@@ -161,11 +225,11 @@
       display: flex;
       align-items: center;
       padding: 1rem 1.5rem;
-      color: #334155;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border);
       width: 100%;
       box-sizing: border-box;
     }
@@ -175,8 +239,8 @@
     }
     
     .sidebar-nav a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
+      background: var(--sidebar-hover);
+      color: var(--primary);
       transform: translateX(5px);
     }
     
@@ -188,7 +252,7 @@
     
     .sidebar-nav .divider {
       height: 1px;
-      background: #e2e8f0;
+      background: var(--border);
       margin: 0.5rem 1.5rem;
       flex-shrink: 0;
     }
@@ -217,15 +281,16 @@
       position: absolute;
       top: 60px;
       right: 1rem;
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-xl);
       min-width: 180px;
       opacity: 0;
       visibility: hidden;
       transform: translateY(-10px);
       transition: all 0.3s ease;
       z-index: 1002;
+      border: 1px solid var(--border);
     }
     
     .user-dropdown-mobile.show {
@@ -238,11 +303,11 @@
       display: flex;
       align-items: center;
       padding: 0.75rem 1rem;
-      color: #334155;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid var(--border);
     }
     
     .user-dropdown-mobile a:last-child {
@@ -255,8 +320,8 @@
     }
     
     .user-dropdown-mobile a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
+      background: var(--sidebar-hover);
+      color: var(--primary);
     }
     
     .user-dropdown-mobile a i {
@@ -266,19 +331,14 @@
     
     /* Mobile Responsive */
     @media (min-width: 768px) {
-      .mobile-nav,
+      .mobile-nav {
+        display: none;
+      }
+      
       .sidebar-menu,
       .menu-overlay,
       .user-dropdown-mobile {
         display: none;
-      }
-      
-      #navbar {
-        display: block !important;
-      }
-      
-      .container {
-        padding-top: 76px; /* Espacio para navbar fijo */
       }
     }
     
@@ -395,20 +455,35 @@
       visibility: hidden;
     /* Main Content Styles */
     body {
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+      background: var(--bg-gradient);
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
+      min-height: 100vh;
     }
     
     .container {
-      padding-top: 20px;
+      padding-top: 100px;
       min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
       padding-bottom: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Modern Header */
+    .detail-header-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
+    }
+    
+    .detail-header-card:hover {
+      box-shadow: var(--shadow-xl);
     }
   </style>
 
@@ -428,8 +503,8 @@
       </a>
     </div>
   </nav>
-  
-  <!-- Desktop Navbar Container -->
+
+  <!-- Navbar Container (includes desktop navbar) -->
   <div id="navbar"></div>
   
   <!-- Sidebar Menu -->
@@ -473,17 +548,20 @@
   <!-- Main Container -->
   <div class="container">
     <div class="row justify-content-center w-100">
-      <div class="col-12 col-lg-10 col-xl-8">
+      <div class="col-12">
         <!-- Header Card -->
         <div class="detail-header-card">
-          <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div class="d-flex align-items-center gap-3">
               <div class="back-button" onclick="window.location.href='Comprobantes.html'">
                 <i class="bi bi-arrow-left"></i>
               </div>
               <div>
-                <h1 class="page-title mb-0">Detalle de Comprobante</h1>
-                <p class="page-subtitle mb-0">Información completa de la factura</p>
+                <h1 class="page-title">
+                  <i class="bi bi-receipt"></i>
+                  Detalle de Comprobante
+                </h1>
+                <p class="page-subtitle">Información completa de tu factura</p>
               </div>
             </div>
             <div class="action-buttons d-none d-md-flex">
@@ -502,7 +580,7 @@
             <div class="detail-card">
               <div class="card-header">
                 <div class="header-icon">
-                  <i class="bi bi-receipt"></i>
+                  <i class="bi bi-info-circle"></i>
                 </div>
                 <div>
                   <h3 class="card-title">Información del Comprobante</h3>
@@ -522,16 +600,18 @@
             <div class="detail-card image-card">
               <div class="card-header">
                 <div class="header-icon">
-                  <i class="bi bi-image"></i>
+                  <i class="bi bi-file-earmark-image"></i>
                 </div>
                 <div>
                   <h3 class="card-title">Comprobante</h3>
-                  <p class="card-subtitle">Imagen del archivo</p>
+                  <p class="card-subtitle">Imagen del documento</p>
                 </div>
               </div>
-              <div class="card-body image-container">
-                <div id="factura-imagen" class="image-content">
-                  <!-- Image will be loaded here -->
+              <div class="card-body">
+                <div class="image-container">
+                  <div id="factura-imagen" class="image-content">
+                    <!-- Image will be loaded here -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -557,40 +637,53 @@
       border-radius: 20px;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
+    }
+    
+    .detail-header-card:hover {
+      box-shadow: var(--shadow-xl);
     }
 
     .back-button {
       width: 48px;
       height: 48px;
-      background: rgba(236, 72, 153, 0.1);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1));
       border: 1px solid rgba(236, 72, 153, 0.2);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--primary);
       font-size: 1.2rem;
     }
 
     .back-button:hover {
-      background: rgba(236, 72, 153, 0.15);
-      transform: translateX(-2px);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(168, 85, 247, 0.15));
+      transform: translateX(-4px);
+      box-shadow: var(--shadow-md);
     }
 
     .page-title {
-      font-size: 1.75rem;
+      font-size: 1.875rem;
       font-weight: 700;
       color: var(--text-primary);
       margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .page-title i {
+      color: var(--primary);
     }
 
     .page-subtitle {
       color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin: 0;
+      font-size: 0.875rem;
+      margin: 0.25rem 0 0 0;
     }
 
     .action-buttons {
@@ -598,7 +691,7 @@
     }
 
     .btn-action {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       border: none;
       border-radius: 12px;
@@ -608,14 +701,14 @@
       align-items: center;
       gap: 0.5rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-md);
     }
 
     .btn-action:hover {
-      background: var(--primary-dark);
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
+      background: linear-gradient(135deg, #d946ef, #a855f7);
     }
 
     /* Detail Cards */
@@ -625,19 +718,20 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: var(--shadow-md);
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       height: 100%;
     }
 
     .detail-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+      border-color: rgba(236, 72, 153, 0.3);
     }
 
     .card-header {
       padding: 1.5rem;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(236, 72, 153, 0.02));
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(168, 85, 247, 0.05));
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -646,7 +740,7 @@
     .header-icon {
       width: 48px;
       height: 48px;
-      background: rgba(236, 72, 153, 0.1);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1));
       border: 1px solid rgba(236, 72, 153, 0.2);
       border-radius: 12px;
       display: flex;
@@ -685,20 +779,24 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem;
-      background: rgba(236, 72, 153, 0.02);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.02), rgba(168, 85, 247, 0.02));
       border: 1px solid rgba(236, 72, 153, 0.1);
       border-radius: 12px;
       transition: all 0.2s ease;
     }
 
     .detail-item:hover {
-      background: rgba(236, 72, 153, 0.05);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(168, 85, 247, 0.05));
       border-color: rgba(236, 72, 153, 0.2);
+      transform: translateX(4px);
     }
 
     .detail-label {
       font-weight: 600;
-      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -730,20 +828,31 @@
       justify-content: center;
       border-radius: 12px;
       overflow: hidden;
-      background: rgba(236, 72, 153, 0.02);
-      border: 1px solid rgba(236, 72, 153, 0.2);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.02), rgba(168, 85, 247, 0.02));
+      border: 2px dashed rgba(236, 72, 153, 0.2);
       min-height: 250px;
       padding: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .image-content:hover {
+      border-color: rgba(236, 72, 153, 0.4);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(168, 85, 247, 0.05));
     }
 
     .image-content img {
       max-width: 100%;
       max-height: 400px;
       border-radius: 8px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-lg);
       object-fit: contain;
       width: auto;
       height: auto;
+      transition: all 0.3s ease;
+    }
+    
+    .image-content img:hover {
+      transform: scale(1.02);
     }
 
     .image-placeholder {
@@ -759,7 +868,10 @@
 
     .image-placeholder i {
       font-size: 3rem;
-      color: rgba(236, 72, 153, 0.3);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(168, 85, 247, 0.3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .image-placeholder small {
@@ -770,25 +882,26 @@
 
     .image-placeholder .btn {
       padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 500;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       border: none;
       font-size: 0.9rem;
     }
 
     .image-placeholder .btn-primary {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
+      box-shadow: var(--shadow-md);
     }
 
     .image-placeholder .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
     .image-placeholder .btn-secondary {
@@ -797,20 +910,19 @@
     }
 
     .image-placeholder .btn-secondary:hover {
-      background: #475569;
-      transform: translateY(-1px);
+      background: #9333ea;
+      transform: translateY(-2px);
     }
 
     /* Mobile Actions */
     .mobile-actions {
       margin-top: 2rem;
       padding: 1rem 0;
-      border-top: 1px solid var(--border);
     }
 
     .btn-mobile-action {
       width: 100%;
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       border: none;
       border-radius: 12px;
@@ -821,16 +933,25 @@
       justify-content: center;
       gap: 0.5rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-md);
     }
 
     .btn-mobile-action:hover {
-      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
     /* Responsive Adjustments */
     @media (max-width: 767px) {
+      body {
+        padding-top: 70px;
+      }
+      
+      .container {
+        padding-top: 20px;
+      }
+      
       .detail-header-card {
         padding: 1.5rem;
         margin-bottom: 1.5rem;
@@ -867,18 +988,24 @@
         min-height: 180px;
       }
     }
+    
+    @media (min-width: 768px) {
+      .container {
+        padding-top: 120px;
+      }
+    }
 
     /* Loading States */
     .skeleton-item {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: linear-gradient(90deg, var(--surface-variant) 25%, var(--surface-hover) 50%, var(--surface-variant) 75%);
       background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: 8px;
-      height: 20px;
+      animation: skeleton-shimmer 1.5s infinite;
+      border-radius: 12px;
+      height: 60px;
       margin-bottom: 1rem;
     }
 
-    @keyframes loading {
+    @keyframes skeleton-shimmer {
       0% { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
@@ -895,12 +1022,12 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1rem;
-      box-shadow: var(--shadow-lg);
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shadow-xl);
       min-width: 300px;
       opacity: 0;
       transform: translateX(100%);
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .toast.show {
@@ -919,6 +1046,85 @@
     .toast.info {
       border-left: 4px solid var(--primary);
     }
+    
+    .toast.warning {
+      border-left: 4px solid var(--warning);
+    }
+    
+    /* Image Modal */
+    .image-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .image-modal img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+    
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .image-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--surface);
+      color: var(--text-primary);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
+    }
+    
+    .image-modal-close:hover {
+      background: var(--primary);
+      color: white;
+      transform: rotate(90deg);
+    }
+    
+    /* Loading Spinner */
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      border-width: 0.25rem;
+    }
   </style>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -935,16 +1141,7 @@
   <script>
     // Load navbar and initialize page
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM loaded, calling loadNavbar...');
       loadNavbar();
-      
-      // Debug: Check if navbar loaded after 1 second
-      setTimeout(() => {
-        const navbar = document.getElementById('navbar');
-        console.log('Navbar element:', navbar);
-        console.log('Navbar HTML:', navbar ? navbar.innerHTML.substring(0, 200) : 'NOT FOUND');
-        console.log('Navbar display style:', navbar ? window.getComputedStyle(navbar).display : 'N/A');
-      }, 1000);
       
       // Get factura ID from URL and load detail
       loadFacturaDetail();
@@ -1021,13 +1218,11 @@
         return response.json();
       })
       .then(data => {
-        console.log('Factura data received:', data);
         hideSkeletonLoading();
         renderFacturaDetail(data.factura);
         setupDownloadButton(facturaId);
       })
       .catch(error => {
-        console.error('Error:', error);
         hideSkeletonLoading();
         showToast('Error al cargar los detalles de la factura', 'error');
       });
@@ -1058,42 +1253,72 @@
       const detailContainer = document.getElementById('factura-detalle');
       const imageContainer = document.getElementById('factura-imagen');
       
-      // Render details
+      // Render details con iconos y mejor presentación
       const details = [
-        { label: 'Motivo', value: factura.motivo || 'Sin motivo especificado' },
-        { label: 'Fecha de Pago', value: new Date(factura.created_at).toLocaleDateString('es-ES') },
-        { label: 'Monto', value: `$${parseFloat(factura.Monto || 0).toFixed(2)}` },
-        { label: 'Estado', value: getEstadoBadge(factura.Estado_Pago) },
-        { label: 'Mes del Pago', value: getMonthName(new Date(factura.created_at)) }
+        { 
+          label: 'Motivo', 
+          value: factura.motivo || 'Sin motivo especificado',
+          icon: 'bi-chat-left-text'
+        },
+        { 
+          label: 'Fecha de Pago', 
+          value: new Date(factura.created_at).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+          }),
+          icon: 'bi-calendar-event'
+        },
+        { 
+          label: 'Monto', 
+          value: `$${parseFloat(factura.Monto || 0).toLocaleString('es-AR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          })}`,
+          icon: 'bi-cash-coin'
+        },
+        { 
+          label: 'Estado', 
+          value: getEstadoBadge(factura.Estado_Pago),
+          icon: 'bi-info-circle'
+        },
+        { 
+          label: 'Mes del Pago', 
+          value: getMonthName(new Date(factura.created_at)),
+          icon: 'bi-calendar3'
+        }
       ];
       
       detailContainer.innerHTML = details.map(item => `
         <div class="detail-item">
-          <span class="detail-label">${item.label}</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <i class="bi ${item.icon}" style="color: var(--primary); font-size: 1.1rem;"></i>
+            <span class="detail-label">${item.label}</span>
+          </div>
           <span class="detail-value">${item.value}</span>
         </div>
       `).join('');
       
       // Render image
-      console.log('Factura data:', factura);
-      console.log('imagen_comprobante:', factura.imagen_comprobante);
-      console.log('Archivo_Comprobante:', factura.Archivo_Comprobante);
-      
       if (factura.imagen_comprobante) {
         // Si hay URL de imagen directa, usarla
         imageContainer.innerHTML = `
-          <img src="${factura.imagen_comprobante}" alt="Comprobante" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: var(--shadow);" onerror="handleImageError(this, ${factura.id})">
+          <img src="${factura.imagen_comprobante}" 
+               alt="Comprobante" 
+               style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: var(--shadow-lg); cursor: pointer;" 
+               onerror="handleImageError(this, ${factura.id})"
+               onclick="openImageModal('${factura.imagen_comprobante}')">
         `;
       } else if (factura.Archivo_Comprobante) {
         // Si hay archivo almacenado, cargar con autenticación
-        console.log('Loading comprobante from API for ID:', factura.id);
         loadComprobanteImage(factura.id, imageContainer);
       } else {
         // No hay comprobante disponible
         imageContainer.innerHTML = `
           <div class="image-placeholder">
-            <i class="bi bi-image"></i>
+            <i class="bi bi-file-earmark-x"></i>
             <span>Sin imagen de comprobante</span>
+            <small>No se ha cargado ningún comprobante para esta factura</small>
           </div>
         `;
       }
@@ -1101,7 +1326,6 @@
 
     // Global function to handle image errors
     window.handleImageError = function(img, facturaId) {
-      console.log('Image load error, trying API endpoint for ID:', facturaId);
       const container = img.parentElement;
       loadComprobanteImage(facturaId, container);
     }
@@ -1120,9 +1344,6 @@
       const token = localStorage.getItem('access_token');
       const comprobanteUrl = API_URLS.cooperativa.comprobante(facturaId);
       
-      console.log('Fetching comprobante from:', comprobanteUrl);
-      console.log('Using token:', token ? 'Present' : 'Missing');
-      
       fetch(comprobanteUrl, {
         method: 'GET',
         headers: {
@@ -1131,21 +1352,14 @@
         }
       })
       .then(response => {
-        console.log('Response status:', response.status);
-        console.log('Response headers:', [...response.headers.entries()]);
-        
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: No se pudo cargar el comprobante`);
         }
         
         const contentType = response.headers.get('content-type');
-        console.log('Content-Type:', contentType);
-        
         return response.blob();
       })
       .then(blob => {
-        console.log('Blob received:', blob.size, 'bytes, type:', blob.type);
-        
         const imageUrl = URL.createObjectURL(blob);
         const contentType = blob.type || 'application/octet-stream';
         
@@ -1188,7 +1402,6 @@
         }
       })
       .catch(error => {
-        console.error('Error loading comprobante:', error);
         container.innerHTML = `
           <div class="image-placeholder">
             <i class="bi bi-exclamation-triangle" style="color: #f59e0b;"></i>
@@ -1209,9 +1422,57 @@
 
     function getEstadoBadge(estado) {
       const badges = {
-        'Pendiente': '<span style="background: #f59e0b; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Pendiente</span>',
-        'Aprobado': '<span style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Aprobado</span>',
-        'Rechazado': '<span style="background: #ef4444; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem;">Rechazado</span>'
+        'Pendiente': `
+          <span style="
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+            color: #f59e0b;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+          ">
+            <i class="bi bi-clock" style="font-size: 1rem;"></i>
+            Pendiente
+          </span>
+        `,
+        'Aprobado': `
+          <span style="
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+          ">
+            <i class="bi bi-check-circle" style="font-size: 1rem;"></i>
+            Aprobado
+          </span>
+        `,
+        'Rechazado': `
+          <span style="
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+            color: #ef4444;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+          ">
+            <i class="bi bi-x-circle" style="font-size: 1rem;"></i>
+            Rechazado
+          </span>
+        `
       };
       
       return badges[estado] || estado;
@@ -1282,7 +1543,6 @@
           showToast('Comprobante descargado correctamente', 'success');
         })
         .catch(error => {
-          console.error('Error al descargar comprobante:', error);
           showToast('Error al descargar el comprobante', 'error');
         });
       }
@@ -1299,36 +1559,62 @@
     function openImageModal(imageSrc) {
       // Create modal for full-size image viewing
       const modal = document.createElement('div');
-      modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      `;
+      modal.className = 'image-modal';
+      
+      const closeBtn = document.createElement('div');
+      closeBtn.className = 'image-modal-close';
+      closeBtn.innerHTML = '<i class="bi bi-x"></i>';
+      closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => document.body.removeChild(modal), 300);
+      };
       
       const img = document.createElement('img');
       img.src = imageSrc;
-      img.style.cssText = `
-        max-width: 90%;
-        max-height: 90%;
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      `;
+      img.onclick = (e) => e.stopPropagation();
       
+      modal.appendChild(closeBtn);
       modal.appendChild(img);
       document.body.appendChild(modal);
       
+      // Close on background click
       modal.addEventListener('click', () => {
-        document.body.removeChild(modal);
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => document.body.removeChild(modal), 300);
       });
+      
+      // Close on ESC key
+      const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+          modal.style.animation = 'fadeOut 0.3s ease';
+          setTimeout(() => {
+            if (document.body.contains(modal)) {
+              document.body.removeChild(modal);
+            }
+          }, 300);
+          document.removeEventListener('keydown', handleEscape);
+        }
+      };
+      document.addEventListener('keydown', handleEscape);
     }
+    
+    // Add fadeOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
+  
+  <!-- Theme Manager -->
+  <script src="JavaScript/theme.js"></script>
 </body>
 </html>

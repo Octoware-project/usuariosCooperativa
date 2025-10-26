@@ -3,8 +3,6 @@ $(function() {
   const token = localStorage.getItem('access_token');
   const tbody = $('.facturas-table tbody');
   
-  console.log('Token:', token ? 'Presente' : 'No encontrado');
-  
   if (!token) {
     tbody.empty();
     tbody.append('<tr><td colspan="4" style="text-align:center;">No autenticado. Inicie sesión.</td></tr>');
@@ -19,7 +17,6 @@ $(function() {
       'Authorization': 'Bearer ' + token
     },
     success: function(data) {
-      console.log('Respuesta exitosa:', data);
       tbody.empty();
       // data.horas es el array de registros
         if (data && Array.isArray(data.horas) && data.horas.length > 0) {
@@ -86,11 +83,6 @@ $(function() {
       }
     },
     error: function(xhr) {
-      console.log('Error en la petición:');
-      console.log('Status:', xhr.status);
-      console.log('Status Text:', xhr.statusText);
-      console.log('Response Text:', xhr.responseText);
-      
       tbody.empty();
       tbody.append('<tr><td colspan="3" style="text-align:center;">Error al cargar las horas. Código: ' + xhr.status + '</td></tr>');
     }

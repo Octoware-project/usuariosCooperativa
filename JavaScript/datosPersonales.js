@@ -53,7 +53,6 @@ async function cargarDatosPersonales() {
     }
     
   } catch (err) {
-    console.error('Error cargando datos:', err);
     mostrarError(err.message);
   }
 }

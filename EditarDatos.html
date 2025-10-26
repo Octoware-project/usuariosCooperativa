@@ -4,6 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Datos Personales</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
+  <style id="theme-vars">
+    :root {
+      /* Default dark theme variables */
+      --primary: #ec4899;
+      --primary-rgb: 236, 72, 153;
+      --primary-light: #f472b6;
+      --primary-dark: #db2777;
+      --surface: #1e2128;
+      --surface-variant: #282c34;
+      --surface-hover: #2d3139;
+      --bg-gradient: linear-gradient(135deg, #1e2128 0%, #282c34 100%);
+      --text-primary: #e4e4e7;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --border: #3f3f46;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #ec4899;
+      --btn-primary-bg: #ec4899;
+      --btn-primary-hover: #f472b6;
+      --header-bg: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+      --content-bg: #282c34;
+    }
+  </style>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') {
+        const lightTheme = {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': 'linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%)',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+          '--shadow-xl': '0 20px 40px rgba(255, 193, 227, 0.3)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%)',
+          '--content-bg': '#fafafa'
+        };
+        Object.entries(lightTheme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
   <link rel="stylesheet" href="styles.css">
   
   <!-- Bootstrap CSS -->
@@ -18,7 +87,7 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif !important;
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%) !important;
+      background: var(--bg-gradient) !important;
       min-height: 100vh;
     }
     
@@ -29,15 +98,15 @@
     }
     
     .edit-card {
-      background: white;
+      background: var(--surface);
       border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(255, 193, 227, 0.3);
+      box-shadow: var(--shadow-xl);
       overflow: hidden;
       border: none;
     }
     
     .edit-header {
-      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
+      background: var(--header-bg);
       padding: 2rem;
       color: white;
       text-align: center;
@@ -59,27 +128,29 @@
     
     .edit-content {
       padding: 2rem;
-      background: #fafafa;
+      background: var(--content-bg);
     }
     
     .section-card {
-      background: white;
+      background: var(--surface);
       border-radius: 20px;
       padding: 2rem;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-      border: none;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
     }
     
     .form-label {
       font-size: 0.9rem;
-      color: #64748b;
+      color: var(--text-secondary);
       font-weight: 500;
       margin-bottom: 0.5rem;
     }
     
     .form-control {
       border-radius: 12px;
-      border: 2px solid #e2e8f0;
+      background: var(--surface-variant);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
       padding: 0.75rem 1rem;
       font-size: 0.95rem;
       transition: all 0.2s ease;
@@ -87,12 +158,13 @@
     }
     
     .form-control:focus {
-      border-color: #f9a8d4;
-      box-shadow: 0 0 0 0.2rem rgba(249, 168, 212, 0.25);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+      background: var(--surface);
     }
     
     .btn-save {
-      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
+      background: var(--header-bg);
       color: white;
       border: none;
       padding: 0.75rem 2rem;
@@ -100,7 +172,7 @@
       font-size: 1rem;
       font-weight: 600;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
+      box-shadow: var(--shadow-md);
       width: 100%;
       height: 50px;
       display: flex;
@@ -110,15 +182,15 @@
     
     .btn-save:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
-      background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+      box-shadow: var(--shadow-lg);
+      filter: brightness(1.1);
       color: white;
     }
     
     .btn-cancel {
       background: transparent;
-      color: #64748b;
-      border: 2px solid #e2e8f0;
+      color: var(--text-secondary);
+      border: 2px solid var(--border);
       padding: 0.75rem 2rem;
       border-radius: 25px;
       font-size: 1rem;
@@ -132,9 +204,9 @@
     }
     
     .btn-cancel:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-      color: #475569;
+      background: var(--surface-hover);
+      border-color: var(--border);
+      color: var(--text-primary);
     }
     
     .alert {
@@ -145,15 +217,15 @@
     }
     
     .alert-danger {
-      background: #fef2f2;
-      color: #dc2626;
-      border-left: 4px solid #dc2626;
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+      border-left: 4px solid var(--error);
     }
     
     .alert-success {
-      background: #f0fdf4;
-      color: #16a34a;
-      border-left: 4px solid #16a34a;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border-left: 4px solid var(--success);
     }
     
     @media (max-width: 768px) {
@@ -222,11 +294,20 @@
       box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
       transition: all 0.2s ease;
       cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      border: none;
+      outline: none;
     }
     
     .user-icon-mobile:hover {
       transform: scale(1.05);
       box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
+    }
+    
+    .user-icon-mobile:active {
+      transform: scale(0.98);
+      transition: all 0.1s ease;
     }
     
     /* Sidebar Menu */
@@ -258,12 +339,14 @@
       margin: 0;
       font-size: 1.3rem;
       font-weight: 600;
+      color: white;
     }
     
     .sidebar-header p {
       margin: 0.5rem 0 0 0;
       opacity: 0.9;
       font-size: 0.9rem;
+      color: white;
     }
     
     .sidebar-nav {
@@ -470,67 +553,63 @@
   </style>
 </head>
 <body>
-  <!-- Mobile Navbar -->
+  <!-- Mobile Navigation -->
   <nav class="mobile-nav">
-    <button class="menu-toggle" onclick="toggleMenu()">
+    <button class="menu-btn" onclick="toggleMenu()">
       <i class="bi bi-list"></i>
     </button>
-    <div class="logo">Octoware</div>
-    <div class="user-icon" onclick="toggleUserDropdown()">
-      <i class="bi bi-person-circle"></i>
-    </div>
-    <div class="user-dropdown">
+    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
+    <!-- User Dropdown Mobile -->
+    <div class="user-dropdown-mobile" id="userDropdownMobile">
       <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person"></i> Perfil
+        <i class="bi bi-person-circle"></i>Ver Perfil
       </a>
       <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
       </a>
     </div>
   </nav>
 
-  <!-- Mobile Sidebar -->
-  <div class="sidebar-menu">
-    <div class="close-menu" onclick="toggleMenu()">
-      <i class="bi bi-x-lg"></i>
-    </div>
-    <ul>
-      <li>
-        <a href="dashboard.html">
-          <i class="bi bi-house-door"></i>
-          <span>Inicio</span>
-        </a>
-      </li>
-      <li>
-        <a href="HorasMensuales.html">
-          <i class="bi bi-clock-history"></i>
-          <span>Horas Mensuales</span>
-        </a>
-      </li>
-      <li>
-        <a href="Comprobantes.html">
-          <i class="bi bi-file-earmark-text"></i>
-          <span>Comprobantes</span>
-        </a>
-      </li>
-      <li>
-        <a href="Asambleas.html">
-          <i class="bi bi-people"></i>
-          <span>Asambleas</span>
-        </a>
-      </li>
-      <li>
-        <a href="PlanesTrabajoUsuario.html">
-          <i class="bi bi-list-check"></i>
-          <span>Planes de Trabajo</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div class="menu-overlay" onclick="toggleMenu()"></div>
-
-  <!-- Desktop Navbar Container -->
+  <!-- Navbar Container (includes desktop navbar) -->
   <div id="navbar"></div>
+  
+  <!-- Sidebar Menu -->
+  <div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+      <h3>Menú Principal</h3>
+      <p>Navegación</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html">
+        <i class="bi bi-house"></i>Dashboard
+      </a>
+      <a href="Comprobantes.html">
+        <i class="bi bi-credit-card"></i>Pagos
+      </a>
+      <a href="HorasMensuales.html">
+        <i class="bi bi-clock"></i>Horas Mensuales
+      </a>
+      <a href="PlanesTrabajoUsuario.html">
+        <i class="bi bi-calendar-check"></i>Planes de Trabajo
+      </a>
+      <a href="Asambleas.html">
+        <i class="bi bi-people-fill"></i>Asambleas
+      </a>
+      <div class="divider"></div>
+      <a href="EditarPerfilModerno.html">
+        <i class="bi bi-person-circle"></i>Mi Perfil
+      </a>
+      <a href="configuracion.html">
+        <i class="bi bi-gear"></i>Configuración
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+  
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
   
   <div class="edit-container">
     <div class="edit-card">
@@ -652,18 +731,18 @@
       const userDropdown = document.getElementById('userDropdownMobile');
       
       // Close user dropdown if open
-      userDropdown.classList.remove('show');
+      if (userDropdown) userDropdown.classList.remove('show');
       
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('active');
+      if (sidebar) sidebar.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('active');
     }
     
     function closeMenu() {
       const sidebar = document.getElementById('sidebarMenu');
       const overlay = document.getElementById('menuOverlay');
       
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
     }
     
     function toggleUserDropdown() {
@@ -672,10 +751,10 @@
       const overlay = document.getElementById('menuOverlay');
       
       // Close sidebar if open
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
       
-      dropdown.classList.toggle('show');
+      if (dropdown) dropdown.classList.toggle('show');
     }
     
     // Close dropdowns when clicking outside
@@ -684,7 +763,7 @@
       const userDropdown = document.getElementById('userDropdownMobile');
       const menuBtn = document.querySelector('.menu-btn');
       
-      if (!userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
+      if (userIcon && userDropdown && !userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
         userDropdown.classList.remove('show');
       }
     });
@@ -694,7 +773,7 @@
       const userIcon = document.getElementById('userIconMobile');
       const token = localStorage.getItem('access_token');
       
-      if (token) {
+      if (token && userIcon) {
         // Try to get user data from token or make API call
         userIcon.textContent = 'U'; // Default, can be updated when user data loads
       }
@@ -714,5 +793,8 @@
       loadNavbar();
     });
   </script>
+  
+  <!-- Theme Manager -->
+  <script src="JavaScript/theme.js"></script>
 </body>
 </html>

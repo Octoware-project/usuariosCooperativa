@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login Minimalista</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
   <style>
     /* Reset básico */
     * {
@@ -54,6 +55,12 @@
       box-shadow: 0 4px 12px rgba(222, 95, 136, 0.6);
       transform: translateY(-3px);
     }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
     button {
       width: 100%;
       padding: 16px 0;
@@ -94,9 +101,11 @@
 <body>
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
-    <input type="email" id="usuario" placeholder="Correo electrónico" autocomplete="username" required />
-    <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password" required />
-    <button id="boton">Iniciar Sesión</button>
+    <form id="loginForm" autocomplete="on">
+      <input type="email" id="usuario" placeholder="Correo electrónico" autocomplete="username" required />
+      <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password" required />
+      <button type="button" id="boton">Iniciar Sesión</button>
+    </form>
     <div class="loader" id="loader" style="display:none;">Iniciando sesión...</div>
     <div class="error" id="error"></div>
   </div>
@@ -127,6 +136,12 @@
         }
       });
     }
+
+    // Prevenir submit del formulario
+    $('#loginForm').on('submit', function(e) {
+      e.preventDefault();
+      return false;
+    });
 
     // Permitir iniciar sesión con Enter en los campos de email o password
     $('#usuario, #password').on('keypress', function(e) {
