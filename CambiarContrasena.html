@@ -821,6 +821,9 @@
         alert('Contraseña actualizada exitosamente');
         document.getElementById('passwordForm').reset();
         
+        // Invalidar el caché para forzar recarga de datos
+        localStorage.removeItem('user_cache');
+        
         // Redirigir a la página de perfil después de 1 segundo
         setTimeout(() => {
           window.location.href = 'EditarPerfilModerno.html';

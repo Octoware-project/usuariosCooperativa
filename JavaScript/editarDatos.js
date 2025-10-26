@@ -84,9 +84,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       errorDiv.style.display = 'none';
       successDiv.textContent = data.message || 'Datos actualizados correctamente.';
       successDiv.style.display = 'block';
-      // Redirigir al dashboard tras 1.5s
+      
+      // Invalidar el caché para forzar recarga de datos
+      localStorage.removeItem('user_cache');
+      
+      // Redirigir a EditarPerfilModerno con parámetro timestamp para evitar caché del navegador
       setTimeout(() => {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'EditarPerfilModerno.html?refresh=' + Date.now();
       }, 1500);
     } catch (err) {
       errorDiv.textContent = err.message;
