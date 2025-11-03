@@ -416,8 +416,23 @@ window.addEventListener('load', async () => {
     return;
   }
   
-  // Cargar datos inmediatamente (desde caché si está disponible)
-  await cargarDatosPerfil();
+  // Verificar si el caché fue invalidado (por ejemplo, después de editar datos)
+  const cacheExists = localStorage.getItem('user_cache');
+  
+  // Detectar parámetro refresh en la URL para forzar recarga
+  const urlParams = new URLSearchParams(window.location.search);
+  const hasRefreshParam = urlParams.has('refresh');
+  
+  const forceRefresh = !cacheExists || hasRefreshParam;
+  
+  // Limpiar el parámetro de la URL sin recargar la página
+  if (hasRefreshParam) {
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+  }
+  
+  // Cargar datos inmediatamente (desde caché si está disponible, o forzar recarga si el caché fue invalidado)
+  await cargarDatosPerfil(forceRefresh);
   
   // Configurar actualización automática cada 5 minutos
   setInterval(actualizarDatosSiNecesario, 5 * 60 * 1000);
