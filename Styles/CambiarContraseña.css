@@ -1,0 +1,577 @@
+/* ============================================
+   CAMBIAR CONTRASEÑA STYLES
+   ============================================ */
+
+body {
+  font-family: 'Poppins', sans-serif !important;
+  background: var(--bg-gradient) !important;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   CONTAINER & LAYOUT
+   ============================================ */
+
+.container-custom {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ============================================
+   PASSWORD CARD
+   ============================================ */
+
+.password-card {
+  background: var(--surface);
+  border-radius: 24px;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  border: none;
+}
+
+/* ============================================
+   PASSWORD HEADER
+   ============================================ */
+
+.password-header {
+  background: var(--header-bg);
+  padding: 2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.password-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+}
+
+.password-icon i {
+  font-size: 1.8rem;
+  color: white;
+}
+
+.password-header-text h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.password-header-text p {
+  font-size: 1rem;
+  color: white;
+  margin: 0.5rem 0 0 0;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+#passwordForm {
+  padding: 2rem;
+  background: var(--content-bg);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-variant);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: block;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+}
+
+/* ============================================
+   PASSWORD REQUIREMENTS
+   ============================================ */
+
+.password-requirements {
+  background: rgba(var(--primary-rgb), 0.05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.password-requirements h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.requirement-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.requirement-item:last-child {
+  margin-bottom: 0;
+}
+
+.requirement-item i {
+  font-size: 0.5rem;
+  color: var(--primary);
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn-group-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-cancel,
+.btn-save {
+  flex: 1;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border);
+}
+
+.btn-cancel:hover {
+  background: var(--surface-hover);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+.btn-save {
+  background: var(--header-bg);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-save:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
+}
+
+.btn-save:disabled {
+  background: var(--surface-hover);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn-save i {
+  font-size: 1.1rem;
+}
+
+.btn-save.loading {
+  opacity: 0.85;
+  cursor: wait;
+  pointer-events: none;
+}
+
+.btn-save .spinner {
+  animation: spin 0.6s linear infinite;
+}
+
+.btn-save:disabled.loading {
+  opacity: 0.85;
+  background: var(--header-bg);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   MOBILE NAVIGATION STYLES
+   ============================================ */
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--navbar-bg);
+  backdrop-filter: blur(20px);
+  padding: 1rem;
+  display: none; /* Hidden by default to prevent flash on desktop */
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: var(--navbar-shadow);
+  border-bottom: 1px solid var(--navbar-border);
+}
+
+/* Show mobile nav only on mobile screens */
+@media (max-width: 767px) {
+  .mobile-nav {
+    display: flex;
+  }
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.menu-btn:hover {
+  background: rgba(236, 72, 153, 0.1);
+  transform: scale(1.05);
+}
+
+.user-icon-mobile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--btn-primary-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.user-icon-mobile:hover {
+  transform: scale(1.05);
+  box-shadow: none;
+}
+
+.user-icon-mobile:active {
+  transform: scale(0.98);
+  transition: all 0.1s ease;
+}
+
+.user-icon-mobile:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.user-dropdown-mobile {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 1rem;
+  margin-top: 0.5rem;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  min-width: 200px;
+  overflow: hidden;
+  z-index: 1001;
+}
+
+.user-dropdown-mobile.show {
+  display: block;
+}
+
+.user-dropdown-mobile a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-dropdown-mobile a:last-child {
+  border-bottom: none;
+}
+
+.user-dropdown-mobile a:hover {
+  background: var(--surface-hover);
+  color: var(--primary);
+}
+
+.user-dropdown-mobile a i {
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   SIDEBAR MENU
+   ============================================ */
+
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 280px;
+  height: 100vh;
+  background: var(--sidebar-bg);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.sidebar-menu.open {
+  left: 0;
+}
+
+.sidebar-header {
+  background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%) !important;
+  padding: 2rem 1.5rem;
+  color: white;
+  text-align: center;
+}
+
+/* Dark theme sidebar header */
+@media (prefers-color-scheme: dark) {
+  .sidebar-header {
+    background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%) !important;
+  }
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+}
+
+.sidebar-header p {
+  margin: 0.5rem 0 0 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.sidebar-nav {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-nav a:last-child {
+  border-bottom: none;
+}
+
+.sidebar-nav a:hover {
+  background: var(--sidebar-hover);
+  color: var(--primary);
+  transform: translateX(5px);
+}
+
+.sidebar-nav a i {
+  width: 20px;
+  margin-right: 1rem;
+  font-size: 1.1rem;
+}
+
+.sidebar-nav .divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.5rem 1.5rem;
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+
+.menu-overlay.open,
+.menu-overlay.active {
+  display: block;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: var(--surface-variant);
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+
+  .container-custom {
+    margin: 1rem;
+    padding: 0;
+  }
+
+  .password-card {
+    border-radius: 16px;
+  }
+
+  .password-header {
+    padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .password-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .password-icon i {
+    font-size: 1.5rem;
+  }
+
+  .password-header-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .password-header-text p {
+    font-size: 0.9rem;
+  }
+
+  #passwordForm {
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .btn-group-actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    width: 100%;
+  }
+
+  .password-requirements {
+    padding: 1.25rem;
+  }
+
+  .password-requirements h3 {
+    font-size: 0.9rem;
+  }
+
+  .requirement-item {
+    font-size: 0.85rem;
+  }
+}

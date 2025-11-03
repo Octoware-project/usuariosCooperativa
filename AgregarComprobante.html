@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Comprobante</title>
     <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
-    
-    <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
+
     <script>
       (function() {
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -19,7 +18,7 @@
             '--surface': '#ffffff',
             '--surface-variant': '#f8f9fa',
             '--surface-hover': '#f0f0f0',
-            '--bg-gradient': '#fafcfe',
+            '--bg-gradient': '#ffffff',
             '--text-primary': '#1f2937',
             '--text-secondary': '#6b7280',
             '--text-muted': '#9ca3af',
@@ -78,9 +77,8 @@
         }
       })();
     </script>
-    
-    <link rel="stylesheet" href="styles.css"> 
-    <link rel="stylesheet" href="styles_formulario.css">
+
+
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -88,1785 +86,29 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Theme Manager -->
+    <link rel="stylesheet" href="Styles/AgregarComprobante.css">
+    
     <script src="JavaScript/theme.js"></script>
-    <style>
-      html, body {
-        overflow-x: hidden;
-        max-width: 100%;
-        background: var(--bg-gradient);
-        font-family: 'Poppins', sans-serif;
-        min-height: 100vh;
-      }
-      
-      /* ============================================
-         MOBILE NAVIGATION STYLES
-      ============================================ */
-      .mobile-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: var(--navbar-bg);
-        backdrop-filter: blur(20px);
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1000;
-        box-shadow: var(--navbar-shadow);
-        border-bottom: 1px solid var(--navbar-border);
-      }
-      
-      .menu-btn {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: var(--primary);
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-      }
-      
-      .menu-btn:hover {
-        background: rgba(236, 72, 153, 0.1);
-        transform: scale(1.05);
-      }
-      
-      .user-icon-mobile {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--btn-primary-bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 1.2rem;
-        box-shadow: none;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        border: none;
-        outline: none;
-      }
-      
-      .user-icon-mobile:hover {
-        transform: scale(1.05);
-        box-shadow: none;
-      }
-      
-      .user-icon-mobile:active {
-        transform: scale(0.98);
-        transition: all 0.1s ease;
-      }
-      
-      /* Sidebar Menu */
-      .sidebar-menu {
-        position: fixed;
-        top: 0;
-        left: -300px;
-        width: 280px;
-        height: 100vh;
-        background: var(--sidebar-bg);
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-        z-index: 1001;
-        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow-y: auto;
-      }
-      
-      .sidebar-menu.open {
-        left: 0;
-      }
-      
-      .sidebar-header {
-        background: var(--sidebar-header-bg);
-        padding: 2rem 1.5rem;
-        color: white;
-        text-align: center;
-      }
-      
-      .sidebar-header h3 {
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: 600;
-      }
-      
-      .sidebar-header p {
-        margin: 0.5rem 0 0 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
-      }
-      
-      .sidebar-nav {
-        padding: 1rem 0;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .sidebar-nav a {
-        display: flex;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        color: var(--text-primary);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border-bottom: 1px solid var(--border);
-        width: 100%;
-        box-sizing: border-box;
-      }
-      
-      .sidebar-nav a:last-child {
-        border-bottom: none;
-      }
-      
-      .sidebar-nav a:hover {
-        background: var(--sidebar-hover);
-        color: var(--primary);
-        transform: translateX(5px);
-      }
-      
-      .sidebar-nav a i {
-        width: 20px;
-        margin-right: 1rem;
-        font-size: 1.1rem;
-      }
-      
-      .sidebar-nav .divider {
-        height: 1px;
-        background: var(--border);
-        margin: 0.5rem 1.5rem;
-        flex-shrink: 0;
-      }
-      
-      /* Overlay */
-      .menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-      }
-      
-      .menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-      }
-      
-      /* User dropdown mobile */
-      .user-dropdown-mobile {
-        position: absolute;
-        top: 60px;
-        right: 1rem;
-        background: var(--surface);
-        border-radius: 12px;
-        box-shadow: var(--shadow-xl);
-        min-width: 180px;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        z-index: 1002;
-        border: 1px solid var(--border);
-      }
-      
-      .user-dropdown-mobile.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-      
-      .user-dropdown-mobile a {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        color: var(--text-primary);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border-bottom: 1px solid var(--border);
-      }
-      
-      .user-dropdown-mobile a:last-child {
-        border-bottom: none;
-        border-radius: 0 0 12px 12px;
-      }
-      
-      .user-dropdown-mobile a:first-child {
-        border-radius: 12px 12px 0 0;
-      }
-      
-      .user-dropdown-mobile a:hover {
-        background: var(--sidebar-hover);
-        color: var(--primary);
-      }
-      
-      .user-dropdown-mobile a i {
-        width: 16px;
-        margin-right: 0.75rem;
-      }
-      
-      @media (min-width: 768px) {
-        .mobile-nav {
-          display: none;
-        }
-        
-        .sidebar-menu,
-        .menu-overlay,
-        .user-dropdown-mobile {
-          display: none;
-        }
-      }
-      
-      @media (max-width: 767px) {
-        #navbar {
-          display: none;
-        }
-        
-        body {
-          padding-top: 70px;
-        }
-        
-        .header {
-          padding: 1rem;
-          text-align: center;
-        }
-        
-        .header h2 {
-          font-size: 1.4rem;
-        }
-        
-        .form-container {
-          padding: 1rem;
-          margin: 0.5rem;
-        }
-        
-        .add-hours-form {
-          padding: 1rem;
-        }
-        
-        .add-hours-form label {
-          font-size: 0.9rem;
-          margin-bottom: 0.25rem;
-        }
-        
-        .add-hours-form input,
-        .add-hours-form select,
-        .add-hours-form textarea {
-          padding: 0.75rem;
-          font-size: 0.9rem;
-          margin-bottom: 1rem;
-        }
-        
-        .btn {
-          padding: 0.75rem 1.5rem;
-          font-size: 0.9rem;
-          width: 100%;
-          margin-top: 1rem;
-        }
-      }
-      
-      @media (max-width: 480px) {
-        .sidebar-menu {
-          width: 260px;
-        }
-        
-        .header h2 {
-          font-size: 1.2rem;
-        }
-        
-        .form-container {
-          padding: 0.5rem;
-          margin: 0.25rem;
-        }
-        
-        .add-hours-form {
-          padding: 0.75rem;
-        }
-        
-        .add-hours-form label {
-          font-size: 0.85rem;
-        }
-        
-        .add-hours-form input,
-        .add-hours-form select,
-        .add-hours-form textarea {
-          padding: 0.6rem;
-          font-size: 0.85rem;
-        }
-        
-        .btn {
-          padding: 0.6rem 1rem;
-          font-size: 0.85rem;
-        }
-      }
-      
-      .modern-form-container {
-        max-width: 800px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-      }
-      
-      .form-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border);
-      }
-      
-      .back-button {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--surface-variant);
-        border: 1px solid var(--border);
-        color: var(--text-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 1.2rem;
-      }
-      
-      .back-button:hover {
-        background: var(--primary);
-        color: white;
-        transform: translateX(-2px);
-      }
-      
-      .form-title h2 {
-        margin: 0;
-        color: var(--text-primary);
-        font-size: 1.75rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-      
-      .form-title h2 i {
-        color: var(--primary);
-      }
-      
-      .form-title p {
-        margin: 0.5rem 0 0 0;
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-      }
-      
-      .stepper-container {
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-      }
-      
-      .stepper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-      }
-      
-      .step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        z-index: 2;
-        transition: all 0.3s ease;
-      }
-      
-      .step-icon {
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        background: var(--surface-variant);
-        border: 2px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        transition: all 0.3s ease;
-        margin-bottom: 0.75rem;
-      }
-      
-      .step.active .step-icon {
-        background: var(--btn-primary-bg);
-        border-color: var(--primary);
-        transform: scale(1.1);
-        box-shadow: none;
-      }
-      
-      .step.completed .step-icon {
-        background: var(--success);
-        border-color: var(--success);
-      }
-      
-      .step-number {
-        position: absolute;
-        font-size: 0.875rem;
-        font-weight: 700;
-        color: var(--text-secondary);
-        opacity: 1;
-        transition: opacity 0.2s ease;
-      }
-      
-      .step.active .step-number,
-      .step.completed .step-number {
-        opacity: 0;
-      }
-      
-      .step-icon i {
-        font-size: 1.25rem;
-        color: var(--text-secondary);
-        opacity: 0;
-        transition: opacity 0.2s ease;
-      }
-      
-      .step.active .step-icon i,
-      .step.completed .step-icon i {
-        color: white;
-        opacity: 1;
-      }
-      
-      .step-label {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--text-secondary);
-        text-align: center;
-        transition: color 0.3s ease;
-      }
-      
-      .step.active .step-label {
-        color: var(--primary);
-      }
-      
-      .step.completed .step-label {
-        color: var(--success);
-      }
-      
-      .step-line {
-        flex: 1;
-        height: 2px;
-        background: var(--border);
-        margin: 0 1rem;
-        position: relative;
-        overflow: hidden;
-      }
-      
-      @media (max-width: 768px) {
-        .step-line {
-          flex: none;
-          margin: 20px 0.25rem 0 0.25rem;
-        }
-      }
-      
-      .step-line::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        background: linear-gradient(90deg, var(--primary), var(--secondary));
-        width: 0;
-        transition: width 0.5s ease;
-      }
-      
-      .step-line.completed::after {
-        width: 100%;
-      }
-      
-      .modern-step-form {
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border);
-        overflow: hidden;
-      }
-      
-      .form-step {
-        padding: 2rem;
-        display: none;
-        animation: slideIn 0.3s ease-out;
-      }
-      
-      .form-step.active {
-        display: block;
-      }
-      
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      
-      .step-content {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      
-      .step-header {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-      
-      .step-header h3 {
-        margin: 0 0 0.5rem 0;
-        color: var(--text-primary);
-        font-size: 1.5rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-      
-      .step-header h3 i {
-        color: var(--primary);
-      }
-      
-      .step-header p {
-        margin: 0;
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-      }
-      
-      /* Form Groups */
-      .form-group-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-      
-      .input-group {
-        margin-bottom: 1.5rem;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .floating-label {
-        position: relative;
-        display: block;
-      }
-      
-      .floating-label input,
-      .floating-label select {
-        width: 100%;
-        padding: 1rem 1rem 1rem 3rem;
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        font-size: 1rem;
-        background: var(--surface);
-        transition: all 0.3s ease;
-        outline: none;
-      }
-      
-      .floating-label input:focus,
-      .floating-label select:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
-      }
-      
-      .floating-text {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-        font-weight: 500;
-        pointer-events: none;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      
-      .floating-text i {
-        color: var(--primary);
-      }
-      
-      .floating-label input:focus + .floating-text,
-      .floating-label input:valid + .floating-text,
-      .floating-label select:focus + .floating-text,
-      .floating-label select:valid + .floating-text {
-        transform: translateY(-200%);
-        font-size: 0.75rem;
-        color: var(--primary);
-      }
-      
-      .input-helper {
-        margin-top: 0.5rem;
-      }
-      
-      .input-helper small {
-        color: var(--text-secondary);
-        font-size: 0.8rem;
-      }
-      
-      .payment-methods {
-        margin-bottom: 2rem;
-      }
-      
-      .method-label {
-        display: block;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 1rem;
-        font-size: 1rem;
-      }
-      
-      .payment-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 1rem;
-      }
-      
-      .payment-option {
-        cursor: pointer;
-      }
-      
-      .payment-option input[type="radio"] {
-        display: none;
-      }
-      
-      .payment-card {
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        padding: 1.5rem 1rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        background: var(--surface);
-      }
-      
-      .payment-option input[type="radio"]:checked + .payment-card {
-        border-color: var(--primary);
-        background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(192, 132, 252, 0.1));
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-      }
-      
-      .payment-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--surface-variant);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 0.75rem auto;
-        font-size: 1.25rem;
-        color: var(--text-secondary);
-        transition: all 0.3s ease;
-      }
-      
-      .payment-option input[type="radio"]:checked + .payment-card .payment-icon {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-      }
-      
-      .payment-card span {
-        font-weight: 600;
-        color: var(--text-primary);
-        font-size: 0.9rem;
-      }
-      
-      .upload-area {
-        border: 2px dashed var(--border);
-        border-radius: 16px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        background: var(--surface-variant);
-        min-height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .upload-area:hover {
-        border-color: var(--primary);
-        background: rgba(236, 72, 153, 0.05);
-      }
-      
-      .upload-area.dragover {
-        border-color: var(--primary);
-        background: rgba(236, 72, 153, 0.1);
-        transform: scale(1.02);
-      }
-      
-      .upload-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .upload-icon {
-        width: 64px;
-        height: 64px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        color: white;
-        margin-bottom: 1rem;
-        animation: bounce 2s infinite;
-      }
-      
-      @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
-          transform: translateY(0);
-        }
-        40% {
-          transform: translateY(-10px);
-        }
-        60% {
-          transform: translateY(-5px);
-        }
-      }
-      
-      .upload-content h4 {
-        margin: 0 0 0.5rem 0;
-        color: var(--text-primary);
-        font-weight: 600;
-      }
-      
-      .upload-content p {
-        margin: 0 0 1rem 0;
-        color: var(--text-secondary);
-      }
-      
-      .upload-formats {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
-      .format-tag {
-        background: var(--primary);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 16px;
-        font-size: 0.75rem;
-        font-weight: 600;
-      }
-      
-      .size-limit {
-        color: var(--text-secondary);
-        font-size: 0.8rem;
-      }
-      
-      .file-preview {
-        border: 2px solid var(--success);
-        border-radius: 16px;
-        padding: 1.5rem;
-        background: rgba(16, 185, 129, 0.05);
-      }
-      
-      .preview-content {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-      }
-      
-      .file-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--success);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-      }
-      
-      .file-info {
-        flex: 1;
-      }
-      
-      .file-name {
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 0.25rem;
-      }
-      
-      .file-size {
-        color: var(--text-secondary);
-        font-size: 0.875rem;
-      }
-      
-      .remove-file {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: var(--error);
-        color: white;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-      }
-      
-      .remove-file:hover {
-        transform: scale(1.1);
-      }
-      
-      .upload-progress {
-        height: 4px;
-        background: var(--border);
-        border-radius: 2px;
-        overflow: hidden;
-      }
-      
-      .progress-bar {
-        height: 100%;
-        background: linear-gradient(90deg, var(--success), #059669);
-        border-radius: 2px;
-        transition: width 0.3s ease;
-        width: 0;
-      }
+    
+    <script src="JavaScript/i18n.js"></script>
 
-      
-      .period-selector-container {
-        max-width: 500px;
-        margin: 0 auto;
-      }
-
-      .period-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--btn-primary-bg);
-        border-radius: 20px;
-        color: white;
-        box-shadow: none;
-      }
-
-      .period-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-      }
-
-      .period-icon i {
-        font-size: 1.5rem;
-        color: white;
-      }
-
-      .period-title h3 {
-        margin: 0 0 0.25rem 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-
-      .period-title p {
-        margin: 0;
-        opacity: 0.9;
-        font-size: 0.95rem;
-      }
-
-      .period-calendar {
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--surface-variant);
-        border-radius: 20px;
-        border: 1px solid var(--border);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .period-calendar::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--primary), var(--secondary));
-      }
-
-      .calendar-display {
-        text-align: center;
-      }
-
-      .current-selection {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-      }
-
-      .selected-month, .selected-year {
-        flex: 1;
-        max-width: 120px;
-        padding: 1rem;
-        background: var(--surface);
-        border-radius: 12px;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-        transition: all 0.3s ease;
-      }
-
-      .selected-month:hover, .selected-year:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-      }
-
-      .month-name, .year-label {
-        display: block;
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.25rem;
-      }
-
-      .month-number, .year-number {
-        display: block;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--primary);
-      }
-
-      .calendar-separator {
-        color: var(--primary);
-        font-size: 1.2rem;
-        opacity: 0.6;
-      }
-
-      .period-selectors {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-      }
-
-      .selector-card {
-        background: var(--surface);
-        border-radius: 16px;
-        padding: 1.5rem;
-        border: 1px solid var(--border);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: visible;
-      }
-
-      .selector-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--primary), var(--primary-light));
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-      }
-
-
-
-      .card-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        color: var(--text-primary);
-        font-weight: 600;
-        font-size: 0.9rem;
-      }
-
-      .card-header i {
-        color: var(--primary);
-        font-size: 1rem;
-      }
-
-      .modern-select, .modern-input {
-        width: 100%;
-        padding: 1.25rem 1.5rem;
-        border: 2px solid var(--border);
-        border-radius: 20px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        background: var(--surface-variant);
-        transition: all 0.3s ease;
-        outline: none;
-      }
-
-      .modern-select:focus, .modern-input:focus {
-        border-color: var(--primary);
-        background: var(--surface);
-        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
-        transform: translateY(-1px);
-      }
-
-      .modern-input:hover {
-        border-color: var(--primary);
-        background: var(--surface);
-      }
-
-      input.monto-input {
-        width: 100% !important;
-        max-width: 300px !important;
-        margin: 0 auto !important;
-        padding: 1rem 1.5rem !important;
-        border: 2px solid var(--border) !important;
-        border-radius: 20px !important;
-        font-size: 1rem !important;
-        font-weight: 500 !important;
-        background: var(--surface-variant) !important;
-        transition: all 0.3s ease !important;
-        outline: none !important;
-        text-align: center !important;
-        letter-spacing: 0.3px !important;
-        display: block !important;
-        color: var(--text-primary) !important;
-        min-height: 48px !important;
-        box-sizing: border-box !important;
-      }
-
-      input.monto-input:focus {
-        border-color: var(--primary) !important;
-        background: var(--surface) !important;
-        box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15), var(--shadow-md) !important;
-        transform: translateY(-2px) scale(1.02) !important;
-        color: var(--text-primary) !important;
-      }
-
-      input.monto-input:hover {
-        border-color: var(--primary) !important;
-        background: var(--surface) !important;
-        transform: translateY(-1px) !important;
-        color: var(--text-primary) !important;
-      }
-
-      input.monto-input::placeholder {
-        color: var(--text-muted) !important;
-        opacity: 0.7 !important;
-      }
-
-      .modern-select {
-        cursor: pointer;
-      }
-
-      .modern-textarea {
-        width: 100% !important;
-        padding: 1rem 1.5rem !important;
-        border: 2px solid var(--border) !important;
-        border-radius: 16px !important;
-        font-size: 0.95rem !important;
-        font-weight: 400 !important;
-        background: var(--surface-variant) !important;
-        transition: all 0.3s ease !important;
-        outline: none !important;
-        resize: vertical !important;
-        min-height: 80px !important;
-        max-height: 120px !important;
-        font-family: inherit !important;
-        line-height: 1.5 !important;
-        color: var(--text-primary) !important;
-      }
-
-      .modern-textarea:focus {
-        border-color: var(--primary) !important;
-        background: var(--surface) !important;
-        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1) !important;
-        transform: translateY(-1px) !important;
-      }
-
-      .modern-textarea:hover {
-        border-color: var(--primary) !important;
-        background: var(--surface) !important;
-      }
-
-      .modern-textarea::placeholder {
-        color: var(--text-muted) !important;
-        opacity: 0.8 !important;
-      }
-
-      .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        font-size: 0.95rem;
-      }
-
-      .form-label i {
-        margin-right: 0.5rem;
-        color: var(--primary);
-      }
-
-      .year-suggestions {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-      }
-
-      .year-btn {
-        flex: 1;
-        padding: 0.5rem;
-        border: 1px solid var(--border);
-        background: var(--surface-variant);
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .year-btn:hover {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-        transform: scale(1.02);
-      }
-
-      .year-btn.active {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-      }
-
-      .period-info {
-        background: var(--surface-variant);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1rem;
-      }
-
-      .info-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        color: var(--text-primary);
-        font-size: 0.9rem;
-        font-weight: 500;
-      }
-
-      .info-item i {
-        color: var(--primary);
-        font-size: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        .period-selectors {
-          grid-template-columns: 1fr 1fr;
-          gap: 0.75rem;
-        }
-
-        .current-selection {
-          flex-direction: row;
-          gap: 0.5rem;
-        }
-
-        .selected-month, .selected-year {
-          max-width: 140px;
-          padding: 0.75rem;
-        }
-
-        .calendar-separator {
-          margin: 0 0.25rem;
-        }
-
-        .month-name, .year-label {
-          font-size: 0.7rem;
-        }
-
-        .month-number, .year-number {
-          font-size: 1.2rem;
-        }
-
-        .period-header {
-          flex-direction: column;
-          text-align: center;
-          gap: 1rem;
-        }
-
-        .selector-card {
-          padding: 1rem;
-        }
-
-        .card-header {
-          margin-bottom: 0.75rem;
-        }
-
-        .card-header span {
-          font-size: 0.9rem;
-        }
-
-        .modern-select,
-        .modern-input {
-          font-size: 0.9rem;
-        }
-
-        input.monto-input {
-          max-width: 100% !important;
-          padding: 0.875rem 1.25rem !important;
-          font-size: 0.95rem !important;
-          border-radius: 18px !important;
-          min-height: 44px !important;
-        }
-
-        .modern-textarea {
-          padding: 0.875rem 1.25rem !important;
-          font-size: 0.9rem !important;
-          border-radius: 14px !important;
-          min-height: 70px !important;
-          max-height: 100px !important;
-        }
-
-      }
-      
-      /* Confirmation */
-      .confirmation-card {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-        margin-bottom: 2rem;
-      }
-      
-      .confirmation-header {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        padding: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-      
-      .confirmation-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-      }
-      
-      .confirmation-header h4 {
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 600;
-      }
-      
-      .confirmation-details {
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .detail-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid var(--border);
-      }
-      
-      .detail-row:last-child {
-        border-bottom: none;
-      }
-      
-      .detail-label {
-        font-weight: 600;
-        color: var(--text-secondary);
-      }
-      
-      .detail-value {
-        font-weight: 600;
-        color: var(--text-primary);
-      }
-      
-      .detail-value.amount {
-        font-size: 1.25rem;
-        color: var(--success);
-      }
-      
-      /* Terms Agreement - Modern Checkbox */
-      .terms-agreement {
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: rgba(236, 72, 153, 0.03);
-        border-radius: 12px;
-        border: 1px solid rgba(236, 72, 153, 0.1);
-      }
-      
-      .modern-checkbox-wrapper {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-      
-      .modern-checkbox {
-        width: 20px !important;
-        height: 20px !important;
-        margin: 0 !important;
-        cursor: pointer !important;
-        opacity: 0 !important;
-        position: absolute !important;
-      }
-      
-      .modern-checkbox-label {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        cursor: pointer;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        color: var(--text-primary);
-        font-weight: 500;
-        width: 100%;
-      }
-      
-      .checkbox-icon {
-        width: 24px;
-        height: 24px;
-        border: 2px solid #d1d5db;
-        border-radius: 6px;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        flex-shrink: 0;
-        margin-top: 2px;
-      }
-      
-      .checkbox-icon i {
-        font-size: 14px;
-        color: white;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-      }
-      
-      .modern-checkbox:checked + .modern-checkbox-label .checkbox-icon {
-        background: linear-gradient(135deg, var(--success), #059669);
-        border-color: var(--success);
-        transform: scale(1.1);
-      }
-      
-      .modern-checkbox:checked + .modern-checkbox-label .checkbox-icon i {
-        opacity: 1;
-      }
-      
-      .modern-checkbox-label:hover .checkbox-icon {
-        border-color: var(--primary);
-        transform: scale(1.05);
-      }
-      
-      .checkbox-text {
-        color: var(--text-primary);
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-top: 1px;
-      }
-      
-      /* Navigation Buttons */
-      .form-navigation {
-        padding: 1.5rem 2rem;
-        background: var(--surface-variant);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-      }
-      
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        border: none;
-        text-decoration: none;
-      }
-      
-      .btn-secondary {
-        background: var(--surface);
-        color: var(--text-secondary);
-        border: 1px solid var(--border);
-      }
-      
-      .btn-secondary:hover {
-        background: var(--border);
-        transform: translateY(-1px);
-      }
-      
-      .btn-primary {
-        background: var(--btn-primary-bg);
-        color: white;
-        box-shadow: none;
-      }
-      
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: none;
-        background: var(--btn-primary-hover);
-      }
-      
-      .btn-success {
-        background: var(--success);
-        color: white;
-        box-shadow: none;
-      }
-      
-      .btn-success:hover {
-        transform: translateY(-2px);
-        box-shadow: none;
-        filter: brightness(1.1);
-      }
-      
-      /* Success Modal */
-      .success-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-      }
-      
-      .success-modal.show {
-        opacity: 1;
-        visibility: visible;
-      }
-      
-      .success-content {
-        background: var(--surface);
-        border-radius: 24px;
-        padding: 3rem 2rem;
-        text-align: center;
-        max-width: 400px;
-        margin: 1rem;
-        transform: translateY(-50px);
-        transition: transform 0.3s ease;
-        box-shadow: var(--shadow-xl);
-      }
-      
-      .success-modal.show .success-content {
-        transform: translateY(0);
-      }
-      
-      .success-animation {
-        margin-bottom: 2rem;
-      }
-      
-      .checkmark-circle {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: var(--success);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        animation: scaleIn 0.5s ease-out;
-      }
-      
-      .checkmark {
-        width: 24px;
-        height: 24px;
-        border: solid white;
-        border-width: 0 4px 4px 0;
-        transform: rotate(45deg);
-        animation: checkmarkDraw 0.5s ease-out 0.3s both;
-      }
-      
-      @keyframes scaleIn {
-        0% {
-          transform: scale(0);
-        }
-        50% {
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-      
-      @keyframes checkmarkDraw {
-        0% {
-          opacity: 0;
-          transform: rotate(45deg) scale(0);
-        }
-        100% {
-          opacity: 1;
-          transform: rotate(45deg) scale(1);
-        }
-      }
-      
-      .success-content h3 {
-        margin: 0 0 1rem 0;
-        color: var(--text-primary);
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-      
-      .success-content p {
-        margin: 0 0 2rem 0;
-        color: var(--text-secondary);
-        line-height: 1.6;
-      }
-      
-      /* Responsive Adjustments */
-      @media (max-width: 768px) {
-        .modern-form-container {
-          padding: 0 0.5rem;
-        }
-        
-        .form-header {
-          padding: 1rem;
-          margin-bottom: 1rem;
-        }
-        
-        .form-title h2 {
-          font-size: 1.5rem;
-        }
-        
-        .stepper {
-          flex-direction: row;
-          gap: 0.25rem;
-          padding: 0.5rem 0;
-          overflow: visible;
-        }
-        
-        .stepper-container {
-          margin-bottom: 1.5rem;
-          padding: 0.5rem;
-        }
-        
-        .step {
-          min-width: 60px;
-          flex: 1;
-          max-width: 80px;
-        }
-        
-        .step-icon {
-          width: 35px;
-          height: 35px;
-          margin-bottom: 0.4rem;
-        }
-        
-        .step-label {
-          font-size: 0.7rem;
-          line-height: 1.1;
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        
-        .step-line {
-          width: 20px;
-          height: 2px;
-          margin: 20px 0 0 0;
-          flex-shrink: 0;
-        }
-        
-        .step-line::after {
-          width: 0;
-          height: 100%;
-          transition: width 0.5s ease;
-        }
-        
-        .step-line.completed::after {
-          width: 100%;
-        }
-        
-        .form-group-row {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-        
-        .payment-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        
-        .form-navigation {
-          padding: 1rem;
-          flex-direction: column;
-        }
-        
-        .btn {
-          width: 100%;
-          justify-content: center;
-        }
-      }
-      
-      @media (max-width: 480px) {
-        .form-step {
-          padding: 1.5rem 1rem;
-        }
-        
-        .step-header h3 {
-          font-size: 1.25rem;
-        }
-        
-        .floating-label input,
-        .floating-label select {
-          padding: 0.875rem 0.875rem 0.875rem 2.5rem;
-          font-size: 0.9rem;
-        }
-        
-        .payment-grid {
-          grid-template-columns: 1fr;
-        }
-        
-        .upload-area {
-          padding: 1.5rem 1rem;
-        }
-        
-        .terms-agreement {
-          padding: 1rem;
-          margin-bottom: 1.5rem;
-        }
-        
-        .modern-checkbox-wrapper {
-          gap: 0.75rem;
-        }
-        
-        .modern-checkbox-label {
-          gap: 0.75rem;
-          font-size: 0.9rem;
-        }
-        
-        .checkbox-icon {
-          width: 22px;
-          height: 22px;
-        }
-      }
-    </style>
 </head>
 <body>
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav">
-    <button class="menu-btn" onclick="toggleMenu()">
-      <i class="bi bi-list"></i>
-    </button>
-    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
-    <!-- User Dropdown Mobile -->
-    <div class="user-dropdown-mobile" id="userDropdownMobile">
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Ver Perfil
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </div>
-  </nav>
+    <!-- Mobile navbar and sidebar will be injected by mobile-navbar.js -->
     
-    <!-- Desktop Navbar -->
     <div id="navbar"></div>
     
-    <!-- Sidebar Menu -->
-    <div class="sidebar-menu" id="sidebarMenu">
-      <div class="sidebar-header">
-        <h3>Menú Principal</h3>
-        <p>Navegación</p>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="dashboard.html">
-          <i class="bi bi-house"></i>Dashboard
-        </a>
-        <a href="Comprobantes.html">
-          <i class="bi bi-credit-card"></i>Pagos
-        </a>
-        <a href="HorasMensuales.html">
-          <i class="bi bi-clock"></i>Horas Mensuales
-        </a>
-        <a href="PlanesTrabajoUsuario.html">
-          <i class="bi bi-calendar-check"></i>Planes de Trabajo
-        </a>
-        <a href="Asambleas.html">
-          <i class="bi bi-people-fill"></i>Asambleas
-        </a>
-        <div class="divider"></div>
-        <a href="EditarPerfilModerno.html">
-          <i class="bi bi-person-circle"></i>Mi Perfil
-        </a>
-        <a href="configuracion.html">
-          <i class="bi bi-gear"></i>Configuración
-        </a>
-        <a href="#" onclick="logout()">
-          <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-        </a>
-      </nav>
-    </div>
-    
-    <!-- Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-    
-    <!-- Modern Step Form Container -->
     <div class="modern-form-container">
-      <!-- Header with Back Button -->
       <div class="form-header">
         <button class="back-button" onclick="goBack()">
           <i class="bi bi-arrow-left"></i>
         </button>
         <div class="form-title">
-          <h2><i class="bi bi-receipt-cutoff"></i> Nuevo Comprobante</h2>
-          <p>Completa los datos de tu comprobante de pago</p>
+          <h2><i class="bi bi-receipt-cutoff"></i> <span data-i18n="payments.new_receipt">Nuevo Comprobante</span></h2>
+          <p data-i18n="payments.receipt_details">Completa los datos de tu comprobante de pago</p>
         </div>
       </div>
       
-      <!-- Progress Stepper -->
       <div class="stepper-container">
         <div class="stepper">
           <div class="step active" data-step="1">
@@ -1874,7 +116,7 @@
               <i class="bi bi-info-circle"></i>
               <div class="step-number">1</div>
             </div>
-            <span class="step-label">Datos Básicos</span>
+            <span class="step-label" data-i18n="payments.basic_data">Datos Básicos</span>
           </div>
           <div class="step-line"></div>
           <div class="step" data-step="2">
@@ -1882,7 +124,7 @@
               <i class="bi bi-cash-coin"></i>
               <div class="step-number">2</div>
             </div>
-            <span class="step-label">Pago</span>
+            <span class="step-label" data-i18n="payments.payment">Pago</span>
           </div>
           <div class="step-line"></div>
           <div class="step" data-step="3">
@@ -1890,7 +132,7 @@
               <i class="bi bi-cloud-upload"></i>
               <div class="step-number">3</div>
             </div>
-            <span class="step-label">Archivo</span>
+            <span class="step-label" data-i18n="payments.file">Archivo</span>
           </div>
           <div class="step-line"></div>
           <div class="step" data-step="4">
@@ -1898,70 +140,65 @@
               <i class="bi bi-check-circle"></i>
               <div class="step-number">4</div>
             </div>
-            <span class="step-label">Confirmar</span>
+            <span class="step-label" data-i18n="payments.confirm">Confirmar</span>
           </div>
         </div>
       </div>
       
-      <!-- Form Container -->
       <form class="modern-step-form" id="addComprobanteForm" enctype="multipart/form-data">
         
-        <!-- Step 1: Datos Básicos -->
         <div class="form-step active" data-step="1">
           <div class="step-content">
             <div class="period-selector-container">
-              <!-- Header con diseño mejorado -->
               <div class="period-header">
                 <div class="period-icon">
                   <i class="bi bi-calendar-check"></i>
                 </div>
                 <div class="period-title">
-                  <h3>Período del Pago</h3>
-                  <p>Selecciona el mes y año correspondiente a tu comprobante</p>
+                  <h3 data-i18n="payments.period">Período del Pago</h3>
+                  <p data-i18n="payments.select_period">Selecciona el mes y año correspondiente a tu comprobante</p>
                 </div>
               </div>
 
-              <!-- Calendario Visual -->
               <div class="period-calendar">
                 <div class="calendar-display">
                   <div class="current-selection">
                     <div class="selected-month" id="selectedMonthDisplay">
-                      <span class="month-name">Selecciona</span>
+                      <span class="month-name" data-i18n="payments.select">Selecciona</span>
                       <span class="month-number">--</span>
                     </div>
                     <div class="calendar-separator">
                       <i class="bi bi-chevron-right"></i>
                     </div>
                     <div class="selected-year" id="selectedYearDisplay">
-                      <span class="year-label">Año</span>
+                      <span class="year-label" data-i18n="common.year">Año</span>
                       <span class="year-number">----</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Selectores con diseño de tarjetas -->
               <div class="period-selectors">
                 <div class="selector-card month-card">
                   <div class="card-header">
                     <i class="bi bi-calendar3"></i>
-                    <span>Mes del Pago</span>
+                    <span data-i18n="payments.month">Mes del Pago</span>
                   </div>
                   <div class="card-content">
                     <select id="Mes" name="Mes" required class="modern-select">
-                      <option value="">Elige un mes</option>
-                      <option value="Enero" data-number="01">Enero</option>
-                      <option value="Febrero" data-number="02">Febrero</option>
-                      <option value="Marzo" data-number="03">Marzo</option>
-                      <option value="Abril" data-number="04">Abril</option>
-                      <option value="Mayo" data-number="05">Mayo</option>
-                      <option value="Junio" data-number="06">Junio</option>
-                      <option value="Julio" data-number="07">Julio</option>
-                      <option value="Agosto" data-number="08">Agosto</option>
-                      <option value="Septiembre" data-number="09">Septiembre</option>
-                      <option value="Octubre" data-number="10">Octubre</option>
-                      <option value="Noviembre" data-number="11">Noviembre</option>
-                      <option value="Diciembre" data-number="12">Diciembre</option>
+                      <option value="" data-i18n="payments.select_month">Elige un mes</option>
+                      <option value="Enero" data-number="01" data-i18n="months.january">Enero</option>
+                      <option value="Febrero" data-number="02" data-i18n="months.february">Febrero</option>
+                      <option value="Marzo" data-number="03" data-i18n="months.march">Marzo</option>
+                      <option value="Abril" data-number="04" data-i18n="months.april">Abril</option>
+                      <option value="Mayo" data-number="05" data-i18n="months.may">Mayo</option>
+                      <option value="Junio" data-number="06" data-i18n="months.june">Junio</option>
+                      <option value="Julio" data-number="07" data-i18n="months.july">Julio</option>
+                      <option value="Agosto" data-number="08" data-i18n="months.august">Agosto</option>
+                      <option value="Septiembre" data-number="09" data-i18n="months.september">Septiembre</option>
+                      <option value="Octubre" data-number="10" data-i18n="months.october">Octubre</option>
+                      <option value="Noviembre" data-number="11" data-i18n="months.november">Noviembre</option>
+                      <option value="Diciembre" data-number="12" data-i18n="months.december">Diciembre</option>
                     </select>
                   </div>
                 </div>
@@ -1969,11 +206,11 @@
                 <div class="selector-card year-card">
                   <div class="card-header">
                     <i class="bi bi-calendar-year"></i>
-                    <span>Año del Pago</span>
+                    <span data-i18n="common.year">Año del Pago</span>
                   </div>
                   <div class="card-content">
                     <input type="number" id="Anio" name="Anio" min="2000" max="2100" required 
-                           class="modern-input" placeholder="2024">
+                           class="modern-input" data-i18n-placeholder="payments.enter_year">
                     <div class="year-suggestions">
                       <button type="button" class="year-btn" data-year="2024">2024</button>
                       <button type="button" class="year-btn" data-year="2025">2025</button>
@@ -1982,47 +219,45 @@
                 </div>
               </div>
 
-              <!-- Información adicional -->
               <div class="period-info">
                 <div class="info-item">
                   <i class="bi bi-info-circle"></i>
-                  <span>Asegúrate de que el período coincida con tu comprobante de pago</span>
+                  <span data-i18n="payments.period_match_info">Asegúrate de que el período coincida con tu comprobante de pago</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Step 2: Detalles del Pago -->
         <div class="form-step" data-step="2">
           <div class="step-content">
             <div class="step-header">
-              <h3><i class="bi bi-cash-stack"></i> Detalles del Pago</h3>
-              <p>Ingresa el monto y método de pago</p>
+              <h3><i class="bi bi-cash-stack"></i> <span data-i18n="payments.payment_details">Detalles del Pago</span></h3>
+              <p data-i18n="payments.enter_amount">Ingresa el monto y método de pago</p>
             </div>
             
             <div class="input-group">
               <label for="Monto" class="form-label">
-                <i class="bi bi-currency-dollar"></i> Monto de pago
+                <i class="bi bi-currency-dollar"></i> <span data-i18n="payments.amount_paid">Monto de pago</span>
               </label>
               <input type="number" id="Monto" name="Monto" step="0.01" required class="monto-input" placeholder="$ 0.00">
               <div class="input-helper">
-                <small>Ingresa el monto exacto que aparece en tu comprobante</small>
+                <small data-i18n="payments.enter_amount">Ingresa el monto exacto que aparece en tu comprobante</small>
               </div>
             </div>
 
             <div class="input-group">
               <label for="motivo" class="form-label">
-                <i class="bi bi-chat-text"></i> Motivo del pago
+                <i class="bi bi-chat-text"></i> <span data-i18n="payments.payment_reason">Motivo del pago</span>
               </label>
-              <textarea id="motivo" name="motivo" class="modern-textarea" rows="3" maxlength="500" required placeholder="Describe el motivo o concepto de este pago"></textarea>
+              <textarea id="motivo" name="motivo" class="modern-textarea" rows="3" maxlength="500" required data-i18n-placeholder="payments.explain_payment"></textarea>
               <div class="input-helper">
-                <small>Ejemplo: Cuota mensual, abono a deuda, pago de servicios, etc. (mín. 5 caracteres, máx. 500)</small>
+                <small data-i18n="payments.explain_payment">Ejemplo: Cuota mensual, abono a deuda, pago de servicios, etc. (mín. 5 caracteres, máx. 500)</small>
               </div>
             </div>
             
             <div class="payment-methods">
-              <label class="method-label">Método de Pago</label>
+              <label class="method-label" data-i18n="payments.payment_method">Método de Pago</label>
               <div class="payment-grid">
                 <label class="payment-option">
                   <input type="radio" name="tipo_pago" value="Transferencia" required>
@@ -2030,7 +265,7 @@
                     <div class="payment-icon">
                       <i class="bi bi-bank"></i>
                     </div>
-                    <span>Transferencia</span>
+                    <span data-i18n="payments.transfer">Transferencia</span>
                   </div>
                 </label>
                 
@@ -2040,7 +275,7 @@
                     <div class="payment-icon">
                       <i class="bi bi-cash-coin"></i>
                     </div>
-                    <span>Efectivo</span>
+                    <span data-i18n="payments.cash">Efectivo</span>
                   </div>
                 </label>
                 
@@ -2050,7 +285,7 @@
                     <div class="payment-icon">
                       <i class="bi bi-credit-card"></i>
                     </div>
-                    <span>Débito</span>
+                    <span data-i18n="payments.card">Débito</span>
                   </div>
                 </label>
                 
@@ -2060,7 +295,7 @@
                     <div class="payment-icon">
                       <i class="bi bi-credit-card-2-front"></i>
                     </div>
-                    <span>Crédito</span>
+                    <span data-i18n="payments.card">Crédito</span>
                   </div>
                 </label>
               </div>
@@ -2068,12 +303,11 @@
           </div>
         </div>
         
-        <!-- Step 3: Subir Archivo -->
         <div class="form-step" data-step="3">
           <div class="step-content">
             <div class="step-header">
-              <h3><i class="bi bi-cloud-arrow-up"></i> Subir Comprobante</h3>
-              <p>Adjunta la imagen o PDF de tu comprobante</p>
+              <h3><i class="bi bi-cloud-arrow-up"></i> <span data-i18n="payments.upload_file">Subir Comprobante</span></h3>
+              <p data-i18n="payments.file">Adjunta la imagen o PDF de tu comprobante</p>
             </div>
             
             <div class="upload-area" id="uploadArea">
@@ -2082,13 +316,13 @@
                 <div class="upload-icon">
                   <i class="bi bi-cloud-upload"></i>
                 </div>
-                <h4>Arrastra tu archivo aquí</h4>
-                <p>o haz clic para seleccionar</p>
+                <h4 data-i18n="payments.drag_drop">Arrastra tu archivo aquí</h4>
+                <p><span data-i18n="payments.or">o</span> <span data-i18n="payments.click_browse">haz clic para seleccionar</span></p>
                 <div class="upload-formats">
                   <span class="format-tag">JPG</span>
                   <span class="format-tag">PNG</span>
                   <span class="format-tag">PDF</span>
-                  <span class="size-limit">Máx. 5MB</span>
+                  <span class="size-limit" data-i18n="payments.supported_formats">Máx. 5MB</span>
                 </div>
               </div>
               
@@ -2101,7 +335,7 @@
                     <div class="file-name"></div>
                     <div class="file-size"></div>
                   </div>
-                  <button type="button" class="remove-file" onclick="removeFile()">
+                  <button type="button" class="remove-file" onclick="removeFile()" data-i18n="payments.remove_file">
                     <i class="bi bi-x-lg"></i>
                   </button>
                 </div>
@@ -2113,12 +347,11 @@
           </div>
         </div>
         
-        <!-- Step 4: Confirmación -->
         <div class="form-step" data-step="4">
           <div class="step-content">
             <div class="step-header">
-              <h3><i class="bi bi-check2-circle"></i> Confirmar Datos</h3>
-              <p>Revisa la información antes de guardar</p>
+              <h3><i class="bi bi-check2-circle"></i> <span data-i18n="payments.review_confirm">Confirmar Datos</span></h3>
+              <p data-i18n="payments.review_info">Revisa la información antes de guardar</p>
             </div>
             
             <div class="confirmation-card">
@@ -2126,28 +359,28 @@
                 <div class="confirmation-icon">
                   <i class="bi bi-receipt"></i>
                 </div>
-                <h4>Resumen del Comprobante</h4>
+                <h4 data-i18n="payments.receipt">Resumen del Comprobante</h4>
               </div>
               
               <div class="confirmation-details">
                 <div class="detail-row">
-                  <span class="detail-label">Período:</span>
+                  <span class="detail-label" data-i18n="payments.period">Período:</span>
                   <span class="detail-value" id="confirmPeriod">-</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Monto:</span>
+                  <span class="detail-label" data-i18n="payments.amount">Monto:</span>
                   <span class="detail-value amount" id="confirmAmount">-</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Método:</span>
+                  <span class="detail-label" data-i18n="payments.payment_method">Método:</span>
                   <span class="detail-value" id="confirmMethod">-</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Archivo:</span>
+                  <span class="detail-label" data-i18n="payments.file">Archivo:</span>
                   <span class="detail-value" id="confirmFile">-</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Motivo:</span>
+                  <span class="detail-label" data-i18n="payments.payment_reason">Motivo:</span>
                   <span class="detail-value" id="confirmMotivo">-</span>
                 </div>
               </div>
@@ -2160,7 +393,7 @@
                   <span class="checkbox-icon">
                     <i class="bi bi-check"></i>
                   </span>
-                  <span class="checkbox-text">
+                  <span class="checkbox-text" data-i18n="payments.terms_accept">
                     Confirmo que la información proporcionada es correcta y verídica
                   </span>
                 </label>
@@ -2169,24 +402,22 @@
           </div>
         </div>
         
-        <!-- Navigation Buttons -->
         <div class="form-navigation">
           <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">
-            <i class="bi bi-arrow-left"></i> Anterior
+            <i class="bi bi-arrow-left"></i> <span data-i18n="payments.previous">Anterior</span>
           </button>
           
           <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
-            Siguiente <i class="bi bi-arrow-right"></i>
+            <span data-i18n="payments.next">Siguiente</span> <i class="bi bi-arrow-right"></i>
           </button>
           
           <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
-            <i class="bi bi-check-circle"></i> Guardar Comprobante
+            <i class="bi bi-check-circle"></i> <span data-i18n="payments.save_receipt">Guardar Comprobante</span>
           </button>
         </div>
         
       </form>
       
-      <!-- Success Modal -->
       <div class="success-modal" id="successModal">
         <div class="success-content">
           <div class="success-animation">
@@ -2194,661 +425,26 @@
               <div class="checkmark"></div>
             </div>
           </div>
-          <h3>¡Comprobante Guardado!</h3>
-          <p>Tu comprobante ha sido enviado correctamente y está siendo revisado.</p>
+          <h3 data-i18n="payments.receipt_saved">¡Comprobante Guardado!</h3>
+          <p data-i18n="payments.receipt_submitted">Tu comprobante ha sido enviado correctamente y está siendo revisado.</p>
           <button class="btn btn-primary" onclick="goToComprobantes()">
-            Ver Comprobantes
+            <span data-i18n="payments.view_receipts">Ver Comprobantes</span>
           </button>
         </div>
       </div>
     </div>
     <script src="JavaScript/config.js"></script>
     <script src="JavaScript/navbar-functions.js"></script>
+    <script src="JavaScript/mobile-navbar.js"></script>
     <script src="JavaScript/dashboard.js"></script>
     <script src="JavaScript/loader.js"></script>
+    <script src="JavaScript/AgregarComprobante.js"></script>
+
     <script>
-      // Load navbar after page loads
       document.addEventListener('DOMContentLoaded', function() {
         loadNavbar();
       });
     </script>
-    <script>
-      // ============================================
-      // MODERN STEP FORM JAVASCRIPT
-      // ============================================
-      
-      let currentStep = 1;
-      const totalSteps = 4;
-      
-      // Initialize form on page load
-      document.addEventListener('DOMContentLoaded', function() {
-        setDefaultMonthYear();
-        initFileUpload();
-        initRequiredFields();
-        initPeriodSelectors();
-        initCustomMonthSelector();
-        updateStepDisplay();
-        
-        // Form submission handler
-        document.getElementById('addComprobanteForm').addEventListener('submit', handleFormSubmit);
-      });
-      
-      // Initialize required field management - remove all required attributes
-      function initRequiredFields() {
-        // Simply remove all required attributes to prevent validation conflicts
-        document.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
-          input.removeAttribute('required');
-        });
-      }
-      
-      // Set default month and year
-      function setDefaultMonthYear() {
-        const meses = [
-          '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-        ];
-        const now = new Date();
-        const mes = now.getMonth() + 1;
-        const anio = now.getFullYear();
-        
-        const mesSelect = document.getElementById('Mes');
-        const anioInput = document.getElementById('Anio');
-        
-        if (mesSelect && meses[mes]) {
-          mesSelect.value = meses[mes];
-        }
-        if (anioInput) {
-          anioInput.value = anio;
-        }
-        
-        // Update visual display
-        updatePeriodDisplay();
-      }
-
-      // Initialize simple selectors - no custom functionality needed
-      function initCustomMonthSelector() {
-        // Simple initialization - the native select will work by itself
-      }
-
-      // ============================================
-      // PERIOD SELECTOR INTERACTIVITY
-      // ============================================
-      
-      function initPeriodSelectors() {
-        const mesSelect = document.getElementById('Mes');
-        const anioInput = document.getElementById('Anio');
-        const yearBtns = document.querySelectorAll('.year-btn');
-
-        // Month selector change
-        mesSelect.addEventListener('change', function() {
-          updatePeriodDisplay();
-          addSelectionAnimation(this.closest('.selector-card'));
-        });
-
-        // Year input change
-        anioInput.addEventListener('input', function() {
-          updatePeriodDisplay();
-          updateYearButtons();
-          addSelectionAnimation(this.closest('.selector-card'));
-        });
-
-        // Year buttons click
-        yearBtns.forEach(btn => {
-          btn.addEventListener('click', function() {
-            const year = this.dataset.year;
-            anioInput.value = year;
-            updatePeriodDisplay();
-            updateYearButtons();
-            addSelectionAnimation(anioInput.closest('.selector-card'));
-          });
-        });
-
-        // Initial setup
-        updateYearButtons();
-      }
-
-      function updatePeriodDisplay() {
-        const mesSelect = document.getElementById('Mes');
-        const anioInput = document.getElementById('Anio');
-        const monthDisplay = document.getElementById('selectedMonthDisplay');
-        const yearDisplay = document.getElementById('selectedYearDisplay');
-
-        // Update month display
-        if (mesSelect.value) {
-          const selectedOption = mesSelect.options[mesSelect.selectedIndex];
-          const monthNumber = selectedOption.dataset.number || '--';
-          monthDisplay.querySelector('.month-name').textContent = mesSelect.value;
-          monthDisplay.querySelector('.month-number').textContent = monthNumber;
-          monthDisplay.style.transform = 'scale(1.05)';
-          setTimeout(() => monthDisplay.style.transform = '', 200);
-        } else {
-          monthDisplay.querySelector('.month-name').textContent = 'Selecciona';
-          monthDisplay.querySelector('.month-number').textContent = '--';
-        }
-
-        // Update year display
-        if (anioInput.value) {
-          yearDisplay.querySelector('.year-label').textContent = 'Año';
-          yearDisplay.querySelector('.year-number').textContent = anioInput.value;
-          yearDisplay.style.transform = 'scale(1.05)';
-          setTimeout(() => yearDisplay.style.transform = '', 200);
-        } else {
-          yearDisplay.querySelector('.year-label').textContent = 'Año';
-          yearDisplay.querySelector('.year-number').textContent = '----';
-        }
-      }
-
-      function updateYearButtons() {
-        const anioInput = document.getElementById('Anio');
-        const yearBtns = document.querySelectorAll('.year-btn');
-        
-        yearBtns.forEach(btn => {
-          if (btn.dataset.year === anioInput.value) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-      }
-
-      function addSelectionAnimation(card) {
-        card.style.transform = 'translateY(-8px) scale(1.02)';
-        card.style.boxShadow = '0 16px 40px rgba(236, 72, 153, 0.2)';
-        
-        setTimeout(() => {
-          card.style.transform = '';
-          card.style.boxShadow = '';
-        }, 300);
-      }
-      
-      // Step navigation functions
-      function changeStep(direction) {
-        if (direction === 1 && !validateCurrentStep()) {
-          return;
-        }
-        
-        const newStep = currentStep + direction;
-        
-        if (newStep >= 1 && newStep <= totalSteps) {
-          // Hide current step
-          document.querySelector(`[data-step="${currentStep}"].form-step`)?.classList.remove('active');
-          
-          // Show new step
-          currentStep = newStep;
-          document.querySelector(`[data-step="${currentStep}"].form-step`)?.classList.add('active');
-          
-          // Update confirmation data if going to step 4
-          if (newStep === 4) {
-            updateConfirmationData();
-          }
-          
-          // Update stepper display
-          updateStepDisplay();
-          
-          // Update navigation buttons
-          updateNavigationButtons();
-          
-          // Add step animation
-          animateStepTransition();
-        }
-      }
-      
-      function validateCurrentStep() {
-        switch (currentStep) {
-          case 1:
-            const mes = document.getElementById('Mes').value;
-            const anio = document.getElementById('Anio').value;
-            if (!mes || !anio) {
-              showNotification('Por favor completa el período del pago', 'error');
-              return false;
-            }
-            break;
-            
-          case 2:
-            const monto = document.getElementById('Monto').value;
-            const tipoPago = document.querySelector('input[name="tipo_pago"]:checked');
-            const motivo = document.getElementById('motivo').value.trim();
-            if (!monto || !tipoPago) {
-              showNotification('Por favor completa el monto y método de pago', 'error');
-              return false;
-            }
-            if (parseFloat(monto) <= 0) {
-              showNotification('El monto debe ser mayor a cero', 'error');
-              return false;
-            }
-            if (!motivo || motivo.length < 5) {
-              showNotification('El motivo del pago es obligatorio (mínimo 5 caracteres)', 'error');
-              return false;
-            }
-            break;
-            
-          case 3:
-            const archivo = document.getElementById('Archivo_Comprobante').files[0];
-            if (!archivo) {
-              showNotification('Por favor selecciona un archivo', 'error');
-              return false;
-            }
-            // Validate file size and type
-            if (archivo.size > 5 * 1024 * 1024) {
-              showNotification('El archivo es demasiado grande. Máximo 5MB.', 'error');
-              return false;
-            }
-            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-            if (!allowedTypes.includes(archivo.type)) {
-              showNotification('Tipo de archivo no permitido. Solo JPG, PNG y PDF.', 'error');
-              return false;
-            }
-            break;
-            
-          case 4:
-            const termsAccept = document.getElementById('termsAccept');
-            if (!termsAccept.checked) {
-              showNotification('Debes aceptar los términos para continuar', 'error');
-              return false;
-            }
-            break;
-        }
-        return true;
-      }
-      
-      function validateAllSteps() {
-        // Validate step 1
-        const mes = document.getElementById('Mes').value;
-        const anio = document.getElementById('Anio').value;
-        if (!mes || !anio) {
-          showNotification('Por favor completa el período del pago (Paso 1)', 'error');
-          return false;
-        }
-        
-        // Validate step 2
-        const monto = document.getElementById('Monto').value;
-        const tipoPago = document.querySelector('input[name="tipo_pago"]:checked');
-        const motivo = document.getElementById('motivo').value.trim();
-        if (!monto || !tipoPago || parseFloat(monto) <= 0) {
-          showNotification('Por favor completa los detalles del pago (Paso 2)', 'error');
-          return false;
-        }
-        if (!motivo || motivo.length < 5) {
-          showNotification('El motivo del pago es obligatorio (mínimo 5 caracteres)', 'error');
-          return false;
-        }
-        
-        // Validate step 3
-        const archivo = document.getElementById('Archivo_Comprobante').files[0];
-        if (!archivo) {
-          showNotification('Por favor selecciona un archivo (Paso 3)', 'error');
-          return false;
-        }
-        
-        // Validate step 4
-        const termsAccept = document.getElementById('termsAccept');
-        if (!termsAccept.checked) {
-          showNotification('Debes aceptar los términos para continuar', 'error');
-          return false;
-        }
-        
-        return true;
-      }
-      
-      function updateStepDisplay() {
-        // Update stepper
-        document.querySelectorAll('.step').forEach((step, index) => {
-          const stepNum = index + 1;
-          const stepElement = step;
-          
-          if (stepNum < currentStep) {
-            stepElement.classList.add('completed');
-            stepElement.classList.remove('active');
-          } else if (stepNum === currentStep) {
-            stepElement.classList.add('active');
-            stepElement.classList.remove('completed');
-          } else {
-            stepElement.classList.remove('active', 'completed');
-          }
-        });
-        
-        // Update step lines
-        document.querySelectorAll('.step-line').forEach((line, index) => {
-          if (index + 1 < currentStep) {
-            line.classList.add('completed');
-          } else {
-            line.classList.remove('completed');
-          }
-        });
-        
-        // Update form steps display
-        document.querySelectorAll('.form-step').forEach((step, index) => {
-          const stepNum = index + 1;
-          if (stepNum === currentStep) {
-            step.classList.add('active');
-          } else {
-            step.classList.remove('active');
-          }
-        });
-      }
-      
-
-      
-      function updateNavigationButtons() {
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        
-        // Previous button
-        if (currentStep === 1) {
-          prevBtn.style.display = 'none';
-        } else {
-          prevBtn.style.display = 'flex';
-        }
-        
-        // Next/Submit buttons
-        if (currentStep === totalSteps) {
-          nextBtn.style.display = 'none';
-          submitBtn.style.display = 'flex';
-        } else {
-          nextBtn.style.display = 'flex';
-          submitBtn.style.display = 'none';
-        }
-      }
-      
-      function animateStepTransition() {
-        const activeStep = document.querySelector('.form-step.active');
-        if (activeStep) {
-          activeStep.style.opacity = '0';
-          activeStep.style.transform = 'translateX(20px)';
-          
-          setTimeout(() => {
-            activeStep.style.opacity = '1';
-            activeStep.style.transform = 'translateX(0)';
-          }, 50);
-        }
-      }
-      
-      function updateConfirmationData() {
-        const mes = document.getElementById('Mes').value;
-        const anio = document.getElementById('Anio').value;
-        const monto = document.getElementById('Monto').value;
-        const tipoPago = document.querySelector('input[name="tipo_pago"]:checked');
-        const archivo = document.getElementById('Archivo_Comprobante').files[0];
-        const motivo = document.getElementById('motivo').value;
-        
-        document.getElementById('confirmPeriod').textContent = `${mes} ${anio}`;
-        document.getElementById('confirmAmount').textContent = `$${parseFloat(monto).toLocaleString('es-ES')}`;
-        document.getElementById('confirmMethod').textContent = tipoPago ? tipoPago.value : '-';
-        document.getElementById('confirmFile').textContent = archivo ? archivo.name : '-';
-        document.getElementById('confirmMotivo').textContent = motivo || 'Sin especificar';
-      }
-      
-      // File upload functionality
-      function initFileUpload() {
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('Archivo_Comprobante');
-        
-        // Click to upload
-        uploadArea.addEventListener('click', () => {
-          fileInput.click();
-        });
-        
-        // Drag and drop
-        uploadArea.addEventListener('dragover', (e) => {
-          e.preventDefault();
-          uploadArea.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', () => {
-          uploadArea.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', (e) => {
-          e.preventDefault();
-          uploadArea.classList.remove('dragover');
-          const files = e.dataTransfer.files;
-          if (files.length > 0) {
-            handleFileSelect(files[0]);
-          }
-        });
-        
-        // File input change
-        fileInput.addEventListener('change', (e) => {
-          if (e.target.files.length > 0) {
-            handleFileSelect(e.target.files[0]);
-          }
-        });
-      }
-      
-      function handleFileSelect(file) {
-        // Validate file
-        if (!validateFile(file)) {
-          return;
-        }
-        
-        // Update file input
-        const fileInput = document.getElementById('Archivo_Comprobante');
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        fileInput.files = dataTransfer.files;
-        
-        // Show preview
-        showFilePreview(file);
-        
-        // Simulate upload progress
-        simulateUploadProgress();
-      }
-      
-      function validateFile(file) {
-        // Size validation (5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          showNotification('El archivo es demasiado grande. Máximo 5MB.', 'error');
-          return false;
-        }
-        
-        // Type validation
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-        if (!allowedTypes.includes(file.type)) {
-          showNotification('Tipo de archivo no permitido. Solo JPG, PNG y PDF.', 'error');
-          return false;
-        }
-        
-        return true;
-      }
-      
-      function showFilePreview(file) {
-        const uploadContent = document.getElementById('uploadContent');
-        const filePreview = document.getElementById('filePreview');
-        
-        // Update file info
-        filePreview.querySelector('.file-name').textContent = file.name;
-        filePreview.querySelector('.file-size').textContent = formatFileSize(file.size);
-        
-        // Show preview, hide upload content
-        uploadContent.style.display = 'none';
-        filePreview.style.display = 'block';
-      }
-      
-      function removeFile() {
-        const fileInput = document.getElementById('Archivo_Comprobante');
-        const uploadContent = document.getElementById('uploadContent');
-        const filePreview = document.getElementById('filePreview');
-        
-        // Clear file input
-        fileInput.value = '';
-        
-        // Show upload content, hide preview
-        uploadContent.style.display = 'flex';
-        filePreview.style.display = 'none';
-        
-        // Reset progress bar
-        document.getElementById('progressBar').style.width = '0%';
-      }
-      
-      function simulateUploadProgress() {
-        const progressBar = document.getElementById('progressBar');
-        let progress = 0;
-        
-        const interval = setInterval(() => {
-          progress += Math.random() * 30;
-          if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-          }
-          progressBar.style.width = progress + '%';
-        }, 200);
-      }
-      
-      function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-      }
-      
-      // Utility functions
-      function goBack() {
-        window.history.back();
-      }
-      
-      function goToComprobantes() {
-        window.location.href = 'Comprobantes.html';
-      }
-      
-      function showSuccessModal() {
-        const modal = document.getElementById('successModal');
-        modal.classList.add('show');
-      }
-      
-      function showNotification(message, type = 'info') {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 1rem 1.5rem;
-          border-radius: 12px;
-          color: white;
-          font-weight: 600;
-          z-index: 10000;
-          transform: translateX(100%);
-          transition: transform 0.3s ease;
-          max-width: 300px;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-          ${type === 'error' ? 'background: #ef4444;' : 
-            type === 'success' ? 'background: #10b981;' : 
-            'background: #3b82f6;'}
-        `;
-        notification.textContent = message;
-        
-        document.body.appendChild(notification);
-        
-        // Animate in
-        setTimeout(() => {
-          notification.style.transform = 'translateX(0)';
-        }, 100);
-        
-        // Remove after delay
-        setTimeout(() => {
-          notification.style.transform = 'translateX(100%)';
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
-        }, 4000);
-      }
-
-      // Form submission handler (replaces old onsubmit)
-      async function handleFormSubmit(e) {
-        e.preventDefault();
-        
-        // Ensure we're on the final step
-        if (currentStep !== 4) {
-          showNotification('Por favor completa todos los pasos', 'error');
-          return;
-        }
-        
-        // Final validation of all steps
-        if (!validateAllSteps()) {
-          return;
-        }
-        
-        const formElement = e.target;
-        
-        // Show loading state
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise spin"></i> Guardando...';
-        submitBtn.disabled = true;
-        
-        // Prepare form data
-        const formData = new FormData(formElement);
-        
-        // Add fecha_pago
-        const mesStr = formElement.Mes.value;
-        const anioStr = formElement.Anio.value;
-        const meses = {
-          'Enero': '01', 'Febrero': '02', 'Marzo': '03', 'Abril': '04', 'Mayo': '05', 'Junio': '06',
-          'Julio': '07', 'Agosto': '08', 'Septiembre': '09', 'Octubre': '10', 'Noviembre': '11', 'Diciembre': '12'
-        };
-        if (mesStr && anioStr && meses[mesStr]) {
-          const fechaPago = `${anioStr}-${meses[mesStr]}-01`;
-          formData.append('fecha_pago', fechaPago);
-        }
-
-        try {
-          const token = localStorage.getItem('access_token');
-          if (!token) {
-            showNotification('No autenticado. Por favor, inicie sesión.', 'error');
-            setTimeout(() => {
-              window.location.href = 'index.html';
-            }, 2000);
-            return;
-          }
-          
-          const response = await fetch(API_URLS?.cooperativa?.facturas?.() || '/api/comprobantes', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-            body: formData
-          });
-          
-          if (response.ok) {
-            showSuccessModal();
-          } else {
-            let errorMsg = 'Error al guardar el comprobante';
-            try {
-              const data = await response.json();
-              if (data && data.error) {
-                errorMsg = data.error;
-              }
-            } catch {
-              // Use default error message
-            }
-            showNotification(errorMsg, 'error');
-          }
-        } catch (err) {
-          showNotification('Error de conexión con el servidor', 'error');
-        } finally {
-          // Restore button
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-        }
-      }
-      
-      // CSS for spinning animation
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .spin {
-          animation: spin 1s linear infinite;
-        }
-      `;
-      document.head.appendChild(style);
-    </script>
-    
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

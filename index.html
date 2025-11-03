@@ -5,226 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login Minimalista</title>
   <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
-  <style>
-    /* Reset básico */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .login-container {
-      background: #ffffff;
-      width: 400px; /* Más ancho */
-      padding: 3rem 2.5rem;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(255, 193, 227, 0.6);
-      text-align: center;
-      transition: box-shadow 0.3s ease;
-    }
-    h2 {
-      color: #de5f88; /* rosado fuerte */
-      margin-bottom: 2rem;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      font-size: 2.2rem;
-    }
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 16px 20px;
-      margin-bottom: 1.2rem;
-      font-size: 1.1rem;
-      border: 2.5px solid #A3D8F4; /* celeste */
-      border-radius: 12px;
-      transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-      /* Para que el movimiento no afecte el layout */
-      display: block;
-    }
-    input[type="email"]:focus,
-    input[type="password"]:focus {
-      outline: none;
-      border-color: #de5f88; /* rosado */
-      background-color: #fff0f6;
-      box-shadow: 0 4px 12px rgba(222, 95, 136, 0.6);
-      transform: translateY(-3px);
-    }
-    form {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    button {
-      width: 100%;
-      padding: 16px 0;
-      background-color: #de5f88; /* rosado */
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.15rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.15s ease;
-    }
-    button:hover:not(:disabled) {
-      background-color: #c94f76;
-      transform: scale(1.05);
-    }
-    button:disabled {
-      background-color: #f7a7c1;
-      cursor: not-allowed;
-    }
-    .error {
-      margin-top: 1rem;
-      min-height: 1.3rem;
-      color: #de5f88;
-      font-weight: 600;
-      font-size: 0.95rem;
-      user-select: none;
-    }
-    .loader {
-      margin-top: 1rem;
-      font-weight: 600;
-      color: #4ea9f7; /* celeste más fuerte */
-      display: none;
-      user-select: none;
-    }
-  </style>
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/Login.css" />
 </head>
 <body>
   <div class="login-container">
-    <h2>Iniciar Sesión</h2>
+    <h2 data-i18n="common.login">Iniciar Sesión</h2>
     <form id="loginForm" autocomplete="on">
-      <input type="email" id="usuario" placeholder="Correo electrónico" autocomplete="username" required />
-      <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password" required />
-      <button type="button" id="boton">Iniciar Sesión</button>
+      <input type="email" id="usuario" data-i18n-placeholder="common.email" placeholder="Correo electrónico" autocomplete="username" required />
+      <input type="password" id="password" data-i18n-placeholder="common.password" placeholder="Contraseña" autocomplete="current-password" required />
+      <button type="button" id="boton" data-i18n="common.login">Iniciar Sesión</button>
     </form>
-    <div class="loader" id="loader" style="display:none;">Iniciando sesión...</div>
+    <div class="loader" id="loader" style="display:none;" data-i18n="common.loggingIn">Iniciando sesión...</div>
     <div class="error" id="error"></div>
   </div>
 
-  <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="JavaScript/config.js"></script>
-  <script>
-  $(document).ready(function(){
-    // Verificar si ya hay un usuario logueado
-    var accessToken = localStorage.getItem("access_token");
-    if (accessToken) {
-      // Verificar si el token es válido
-      $.ajax({
-        url: API_URLS.usuarios.validate(),
-        type: 'GET',
-        headers: {
-          "Accept": "application/json",
-          "Authorization": "Bearer " + accessToken
-        },
-        success: function(data) {
-          // Si el token es válido, redirigir al dashboard
-          window.location.href = 'dashboard.html';
-        },
-        error: function() {
-          // Si el token no es válido, eliminarlo del localStorage
-          localStorage.removeItem("access_token");
-        }
-      });
-    }
-
-    // Prevenir submit del formulario
-    $('#loginForm').on('submit', function(e) {
-      e.preventDefault();
-      return false;
-    });
-
-    // Permitir iniciar sesión con Enter en los campos de email o password
-    $('#usuario, #password').on('keypress', function(e) {
-    if (e.which === 13) {
-      e.preventDefault();
-      $('#boton').click();
-    }
-    });
-
-    $("#boton").click(function(){
-      var usuario = $("#usuario").val().trim();
-      var password = $("#password").val().trim();
-
-      if (!usuario || !password) {
-        $("#error").html("Todos los campos son obligatorios.");
-        return;
-      }
-
-      $("#boton").prop("disabled", true);
-      $("#loader").show();
-      $("#error").html("");
-
-      var data = {
-        "username": usuario,
-        "password": password,
-        "grant_type": "password",
-        "client_id": "1",
-        "client_secret": "wsBa0mp4jwSTYssUGHX5xoqD9IC0X95Gfpg0w3uY"
-      };
-
-      // Convertir a x-www-form-urlencoded
-      var formBody = Object.keys(data).map(function(key) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
-      }).join('&');
-
-      $.ajax({
-        url: API_URLS.usuarios.token(),
-        type: 'POST',
-        headers: {
-          "Accept" : "application/json",
-          "Content-Type" : "application/x-www-form-urlencoded",
-        },
-        data: formBody,
-        success: function(data) {
-          localStorage.setItem("access_token", data.access_token);
-          // Validar estadoRegistro antes de redirigir
-          $.ajax({
-            url: API_URLS.usuarios.validate(),
-            type: 'GET',
-            headers: {
-              'Authorization': 'Bearer ' + data.access_token,
-              'Accept': 'application/json'
-            },
-            success: function(res) {
-              if (res.persona && (res.persona.estadoRegistro === 'Aceptado' || res.persona.estadoRegistro === 'Inactivo')) {
-                window.location.href = "dashboard.html";
-              } else {
-                $("#error").html("Tu cuenta no está habilitada para acceder.");
-              }
-            },
-            error: function() {
-              window.location.href = "dashboard.html";
-            }
-          });
-        },
-        error: function(xhr){
-          let msg = "Credenciales incorrectas";
-          if (xhr.responseJSON) {
-            if (xhr.responseJSON.error_description) {
-              msg = xhr.responseJSON.error_description;
-            } else if (xhr.responseJSON.error) {
-              msg = xhr.responseJSON.error;
-            }
-          }
-          $("#error").html(msg);
-        },
-        complete: function() {
-          $("#boton").prop("disabled", false);
-          $("#loader").hide();
-        }
-      });
-    });
-  });
-    </script>
-</body>
+  <script src="JavaScript/Index.js"></script>
+  </body>
 </html>

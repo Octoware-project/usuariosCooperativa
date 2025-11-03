@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      const themes = {
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#fafcfe',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+          '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)',
+          '--sidebar-text': '#334155',
+          '--sidebar-divider': '#e2e8f0',
+          '--profile-sidebar-bg': '#d946a6',
+          '--profile-card-bg': '#ffffff',
+          '--profile-avatar-bg': '#ffffff',
+          '--avatar-placeholder-color': '#f9a8d4',
+          '--section-title-icon': '#f9a8d4',
+          '--dropdown-bg': '#ffffff'
+        },
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#16181d',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.5)',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6',
+          '--navbar-bg': 'rgba(30, 33, 40, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.3)',
+          '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+          '--sidebar-bg': '#1e2128',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #be185d 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(236, 72, 153, 0.15)',
+          '--sidebar-text': '#e4e4e7',
+          '--sidebar-divider': '#3f3f46',
+          '--profile-sidebar-bg': '#282c34',
+          '--profile-card-bg': '#1e2128',
+          '--profile-avatar-bg': '#282c34',
+          '--avatar-placeholder-color': '#ec4899',
+          '--section-title-icon': '#ec4899',
+          '--dropdown-bg': '#1e2128'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="Styles/PerfilUsuario.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/PerfilUsuario.css">
+</head>
+<body>
+
+  <div id="navbar"></div>
+  
+  <div class="profile-container">
+    <div class="profile-card">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <div class="profile-sidebar">
+            <div class="profile-avatar">
+              <img id="profileImage" src="img/UserIconEjemplo.png" alt="Foto de perfil" style="display: none;">
+              <div class="avatar-placeholder" id="avatarPlaceholder">U</div>
+            </div>
+            
+            <div class="profile-name">
+              <h2 id="fullName" data-i18n="profile.loading">Cargando...</h2>
+              <div class="subtitle" id="userRole" style="display: none;" data-i18n="profile.user">Usuario</div>
+            </div>
+            
+            <div class="profile-info">
+              <div class="info-item">
+                <i class="bi bi-calendar3"></i>
+                <div>
+                  <div class="label" data-i18n="profile.birth_date">Nacimiento:</div>
+                  <div class="value" id="birthDate">--/--/----</div>
+                </div>
+              </div>
+              
+              <div class="info-item">
+                <i class="bi bi-card-text"></i>
+                <div>
+                  <div class="label" data-i18n="profile.cedula">Cédula:</div>
+                  <div class="value" id="cedula" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="info-item">
+                <i class="bi bi-geo-alt"></i>
+                <div>
+                  <div class="label" data-i18n="profile.address">Dirección:</div>
+                  <div class="value" id="address" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="info-item">
+                <i class="bi bi-briefcase"></i>
+                <div>
+                  <div class="label" data-i18n="profile.occupation">Ocupación:</div>
+                  <div class="value" id="occupation" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <button class="sidebar-edit-btn" onclick="editPersonalInfo()" style="margin-top: 1.5rem;">
+                <i class="bi bi-pencil"></i> <span data-i18n="profile.edit_personal">Editar Información Personal</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-8">
+          <div class="profile-content">
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title">
+                  <i class="bi bi-person-circle"></i>
+                  <span data-i18n="profile.account_data">Datos de la Cuenta</span>
+                </h3>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.email">Correo electrónico</div>
+                  <div class="field-value" id="email">ejemplo@correo.com</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.phone">Teléfono</div>
+                  <div class="field-value" id="phone" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.username">Nombre de usuario</div>
+                  <div class="field-value" id="username">Usuario123</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.gender">Género</div>
+                  <div class="field-value" id="gender" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.civil_status">Estado Civil</div>
+                  <div class="field-value" id="civilStatus" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.nationality">Nacionalidad</div>
+                  <div class="field-value" id="nationality" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title">
+                  <i class="bi bi-house-door"></i>
+                  <span data-i18n="profile.housing_info">Información de Vivienda</span>
+                </h3>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.unit_number">Unidad Habitacional</div>
+                  <div class="field-value" id="unitNumber" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.floor">Piso</div>
+                  <div class="field-value" id="floor" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.assignment_date">Fecha de Asignación</div>
+                  <div class="field-value" id="registrationDate" data-i18n="profile.not_specified">No especificado</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="section-card">
+              <div class="section-header">
+                <h3 class="section-title">
+                  <i class="bi bi-shield-lock"></i>
+                  <span data-i18n="profile.security">Seguridad y Verificación</span>
+                </h3>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-info">
+                  <div class="field-label" data-i18n="profile.password">Contraseña</div>
+                  <div class="field-value">••••••••••</div>
+                </div>
+                <button class="field-edit-btn" onclick="cambiarContrasena()"><span data-i18n="profile.change">Cambiar</span></button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/perfilUsuario.js"></script>
+  
+ 
+</body>
+</html>

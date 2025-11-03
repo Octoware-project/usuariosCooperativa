@@ -6,10 +6,8 @@
   <title>Editar Datos Personales</title>
   <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
   
-  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
   <style id="theme-vars">
     :root {
-      /* Default dark theme variables */
       --primary: #ec4899;
       --primary-rgb: 236, 72, 153;
       --primary-light: #f472b6;
@@ -48,7 +46,7 @@
           '--surface': '#ffffff',
           '--surface-variant': '#f8f9fa',
           '--surface-hover': '#f0f0f0',
-          '--bg-gradient': 'linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%)',
+          '--bg-gradient': '#ffffff',
           '--text-primary': '#1f2937',
           '--text-secondary': '#6b7280',
           '--text-muted': '#9ca3af',
@@ -73,573 +71,50 @@
     })();
   </script>
   
-  <link rel="stylesheet" href="styles.css">
   
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   
-  <!-- Google Fonts - Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif !important;
-      background: var(--bg-gradient) !important;
-      min-height: 100vh;
-    }
-    
-    .edit-container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    
-    .edit-card {
-      background: var(--surface);
-      border-radius: 24px;
-      box-shadow: var(--shadow-xl);
-      overflow: hidden;
-      border: none;
-    }
-    
-    .edit-header {
-      background: var(--header-bg);
-      padding: 2rem;
-      color: white;
-      text-align: center;
-    }
-    
-    .edit-header h2 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin: 0;
-      color: white;
-    }
-    
-    .edit-header .subtitle {
-      font-size: 1rem;
-      opacity: 0.9;
-      font-weight: 300;
-      margin-top: 0.5rem;
-    }
-    
-    .edit-content {
-      padding: 2rem;
-      background: var(--content-bg);
-    }
-    
-    .section-card {
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border);
-    }
-    
-    .form-label {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-    
-    .form-control {
-      border-radius: 12px;
-      background: var(--surface-variant);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 0.75rem 1rem;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      margin-bottom: 1rem;
-    }
-    
-    .form-control:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
-      background: var(--surface);
-    }
-    
-    .btn-save {
-      background: var(--header-bg);
-      color: white;
-      border: none;
-      padding: 0.75rem 2rem;
-      border-radius: 25px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow-md);
-      width: 100%;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .btn-save:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-      filter: brightness(1.1);
-      color: white;
-    }
-    
-    .btn-cancel {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 2px solid var(--border);
-      padding: 0.75rem 2rem;
-      border-radius: 25px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      width: 100%;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .btn-cancel:hover {
-      background: var(--surface-hover);
-      border-color: var(--border);
-      color: var(--text-primary);
-    }
-    
-    .alert {
-      border: none;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-    
-    .alert-danger {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--error);
-      border-left: 4px solid var(--error);
-    }
-    
-    .alert-success {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--success);
-      border-left: 4px solid var(--success);
-    }
-    
-    @media (max-width: 768px) {
-      .edit-container {
-        margin: 1rem;
-        padding: 0;
-      }
-      
-      .edit-header {
-        padding: 1.5rem;
-      }
-      
-      .edit-content {
-        padding: 1rem;
-      }
-      
-      .section-card {
-        padding: 1.5rem;
-      }
-    }
-    
-    /* Mobile Navigation */
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 2px 20px rgba(249, 168, 212, 0.2);
-      border-bottom: 1px solid rgba(249, 168, 212, 0.1);
-    }
-    
-    .menu-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: #ec4899;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-    
-    .menu-btn:hover {
-      background: rgba(236, 72, 153, 0.1);
-      transform: scale(1.05);
-    }
-    
-    .user-icon-mobile {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(249, 168, 212, 0.4);
-      transition: all 0.2s ease;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      border: none;
-      outline: none;
-    }
-    
-    .user-icon-mobile:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.5);
-    }
-    
-    .user-icon-mobile:active {
-      transform: scale(0.98);
-      transition: all 0.1s ease;
-    }
-    
-    /* Sidebar Menu */
-    .sidebar-menu {
-      position: fixed;
-      top: 0;
-      left: -300px;
-      width: 280px;
-      height: 100vh;
-      background: white;
-      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-      z-index: 1001;
-      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow-y: auto;
-    }
-    
-    .sidebar-menu.open {
-      left: 0;
-    }
-    
-    .sidebar-header {
-      background: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
-      padding: 2rem 1.5rem;
-      color: white;
-      text-align: center;
-    }
-    
-    .sidebar-header h3 {
-      margin: 0;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: white;
-    }
-    
-    .sidebar-header p {
-      margin: 0.5rem 0 0 0;
-      opacity: 0.9;
-      font-size: 0.9rem;
-      color: white;
-    }
-    
-    .sidebar-nav {
-      padding: 1rem 0;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .sidebar-nav a {
-      display: flex;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      color: #334155;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    
-    .sidebar-nav a:last-child {
-      border-bottom: none;
-    }
-    
-    .sidebar-nav a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
-      transform: translateX(5px);
-    }
-    
-    .sidebar-nav a i {
-      width: 20px;
-      margin-right: 1rem;
-      font-size: 1.1rem;
-    }
-    
-    .sidebar-nav .divider {
-      height: 1px;
-      background: #e2e8f0;
-      margin: 0.5rem 1.5rem;
-      flex-shrink: 0;
-    }
-    
-    /* Overlay */
-    .menu-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    /* User dropdown mobile */
-    .user-dropdown-mobile {
-      position: absolute;
-      top: 60px;
-      right: 1rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      min-width: 180px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1002;
-    }
-    
-    .user-dropdown-mobile.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    
-    .user-dropdown-mobile a {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      color: #334155;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid #f1f5f9;
-    }
-    
-    .user-dropdown-mobile a:last-child {
-      border-bottom: none;
-      border-radius: 0 0 12px 12px;
-    }
-    
-    .user-dropdown-mobile a:first-child {
-      border-radius: 12px 12px 0 0;
-    }
-    
-    .user-dropdown-mobile a:hover {
-      background: #ffc1e3;
-      color: #ec4899;
-    }
-    
-    .user-dropdown-mobile a i {
-      width: 16px;
-      margin-right: 0.75rem;
-    }
-    
-    /* Enhanced Mobile Responsiveness */
-    @media (min-width: 768px) {
-      .mobile-nav {
-        display: none;
-      }
-      
-      .sidebar-menu,
-      .menu-overlay,
-      .user-dropdown-mobile {
-        display: none;
-      }
-    }
-    
-    @media (max-width: 767px) {
-      #navbar {
-        display: none;
-      }
-      
-      body {
-        padding-top: 70px;
-      }
-      
-      .edit-container {
-        margin: 0.5rem;
-        padding: 0;
-      }
-      
-      .edit-card {
-        border-radius: 16px;
-      }
-      
-      .edit-header {
-        padding: 1.5rem 1rem;
-      }
-      
-      .edit-header h2 {
-        font-size: 1.4rem;
-      }
-      
-      .edit-content {
-        padding: 1rem;
-      }
-      
-      .section-card {
-        padding: 1rem;
-        border-radius: 12px;
-      }
-      
-      .form-control {
-        margin-bottom: 1rem;
-      }
-      
-      .btn-save, .btn-cancel {
-        padding: 1rem;
-        font-size: 1rem;
-        margin: 0.25rem 0;
-      }
-      
-      .row .col-md-6 {
-        margin-bottom: 0.5rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .edit-header h2 {
-        font-size: 1.2rem;
-      }
-      
-      .edit-header .subtitle {
-        font-size: 0.9rem;
-      }
-      
-      .form-label {
-        font-size: 0.85rem;
-      }
-      
-      .form-control {
-        padding: 0.6rem 0.8rem;
-      }
-      
-      .btn-save, .btn-cancel {
-        padding: 0.8rem;
-      }
-      
-      .sidebar-menu {
-        width: 260px;
-      }
-    }
-  </style>
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+
+  <link rel="stylesheet" href="Styles/EditarDatos.css">
 </head>
 <body>
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav">
-    <button class="menu-btn" onclick="toggleMenu()">
-      <i class="bi bi-list"></i>
-    </button>
-    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
-    <!-- User Dropdown Mobile -->
-    <div class="user-dropdown-mobile" id="userDropdownMobile">
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Ver Perfil
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </div>
-  </nav>
 
-  <!-- Navbar Container (includes desktop navbar) -->
   <div id="navbar"></div>
-  
-  <!-- Sidebar Menu -->
-  <div class="sidebar-menu" id="sidebarMenu">
-    <div class="sidebar-header">
-      <h3>Menú Principal</h3>
-      <p>Navegación</p>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="dashboard.html">
-        <i class="bi bi-house"></i>Dashboard
-      </a>
-      <a href="Comprobantes.html">
-        <i class="bi bi-credit-card"></i>Pagos
-      </a>
-      <a href="HorasMensuales.html">
-        <i class="bi bi-clock"></i>Horas Mensuales
-      </a>
-      <a href="PlanesTrabajoUsuario.html">
-        <i class="bi bi-calendar-check"></i>Planes de Trabajo
-      </a>
-      <a href="Asambleas.html">
-        <i class="bi bi-people-fill"></i>Asambleas
-      </a>
-      <div class="divider"></div>
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Mi Perfil
-      </a>
-      <a href="configuracion.html">
-        <i class="bi bi-gear"></i>Configuración
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </nav>
-  </div>
-  
-  <!-- Menu Overlay -->
-  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
   
   <div class="edit-container">
     <div class="edit-card">
-      <!-- Header -->
       <div class="edit-header">
-        <h2><i class="bi bi-person-gear me-2"></i>Editar Datos Personales</h2>
-        <div class="subtitle">Actualiza tu información personal</div>
+        <h2><i class="bi bi-person-gear me-2"></i> <span data-i18n="profile.editPersonalData">Editar Datos Personales</span></h2>
+        <div class="subtitle" data-i18n="profile.updateYourInfo">Actualiza tu información personal</div>
       </div>
       
-      <!-- Content -->
       <div class="edit-content">
         <div class="section-card">
           <form id="editDatosForm">
             <div class="row">
               <div class="col-md-6">
                 <label for="telefono" class="form-label">
-                  <i class="bi bi-telephone me-1"></i>Teléfono
+                  <i class="bi bi-telephone me-1"></i><span data-i18n="profile.phone">Teléfono</span>
                 </label>
                 <input type="text" class="form-control" id="telefono" name="telefono" required>
               </div>
               
               <div class="col-md-6">
                 <label for="genero" class="form-label">
-                  <i class="bi bi-person me-1"></i>Género
+                  <i class="bi bi-person me-1"></i><span data-i18n="profile.gender">Género</span>
                 </label>
                 <select class="form-control" id="genero" name="genero" required>
-                  <option value="">Seleccionar género</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
-                  <option value="Otro">Otro</option>
+                  <option value="" data-i18n="profile.selectGender">Seleccionar género</option>
+                  <option value="Masculino" data-i18n="profile.male">Masculino</option>
+                  <option value="Femenino" data-i18n="profile.female">Femenino</option>
+                  <option value="Otro" data-i18n="profile.other">Otro</option>
                 </select>
               </div>
             </div>
@@ -647,29 +122,29 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="fechaNacimiento" class="form-label">
-                  <i class="bi bi-calendar3 me-1"></i>Fecha de Nacimiento
+                  <i class="bi bi-calendar3 me-1"></i><span data-i18n="profile.birth_date">Fecha de Nacimiento</span>
                 </label>
                 <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
               </div>
               
               <div class="col-md-6">
                 <label for="estadoCivil" class="form-label">
-                  <i class="bi bi-heart me-1"></i>Estado Civil
+                  <i class="bi bi-heart me-1"></i><span data-i18n="profile.civil_status">Estado Civil</span>
                 </label>
                 <select class="form-control" id="estadoCivil" name="estadoCivil" required>
-                  <option value="">Seleccionar estado civil</option>
-                  <option value="Soltero/a">Soltero/a</option>
-                  <option value="Casado/a">Casado/a</option>
-                  <option value="Divorciado/a">Divorciado/a</option>
-                  <option value="Viudo/a">Viudo/a</option>
-                  <option value="Unión libre">Unión libre</option>
+                  <option value="" data-i18n="profile.selectCivilStatus">Seleccionar estado civil</option>
+                  <option value="Soltero/a" data-i18n="profile.single">Soltero/a</option>
+                  <option value="Casado/a" data-i18n="profile.married">Casado/a</option>
+                  <option value="Divorciado/a" data-i18n="profile.divorced">Divorciado/a</option>
+                  <option value="Viudo/a" data-i18n="profile.widowed">Viudo/a</option>
+                  <option value="Unión libre" data-i18n="profile.commonLaw">Unión libre</option>
                 </select>
               </div>
             </div>
             
             <div class="mb-3">
               <label for="direccion" class="form-label">
-                <i class="bi bi-geo-alt me-1"></i>Dirección
+                <i class="bi bi-geo-alt me-1"></i><span data-i18n="profile.address">Dirección</span>
               </label>
               <input type="text" class="form-control" id="direccion" name="direccion" required>
             </div>
@@ -677,33 +152,31 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="ocupacion" class="form-label">
-                  <i class="bi bi-briefcase me-1"></i>Ocupación
+                  <i class="bi bi-briefcase me-1"></i><span data-i18n="profile.occupation">Ocupación</span>
                 </label>
                 <input type="text" class="form-control" id="ocupacion" name="ocupacion" required>
               </div>
               
               <div class="col-md-6">
                 <label for="nacionalidad" class="form-label">
-                  <i class="bi bi-flag me-1"></i>Nacionalidad
+                  <i class="bi bi-flag me-1"></i><span data-i18n="profile.nationality">Nacionalidad</span>
                 </label>
                 <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" required>
               </div>
             </div>
             
-            <!-- Mensajes de error y éxito -->
             <div id="formError" class="alert alert-danger" style="display: none;"></div>
             <div id="formSuccess" class="alert alert-success" style="display: none;"></div>
             
-            <!-- Botones -->
             <div class="row mt-3">
               <div class="col-md-6">
                 <button type="button" class="btn-cancel" onclick="window.history.back()">
-                  <i class="bi bi-x-circle me-2"></i>Cancelar
+                  <i class="bi bi-x-circle me-2"></i><span data-i18n="profile.cancel">Cancelar</span>
                 </button>
               </div>
               <div class="col-md-6">
                 <button type="submit" class="btn-save">
-                  <i class="bi bi-check-circle me-2"></i>Guardar Cambios
+                  <i class="bi bi-check-circle me-2"></i><span data-i18n="profile.saveChanges">Guardar Cambios</span>
                 </button>
               </div>
             </div>
@@ -713,88 +186,15 @@
     </div>
   </div>
   
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- Scripts propios -->
   <script src="JavaScript/config.js"></script>
   <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
   <script src="JavaScript/dashboard.js"></script>
   <script src="JavaScript/loader.js"></script>
   <script src="JavaScript/editarDatos.js"></script>
   
-  <script>
-    // Mobile menu functionality
-    function toggleMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      
-      // Close user dropdown if open
-      if (userDropdown) userDropdown.classList.remove('show');
-      
-      if (sidebar) sidebar.classList.toggle('open');
-      if (overlay) overlay.classList.toggle('active');
-    }
-    
-    function closeMenu() {
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      if (sidebar) sidebar.classList.remove('open');
-      if (overlay) overlay.classList.remove('active');
-    }
-    
-    function toggleUserDropdown() {
-      const dropdown = document.getElementById('userDropdownMobile');
-      const sidebar = document.getElementById('sidebarMenu');
-      const overlay = document.getElementById('menuOverlay');
-      
-      // Close sidebar if open
-      if (sidebar) sidebar.classList.remove('open');
-      if (overlay) overlay.classList.remove('active');
-      
-      if (dropdown) dropdown.classList.toggle('show');
-    }
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(event) {
-      const userIcon = document.getElementById('userIconMobile');
-      const userDropdown = document.getElementById('userDropdownMobile');
-      const menuBtn = document.querySelector('.menu-btn');
-      
-      if (userIcon && userDropdown && !userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-        userDropdown.classList.remove('show');
-      }
-    });
-    
-    // Initialize user icon with first letter of name
-    function initUserIcon() {
-      const userIcon = document.getElementById('userIconMobile');
-      const token = localStorage.getItem('access_token');
-      
-      if (token && userIcon) {
-        // Try to get user data from token or make API call
-        userIcon.textContent = 'U'; // Default, can be updated when user data loads
-      }
-    }
-    
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initUserIcon);
-    
-    // Logout function
-    function logout() {
-      localStorage.removeItem('access_token');
-      window.location.href = 'index.html';
-    }
-    
-    // Load navbar dynamically
-    document.addEventListener('DOMContentLoaded', function() {
-      loadNavbar();
-    });
-  </script>
-  
-  <!-- Theme Manager -->
+   
   <script src="JavaScript/theme.js"></script>
 </body>
 </html>

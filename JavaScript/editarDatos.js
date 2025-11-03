@@ -1,6 +1,3 @@
-// editarDatos.js
-// Cargar datos actuales y enviar cambios al backend (solo campos editables)
-
 document.addEventListener('DOMContentLoaded', async function() {
   const token = localStorage.getItem('access_token');
   if (!token) {
@@ -11,7 +8,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   const errorDiv = document.getElementById('formError');
   const successDiv = document.getElementById('formSuccess');
 
-  // Cargar datos actuales
   try {
     const res = await fetch(API_URLS.cooperativa.datosUsuario(), {
       headers: {
@@ -27,10 +23,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('estadoCivil').value = persona.estadoCivil || '';
     document.getElementById('genero').value = persona.genero || '';
     
-    // Fix date format - extract only YYYY-MM-DD from datetime string
     const fechaNacimiento = persona.fechaNacimiento || '';
     if (fechaNacimiento) {
-      // Extract date part (YYYY-MM-DD) from datetime string
       const datePart = fechaNacimiento.split('T')[0];
       document.getElementById('fechaNacimiento').value = datePart;
     }
@@ -41,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     errorDiv.textContent = err.message;
   }
 
-  // Enviar cambios
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     errorDiv.textContent = '';
@@ -50,7 +43,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     successDiv.style.display = 'none';
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.textContent;
-    // Animación de carga
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner" style="display:inline-block;width:18px;height:18px;border:3px solid #fff;border-top:3px solid #d81b60;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px;"></span>Guardando...';
 
@@ -79,18 +71,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         successDiv.style.display = 'none';
         return;
       }
-      // Mostrar el mensaje de la API debajo del botón en negrita
       errorDiv.textContent = '';
       errorDiv.style.display = 'none';
       successDiv.textContent = data.message || 'Datos actualizados correctamente.';
       successDiv.style.display = 'block';
       
-      // Invalidar el caché para forzar recarga de datos
       localStorage.removeItem('user_cache');
       
-      // Redirigir a EditarPerfilModerno con parámetro timestamp para evitar caché del navegador
       setTimeout(() => {
-        window.location.href = 'EditarPerfilModerno.html?refresh=' + Date.now();
+        window.location.href = 'PerfilUsuario.html?refresh=' + Date.now();
       }, 1500);
     } catch (err) {
       errorDiv.textContent = err.message;
@@ -101,8 +90,75 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
 
-  // Spinner CSS
   const style = document.createElement('style');
   style.innerHTML = `@keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }`;
   document.head.appendChild(style);
 });
+
+    function toggleMenu() {
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('menuOverlay');
+      const userDropdown = document.getElementById('userDropdownMobile');
+      
+      // Close user dropdown if open
+      if (userDropdown) userDropdown.classList.remove('show');
+      
+      if (sidebar) sidebar.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('active');
+    }
+    
+    function closeMenu() {
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('menuOverlay');
+      
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
+    }
+    
+    function toggleUserDropdown() {
+      const dropdown = document.getElementById('userDropdownMobile');
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('menuOverlay');
+      
+      // Close sidebar if open
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
+      
+      if (dropdown) dropdown.classList.toggle('show');
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+      const userIcon = document.getElementById('userIconMobile');
+      const userDropdown = document.getElementById('userDropdownMobile');
+      const menuBtn = document.querySelector('.menu-btn');
+      
+      if (userIcon && userDropdown && !userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
+        userDropdown.classList.remove('show');
+      }
+    });
+    
+    // Initialize user icon with first letter of name
+    function initUserIcon() {
+      const userIcon = document.getElementById('userIconMobile');
+      const token = localStorage.getItem('access_token');
+      
+      if (token && userIcon) {
+        // Try to get user data from token or make API call
+        userIcon.textContent = 'U'; // Default, can be updated when user data loads
+      }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initUserIcon);
+    
+    // Logout function
+    function logout() {
+      localStorage.removeItem('access_token');
+      window.location.href = 'index.html';
+    }
+    
+    // Load navbar dynamically
+    document.addEventListener('DOMContentLoaded', function() {
+      loadNavbar();
+    });
