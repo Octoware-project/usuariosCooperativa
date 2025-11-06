@@ -54,12 +54,19 @@
           skeleton.style.opacity = '1';
         });
         
-        const response = await fetch(API_URLS.cooperativa.asambleas(), {
+        const asambleasPromise = fetch(API_URLS.cooperativa.asambleas(), {
           headers: {
             'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
           }
         });
+
+        // Registrar en universal loader
+        if (window.universalLoader) {
+          window.universalLoader.registerApiCall(asambleasPromise, 'Asambleas');
+        }
+        
+        const response = await asambleasPromise;
         
         if (!response.ok) {
           throw new Error('Error al cargar asambleas');

@@ -152,6 +152,17 @@ const ThemeManager = {
     if (themeText) {
       themeText.textContent = theme === 'light' ? 'Modo Oscuro' : 'Modo Claro';
     }
+    
+    // Update favicon based on theme
+    this.updateFavicon(theme);
+  },
+  
+  updateFavicon(theme) {
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon) {
+      const iconPath = theme === 'dark' ? 'img/IconoOscuro.jpeg' : 'img/IconoClaro.jpeg';
+      favicon.href = iconPath;
+    }
   }
 };
 

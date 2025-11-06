@@ -240,13 +240,20 @@ document.addEventListener('DOMContentLoaded', function() {
           return;
         }
         
-        const response = await fetch(API_URLS.cooperativa.facturas(), {
+        const facturasPromise = fetch(API_URLS.cooperativa.facturas(), {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
             'Accept': 'application/json'
           }
         });
+
+        // Registrar en universal loader
+        if (window.universalLoader) {
+          window.universalLoader.registerApiCall(facturasPromise, 'Facturas');
+        }
+
+        const response = await facturasPromise;
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

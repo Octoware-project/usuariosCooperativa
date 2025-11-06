@@ -12,17 +12,23 @@ function redirectToLogin() {
       }
 
       try {
-        // Validate user
-        const validateRes = await fetch(API_URLS.usuarios.validate(), {
+        // Registrar validación en el loader universal
+        const validatePromise = fetch(API_URLS.usuarios.validate(), {
           headers: {
             'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
           }
+        }).then(res => {
+          if (!res.ok) throw new Error('No se pudo validar el token');
+          return res.json();
         });
-        
-        if (!validateRes.ok) throw new Error('No se pudo validar el token');
-        
-        const userData = await validateRes.json();
+
+        // Registrar en el universal loader
+        if (window.universalLoader) {
+          window.universalLoader.registerApiCall(validatePromise, 'Validar Usuario');
+        }
+
+        const userData = await validatePromise;
         
         // Check user status
         if (userData.persona && userData.persona.estadoRegistro === 'Inactivo') {
@@ -38,12 +44,19 @@ function redirectToLogin() {
         
         // Get user data from cooperativa API
         try {
-          const userDataRes = await fetch(API_URLS.cooperativa.datosUsuario(), {
+          const userDataPromise = fetch(API_URLS.cooperativa.datosUsuario(), {
             headers: {
               'Authorization': 'Bearer ' + token,
               'Accept': 'application/json'
             }
           });
+
+          // Registrar en el universal loader
+          if (window.universalLoader) {
+            window.universalLoader.registerApiCall(userDataPromise, 'Datos Usuario');
+          }
+
+          const userDataRes = await userDataPromise;
           
           if (userDataRes.ok) {
             const userInfo = await userDataRes.json();
@@ -77,15 +90,26 @@ function redirectToLogin() {
     async function loadAsambleasStats() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await fetch(API_URLS.cooperativa.asambleas(), {
+        
+        // Crear promesa y registrarla
+        const asambleasPromise = fetch(API_URLS.cooperativa.asambleas(), {
           headers: {
             'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
           }
+        }).then(res => {
+          if (!res.ok) throw new Error('Error al cargar asambleas');
+          return res.json();
         });
+
+        // Registrar en el universal loader
+        if (window.universalLoader) {
+          window.universalLoader.registerApiCall(asambleasPromise, 'Asambleas');
+        }
+
+        const data = await asambleasPromise;
         
-        if (response.ok) {
-          const data = await response.json();
+        if (data) {
           const asambleas = Array.isArray(data) ? data : (data.data || []);
           
           // Filter future asambleas
@@ -122,11 +146,19 @@ function redirectToLogin() {
     }
     
     // Initialize dashboard only if we're on the dashboard page
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
       // Check if we're on dashboard.html
       const isDashboardPage = window.location.pathname.includes('dashboard.html');
       
       if (isDashboardPage) {
-        loadDashboardData();
+        try {
+          await loadDashboardData();
+        } catch (error) {
+          console.error('Error cargando dashboard:', error);
+          // Forzar mostrar contenido incluso si hay error
+          if (window.universalLoader) {
+            window.universalLoader.forceShow();
+          }
+        }
       }
     });

@@ -1,6 +1,8 @@
 const API_CONFIG = {
     API_USUARIOS: 'http://127.0.0.1:8000',    
     API_COOPERATIVA: 'http://127.0.0.1:8001',
+    OAUTH_CLIENT_ID: '1',
+    OAUTH_CLIENT_SECRET: '1G9lLndGPwNHvCnB0cpiaE8XHK4rQQhGfa1q6Rcf'
 };
 
 const API_URLS = {

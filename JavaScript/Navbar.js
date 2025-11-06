@@ -44,5 +44,44 @@ if (typeof updateThemeButtons === 'undefined') {
         darkBtn.classList.add('active');
       }
     }
+    
+    // Update logo based on theme
+    updateNavbarLogo(currentTheme);
   };
 }
+
+// Function to update navbar logo based on theme
+if (typeof updateNavbarLogo === 'undefined') {
+  window.updateNavbarLogo = function(theme) {
+    const logo = document.getElementById('navbarLogo');
+    if (logo) {
+      if (theme === 'dark') {
+        logo.src = 'img/IconoOscuro.jpeg';
+      } else {
+        logo.src = 'img/IconoClaro.jpeg';
+      }
+    }
+  };
+}
+
+// Initialize logo on page load
+(function() {
+  const initLogo = function() {
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    updateNavbarLogo(currentTheme);
+  };
+
+  // Set logo immediately if DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLogo);
+  } else {
+    initLogo();
+  }
+
+  // Listen for theme changes from ThemeManager
+  window.addEventListener('themeChanged', function(e) {
+    if (e.detail && e.detail.theme) {
+      updateNavbarLogo(e.detail.theme);
+    }
+  });
+})();

@@ -1,65 +1,92 @@
+// Cachear referencias DOM para optimizar performance
+const NavbarCache = {
+  sidebar: null,
+  overlay: null,
+  userDropdown: null,
+  
+  init() {
+    this.sidebar = document.getElementById('sidebarMenu');
+    this.overlay = document.getElementById('menuOverlay');
+    this.userDropdown = document.getElementById('userDropdownMobile');
+  },
+  
+  refresh() {
+    // Refrescar referencias si es necesario
+    if (!this.sidebar) this.sidebar = document.getElementById('sidebarMenu');
+    if (!this.overlay) this.overlay = document.getElementById('menuOverlay');
+    if (!this.userDropdown) this.userDropdown = document.getElementById('userDropdownMobile');
+  }
+};
 
 function toggleMenu() {
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
-  const userDropdown = document.getElementById('userDropdownMobile');
+  NavbarCache.refresh();
   
-  if (userDropdown) {
-    userDropdown.classList.remove('show');
+  if (NavbarCache.userDropdown) {
+    NavbarCache.userDropdown.classList.remove('show');
   }
   
-  if (sidebar) {
-    sidebar.classList.toggle('open');
+  if (NavbarCache.sidebar) {
+    NavbarCache.sidebar.classList.toggle('open');
   }
-  if (overlay) {
-    overlay.classList.toggle('active');
+  if (NavbarCache.overlay) {
+    NavbarCache.overlay.classList.toggle('active');
   }
 }
 
 function closeMenu() {
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
+  NavbarCache.refresh();
   
-  if (sidebar) {
-    sidebar.classList.remove('open');
+  if (NavbarCache.sidebar) {
+    NavbarCache.sidebar.classList.remove('open');
   }
-  if (overlay) {
-    overlay.classList.remove('active');
+  if (NavbarCache.overlay) {
+    NavbarCache.overlay.classList.remove('active');
   }
 }
 
 function toggleUserDropdown() {
-  const dropdown = document.getElementById('userDropdownMobile');
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
+  NavbarCache.refresh();
   
-  if (sidebar) {
-    sidebar.classList.remove('open');
+  if (NavbarCache.sidebar) {
+    NavbarCache.sidebar.classList.remove('open');
   }
-  if (overlay) {
-    overlay.classList.remove('active');
+  if (NavbarCache.overlay) {
+    NavbarCache.overlay.classList.remove('active');
   }
   
-  if (dropdown) {
-    dropdown.classList.toggle('show');
+  if (NavbarCache.userDropdown) {
+    NavbarCache.userDropdown.classList.toggle('show');
   }
 }
 
-document.addEventListener('click', function(event) {
-  const userIcon = document.getElementById('userIconMobile');
-  const userDropdown = document.getElementById('userDropdownMobile');
-  const menuBtn = document.querySelector('.menu-btn');
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
+// Usar delegación de eventos y cachear elementos
+let globalClickHandlerAttached = false;
+
+function attachGlobalClickHandler() {
+  if (globalClickHandlerAttached) return;
   
-  if (userIcon && userDropdown && !userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-    userDropdown.classList.remove('show');
-  }
+  document.addEventListener('click', function(event) {
+    const target = event.target;
+    
+    // Usar delegación - verificar clases en lugar de consultar DOM
+    const userDropdown = document.getElementById('userDropdownMobile');
+    const userIcon = document.getElementById('userIconMobile');
+    
+    if (userIcon && userDropdown && !userIcon.contains(target) && !userDropdown.contains(target)) {
+      userDropdown.classList.remove('show');
+    }
+    
+    // Verificar si el click fue en el overlay
+    if (target.classList.contains('menu-overlay') || target.id === 'menuOverlay') {
+      closeMenu();
+    }
+  }, { passive: true });
   
-  if (overlay && overlay.contains(event.target)) {
-    closeMenu();
-  }
-});
+  globalClickHandlerAttached = true;
+}
+
+// Llamar al final de la inicialización
+attachGlobalClickHandler();
 
 function initUserIcon() {
   const userIcon = document.getElementById('userIconMobile');
@@ -72,9 +99,16 @@ function initUserIcon() {
   }
 }
 
+// Cachear elementos del desktop navbar
+let desktopNavbarInitialized = false;
+let userMenuBtn = null;
+let userDropdown = null;
+
 function initDesktopNavbar() {
-  const userMenuBtn = document.getElementById('userMenuBtn');
-  const userDropdown = document.getElementById('userDropdown');
+  if (desktopNavbarInitialized) return;
+  
+  userMenuBtn = document.getElementById('userMenuBtn');
+  userDropdown = document.getElementById('userDropdown');
   
   if (userMenuBtn && userDropdown) {
     userMenuBtn.addEventListener('click', (e) => {
@@ -91,23 +125,30 @@ function initDesktopNavbar() {
       }
     });
     
-    document.addEventListener('click', function(event) {
-      if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+    // Solo agregar este listener una vez
+    document.addEventListener('click', function desktopDropdownHandler(event) {
+      if (userMenuBtn && userDropdown && 
+          !userMenuBtn.contains(event.target) && 
+          !userDropdown.contains(event.target)) {
         userDropdown.classList.remove('show');
         userMenuBtn.classList.remove('menu-open');
       }
-    });
+    }, { passive: true });
+    
+    desktopNavbarInitialized = true;
   }
 }
 
 function logout() {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('userData');
-  localStorage.removeItem('authToken');
+  // Limpiar todo el localStorage de una vez en lugar de múltiples llamadas
+  const keysToRemove = ['access_token', 'userData', 'authToken'];
+  keysToRemove.forEach(key => localStorage.removeItem(key));
+  
   window.location.href = 'index.html';
 }
 
 function initNavbarAfterLoad() {
+  NavbarCache.init();
   initUserIcon();
   initDesktopNavbar();
 }

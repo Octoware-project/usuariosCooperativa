@@ -116,26 +116,39 @@ document.addEventListener('DOMContentLoaded', function() {
         const anio = now.getFullYear();
 
         // Cargar datos desde endpoints existentes
+        const horasPromise = fetch(API_URLS.cooperativa.horas(), {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const calcularPromise = fetch(API_URLS.cooperativa.horasCalcular(), {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ mes, anio })
+        });
+
+        const planesPromise = fetch(API_URLS.cooperativa.planesTrabajoList(), {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+
+        // Registrar en universal loader
+        if (window.universalLoader) {
+          window.universalLoader.registerApiCall(horasPromise, 'Horas');
+          window.universalLoader.registerApiCall(calcularPromise, 'Calcular Horas');
+          window.universalLoader.registerApiCall(planesPromise, 'Planes de Trabajo');
+        }
+
         const [horasResponse, calcularResponse, planesResponse] = await Promise.all([
-          fetch(API_URLS.cooperativa.horas(), {
-            headers: {
-              'Authorization': 'Bearer ' + token,
-              'Content-Type': 'application/json'
-            }
-          }),
-          fetch(API_URLS.cooperativa.horasCalcular(), {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + token,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ mes, anio })
-          }),
-          fetch(API_URLS.cooperativa.planesTrabajoList(), {
-            headers: {
-              'Authorization': 'Bearer ' + token
-            }
-          })
+          horasPromise,
+          calcularPromise,
+          planesPromise
         ]);
 
         if (!horasResponse.ok) {

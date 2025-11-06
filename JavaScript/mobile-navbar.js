@@ -2,14 +2,35 @@
 // This module handles the mobile navigation bar, sidebar menu, and user dropdown
 
 const MobileNavbar = {
+  // Cache de elementos DOM
+  elements: {
+    menuBtn: null,
+    userIcon: null,
+    overlay: null,
+    sidebarLogout: null,
+    mobileLogout: null
+  },
+  
   /**
    * Initialize and inject mobile navbar into the page
    * Should be called on DOMContentLoaded
    */
   init: function() {
     this.injectHTML();
+    this.cacheElements();
     this.setupEventListeners();
     this.updateUserIcon();
+  },
+  
+  /**
+   * Cache elementos DOM para reutilizar
+   */
+  cacheElements: function() {
+    this.elements.menuBtn = document.getElementById('mobileMenuBtn');
+    this.elements.userIcon = document.getElementById('userIconMobile');
+    this.elements.overlay = document.getElementById('menuOverlay');
+    this.elements.sidebarLogout = document.getElementById('sidebarLogoutBtn');
+    this.elements.mobileLogout = document.getElementById('mobileLogoutBtn');
   },
 
   /**
@@ -40,31 +61,34 @@ const MobileNavbar = {
           <p data-i18n="nav.navigation">Navegación</p>
         </div>
         <nav class="sidebar-nav">
-          <a href="dashboard.html">
-            <i class="bi bi-house"></i><span data-i18n="nav.dashboard">Dashboard</span>
-          </a>
-          <a href="Comprobantes.html">
-            <i class="bi bi-credit-card"></i><span data-i18n="nav.payments">Pagos</span>
-          </a>
-          <a href="HorasMensuales.html">
-            <i class="bi bi-clock"></i><span data-i18n="nav.hours">Horas Mensuales</span>
-          </a>
-          <a href="PlanesTrabajoUsuario.html">
-            <i class="bi bi-calendar-check"></i><span data-i18n="nav.work_plans">Planes de Trabajo</span>
-          </a>
-          <a href="Asambleas.html">
-            <i class="bi bi-people-fill"></i><span data-i18n="nav.assemblies">Asambleas</span>
-          </a>
-          <div class="divider"></div>
-          <a href="PerfilUsuario.html">
-            <i class="bi bi-person-circle"></i><span data-i18n="nav.profile">Mi Perfil</span>
-          </a>
-          <a href="configuracion.html">
-            <i class="bi bi-gear"></i><span data-i18n="nav.settings">Configuración</span>
-          </a>
-          <a href="#" id="sidebarLogoutBtn">
-            <i class="bi bi-box-arrow-right"></i><span data-i18n="nav.logout">Cerrar Sesión</span>
-          </a>
+          <div class="sidebar-main-links">
+            <a href="dashboard.html">
+              <i class="bi bi-house"></i><span data-i18n="nav.dashboard">Dashboard</span>
+            </a>
+            <a href="Comprobantes.html">
+              <i class="bi bi-credit-card"></i><span data-i18n="nav.payments">Pagos</span>
+            </a>
+            <a href="HorasMensuales.html">
+              <i class="bi bi-clock"></i><span data-i18n="nav.hours">Horas Mensuales</span>
+            </a>
+            <a href="PlanesTrabajoUsuario.html">
+              <i class="bi bi-calendar-check"></i><span data-i18n="nav.work_plans">Planes de Trabajo</span>
+            </a>
+            <a href="Asambleas.html">
+              <i class="bi bi-people-fill"></i><span data-i18n="nav.assemblies">Asambleas</span>
+            </a>
+          </div>
+          <div class="sidebar-bottom-links">
+            <a href="PerfilUsuario.html">
+              <i class="bi bi-person-circle"></i><span data-i18n="nav.profile">Mi Perfil</span>
+            </a>
+            <a href="configuracion.html">
+              <i class="bi bi-gear"></i><span data-i18n="nav.settings">Configuración</span>
+            </a>
+            <a href="#" id="sidebarLogoutBtn">
+              <i class="bi bi-box-arrow-right"></i><span data-i18n="nav.logout">Cerrar Sesión</span>
+            </a>
+          </div>
         </nav>
       </div>
       
@@ -72,26 +96,18 @@ const MobileNavbar = {
       <div class="menu-overlay" id="menuOverlay"></div>
     `;
 
-    // Insert at the beginning of body
     document.body.insertAdjacentHTML('afterbegin', navbarHTML);
 
-    // Apply translations if LanguageManager is available
     if (typeof LanguageManager !== 'undefined' && LanguageManager.applyTranslations) {
       LanguageManager.applyTranslations();
     }
   },
 
-  /**
-   * Setup all event listeners for mobile navbar interactions
-   */
-  setupEventListeners: function() {
-    const menuBtn = document.getElementById('mobileMenuBtn');
-    const userIcon = document.getElementById('userIconMobile');
-    const overlay = document.getElementById('menuOverlay');
-    const sidebarLogout = document.getElementById('sidebarLogoutBtn');
-    const mobileLogout = document.getElementById('mobileLogoutBtn');
 
-    // Toggle sidebar menu - use global function if available
+  setupEventListeners: function() {
+    // Usar elementos cacheados
+    const { menuBtn, userIcon, overlay, sidebarLogout, mobileLogout } = this.elements;
+
     if (menuBtn) {
       menuBtn.addEventListener('click', () => {
         if (typeof toggleMenu === 'function') {
@@ -102,7 +118,6 @@ const MobileNavbar = {
       });
     }
 
-    // Toggle user dropdown - use global function if available
     if (userIcon) {
       userIcon.addEventListener('click', () => {
         if (typeof toggleUserDropdown === 'function') {
@@ -113,7 +128,6 @@ const MobileNavbar = {
       });
     }
 
-    // Close menu when clicking overlay - use global function if available
     if (overlay) {
       overlay.addEventListener('click', () => {
         if (typeof closeMenu === 'function') {
@@ -147,65 +161,85 @@ const MobileNavbar = {
       });
     }
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      const userDropdown = document.getElementById('userDropdownMobile');
-      const userIconEl = document.getElementById('userIconMobile');
+    // Close dropdown when clicking outside (usando delegación)
+    // Solo agregar listener si no existe
+    if (!document._mobileNavbarClickHandlerAttached) {
+      document.addEventListener('click', (e) => {
+        const userDropdown = document.getElementById('userDropdownMobile');
+        const userIconEl = document.getElementById('userIconMobile');
+        
+        if (userDropdown && userIconEl && 
+            !userIconEl.contains(e.target) && 
+            !userDropdown.contains(e.target)) {
+          userDropdown.classList.remove('active');
+        }
+      }, { passive: true });
       
-      if (userDropdown && userIconEl && 
-          !userIconEl.contains(e.target) && 
-          !userDropdown.contains(e.target)) {
-        userDropdown.classList.remove('active');
-      }
-    });
+      document._mobileNavbarClickHandlerAttached = true;
+    }
   },
 
   /**
    * Toggle sidebar menu visibility
+   * Usa funciones globales si existen para evitar duplicación
    */
   toggleMenu: function() {
-    const sidebar = document.getElementById('sidebarMenu');
-    const overlay = document.getElementById('menuOverlay');
-    
-    if (sidebar && overlay) {
-      const isOpen = sidebar.classList.contains('open');
+    if (typeof window.toggleMenu === 'function') {
+      window.toggleMenu();
+    } else {
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('menuOverlay');
       
-      if (isOpen) {
-        this.closeMenu();
-      } else {
-        sidebar.classList.add('open');
-        overlay.classList.add('active', 'open');
-        document.body.style.overflow = 'hidden';
+      if (sidebar && overlay) {
+        const isOpen = sidebar.classList.contains('open');
+        
+        if (isOpen) {
+          this.closeMenu();
+        } else {
+          sidebar.classList.add('open');
+          overlay.classList.add('active', 'open');
+          document.body.style.overflow = 'hidden';
+        }
       }
     }
   },
 
   /**
    * Close sidebar menu
+   * Usa funciones globales si existen para evitar duplicación
    */
   closeMenu: function() {
-    const sidebar = document.getElementById('sidebarMenu');
-    const overlay = document.getElementById('menuOverlay');
-    
-    if (sidebar) {
-      sidebar.classList.remove('open');
+    if (typeof window.closeMenu === 'function') {
+      window.closeMenu();
+    } else {
+      const sidebar = document.getElementById('sidebarMenu');
+      const overlay = document.getElementById('menuOverlay');
+      
+      if (sidebar) {
+        sidebar.classList.remove('open');
+      }
+      
+      if (overlay) {
+        overlay.classList.remove('active', 'open');
+      }
+      
+      document.body.style.overflow = '';
     }
-    
-    if (overlay) {
-      overlay.classList.remove('active', 'open');
-    }
-    
-    document.body.style.overflow = '';
   },
 
   /**
    * Toggle user dropdown menu
+   * Usa funciones globales si existen para evitar duplicación
    */
   toggleUserDropdown: function() {
-    const dropdown = document.getElementById('userDropdownMobile');
-    
-    if (dropdown) {
-      dropdown.classList.toggle('active');
+    if (typeof window.toggleUserDropdown === 'function') {
+      window.toggleUserDropdown();
+    } else {
+      const dropdown = document.getElementById('userDropdownMobile');
+      
+      if (dropdown) {
+        dropdown.classList.toggle('active');
+      }
     }
   },
 
@@ -222,7 +256,6 @@ const MobileNavbar = {
         const initial = user.nombre ? user.nombre.charAt(0).toUpperCase() : 'U';
         userIcon.textContent = initial;
       } catch (e) {
-        console.error('Error parsing user data:', e);
         userIcon.textContent = 'U';
       }
     }

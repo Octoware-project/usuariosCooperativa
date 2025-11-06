@@ -74,9 +74,11 @@
     height: 100vh;
     background: var(--sidebar-bg, white);
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
+    z-index: 1002;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
   }
   
   .sidebar-menu.open {
@@ -88,6 +90,7 @@
     padding: 2rem 1.5rem;
     color: white;
     text-align: center;
+    flex-shrink: 0;
   }
   
   /* Dark theme sidebar header */
@@ -112,9 +115,26 @@
   }
   
   .sidebar-nav {
-    padding: 1rem 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    overflow-y: hidden;
+  }
+  
+  .sidebar-main-links {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+  }
+  
+  .sidebar-bottom-links {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    flex-shrink: 0;
   }
   
   .sidebar-nav a {
@@ -125,13 +145,8 @@
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s ease;
-    border-bottom: 1px solid var(--border, #f1f5f9);
     width: 100%;
     box-sizing: border-box;
-  }
-  
-  .sidebar-nav a:last-child {
-    border-bottom: none;
   }
   
   .sidebar-nav a:hover {
@@ -161,15 +176,17 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
-    z-index: 999;
+    z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    pointer-events: none;
   }
   
   .menu-overlay.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
   
   /* User dropdown mobile */

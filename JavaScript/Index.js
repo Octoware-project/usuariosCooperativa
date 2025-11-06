@@ -46,8 +46,8 @@
         "username": usuario,
         "password": password,
         "grant_type": "password",
-        "client_id": "1",
-        "client_secret": "wsBa0mp4jwSTYssUGHX5xoqD9IC0X95Gfpg0w3uY"
+        "client_id": API_CONFIG.OAUTH_CLIENT_ID,
+        "client_secret": API_CONFIG.OAUTH_CLIENT_SECRET
       };
 
       // Convertir a x-www-form-urlencoded
