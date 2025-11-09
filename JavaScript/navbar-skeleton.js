@@ -147,27 +147,26 @@ function loadNavbarFromCacheInstantly() {
       
       if (navbarContainer) {
         navbarContainer.innerHTML = cleanedHTML;
+        navbarContainer.classList.add('loaded');
       }
       
       if (mobileNavbarContainer) {
         mobileNavbarContainer.innerHTML = cleanedHTML;
+        mobileNavbarContainer.classList.add('loaded');
       }
       
-      // Marcar como cargado y ocultar skeleton
-      setTimeout(() => {
-        if (navbarContainer) navbarContainer.classList.add('loaded');
-        if (mobileNavbarContainer) mobileNavbarContainer.classList.add('loaded');
-        document.body.classList.add('navbar-loaded');
-        navbarSkeletonLoader.hide();
-        
-        // Inicializar funciones del navbar
+      // Marcar como cargado inmediatamente
+      document.body.classList.add('navbar-loaded');
+      
+      // Inicializar funciones del navbar de forma asíncrona
+      requestAnimationFrame(() => {
         if (typeof attachNavbarEvents === 'function') {
           attachNavbarEvents();
         }
         if (typeof initUserIcon === 'function') {
           initUserIcon();
         }
-      }, 50);
+      });
       
       return true;
     }

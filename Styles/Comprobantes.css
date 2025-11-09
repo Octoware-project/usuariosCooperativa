@@ -635,14 +635,60 @@
       width: 100%;
       box-sizing: border-box;
     }
-    
+
     .comprobante-card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
       border-color: var(--primary);
     }
-    
-    .card-header {
+
+    /* Resaltado para comprobantes del mes actual */
+    .comprobante-card.current-month {
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    }
+
+    .comprobante-card.current-month:hover {
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+    }
+
+    /* Separador de mes */
+    .month-separator {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0 0.5rem 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .month-separator:first-child {
+      margin-top: 0;
+    }
+
+    .month-separator::before,
+    .month-separator::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .month-separator .month-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--surface-variant);
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .month-separator .month-label i {
+      color: var(--primary);
+    }    .card-header {
       padding: 1.5rem 1.5rem 1rem 1.5rem;
       display: flex;
       align-items: center;

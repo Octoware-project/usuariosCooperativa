@@ -81,6 +81,9 @@ function redirectToLogin() {
         // Load upcoming events
         await loadAsambleasStats();
         
+        // Load payment notifications
+        await loadPaymentNotifications();
+        
       } catch (err) {
         window.location.href = 'index.html';
       }
@@ -143,6 +146,159 @@ function redirectToLogin() {
         }
       } catch (err) {
         }
+    }
+
+    // Load payment notifications
+    async function loadPaymentNotifications() {
+      try {
+        const token = localStorage.getItem('access_token');
+        
+        // Crear promesa y registrarla
+        const comprobantesPromise = fetch(API_URLS.cooperativa.comprobantes(), {
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+          }
+        }).then(res => {
+          if (!res.ok) throw new Error('Error al cargar comprobantes');
+          return res.json();
+        });
+
+        // Registrar en el universal loader
+        if (window.universalLoader) {
+          window.universalLoader.registerApiCall(comprobantesPromise, 'Notificaciones de Pagos');
+        }
+
+        const data = await comprobantesPromise;
+        
+        if (data) {
+          const comprobantes = Array.isArray(data) ? data : (data.data || []);
+          
+          // Obtener fecha de hace un mes
+          const oneMonthAgo = new Date();
+          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+          
+          // Filtrar comprobantes del último mes
+          const recentComprobantes = comprobantes.filter(c => {
+            const createdDate = new Date(c.created_at);
+            return createdDate >= oneMonthAgo;
+          });
+          
+          // Separar por estado
+          const pending = recentComprobantes.filter(c => c.Estado_Pago === 'Pendiente');
+          const approved = recentComprobantes.filter(c => c.Estado_Pago === 'Aceptado');
+          const rejected = recentComprobantes.filter(c => c.Estado_Pago === 'Rechazado');
+          
+          // Mostrar notificaciones
+          const notificationsContainer = document.getElementById('paymentNotifications');
+          if (notificationsContainer) {
+            const notifications = [];
+            
+            // Agregar pendientes
+            pending.forEach(comp => {
+              notifications.push(createNotificationItem(comp, 'pending'));
+            });
+            
+            // Agregar rechazados (primero porque son importantes)
+            rejected.forEach(comp => {
+              notifications.push(createNotificationItem(comp, 'rejected'));
+            });
+            
+            // Agregar aceptados
+            approved.forEach(comp => {
+              notifications.push(createNotificationItem(comp, 'approved'));
+            });
+            
+            if (notifications.length > 0) {
+              notificationsContainer.innerHTML = notifications.slice(0, 5).join('');
+            } else {
+              notificationsContainer.innerHTML = `
+                <div class="empty-state">
+                  <i class="bi bi-check-circle"></i>
+                  <p>No hay notificaciones</p>
+                </div>
+              `;
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error cargando notificaciones:', err);
+      }
+    }
+
+    // Crear item de notificación
+    function createNotificationItem(comprobante, tipo) {
+      const amount = formatCurrency(comprobante.Monto);
+      const date = formatShortDate(comprobante.created_at);
+      
+      let icon, title, message, cssClass;
+      
+      switch(tipo) {
+        case 'pending':
+          icon = 'bi-clock-history';
+          title = 'Pago Pendiente';
+          message = `${amount} esperando aprobación`;
+          cssClass = 'pending';
+          break;
+        case 'approved':
+          icon = 'bi-check-circle-fill';
+          title = 'Pago Aceptado';
+          message = `${amount} fue aprobado`;
+          cssClass = 'approved';
+          break;
+        case 'rejected':
+          icon = 'bi-x-circle-fill';
+          title = 'Pago Rechazado';
+          message = `${amount} fue rechazado`;
+          cssClass = 'rejected';
+          break;
+      }
+      
+      return `
+        <div class="notification-item ${cssClass}" onclick="window.location.href='FacturaDetalle.html?id=${comprobante.id}'" style="cursor: pointer;">
+          <div class="notification-icon ${cssClass}">
+            <i class="${icon}"></i>
+          </div>
+          <div class="notification-content">
+            <h5>${title}</h5>
+            <p>${message} • ${date}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Formatear moneda
+    function formatCurrency(amount) {
+      if (!amount && amount !== 0) return '$0';
+      try {
+        return new Intl.NumberFormat('es-AR', {
+          style: 'currency',
+          currency: 'ARS',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        }).format(amount);
+      } catch (error) {
+        return `$${amount}`;
+      }
+    }
+
+    // Formatear fecha corta
+    function formatShortDate(dateString) {
+      if (!dateString) return 'N/A';
+      try {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return 'Hoy';
+        if (diffDays === 1) return 'Ayer';
+        if (diffDays < 7) return `Hace ${diffDays} días`;
+        if (diffDays < 30) return `Hace ${Math.floor(diffDays / 7)} semanas`;
+        return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
+      } catch (error) {
+        return dateString;
+      }
     }
     
     // Initialize dashboard only if we're on the dashboard page

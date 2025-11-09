@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const container = document.getElementById('horasGrid');
       
       // Clear existing dynamic cards but keep skeleton
-      const existingCards = container.querySelectorAll('.hora-card:not(.skeleton)');
+      const existingCards = container.querySelectorAll('.hora-card:not(.skeleton), .month-separator');
       existingCards.forEach(card => card.remove());
 
       // Extract array of horas from response
@@ -218,21 +218,99 @@ document.addEventListener('DOMContentLoaded', function() {
         return dateB - dateA; // Orden descendente (más recientes primero)
       });
 
-      registros.forEach((hora, index) => {
-        const card = createHoraCard(hora);
-        container.appendChild(card);
+      // Agrupar registros por mes
+      const registrosPorMes = agruparPorMes(registros);
+      
+      // Obtener mes y año actual
+      const now = new Date();
+      const mesActual = now.getMonth() + 1;
+      const anioActual = now.getFullYear();
+      
+      let animationIndex = 0;
+      
+      // Renderizar cada grupo de mes
+      registrosPorMes.forEach(grupo => {
+        // Crear separador de mes
+        const separator = createMonthSeparator(grupo.mes, grupo.anio, mesActual, anioActual);
+        container.appendChild(separator);
         
-        // Animate card entrance
-        setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
+        // Renderizar tarjetas del mes
+        grupo.registros.forEach(hora => {
+          const esDelMesActual = grupo.mes === mesActual && grupo.anio === anioActual;
+          const card = createHoraCard(hora, esDelMesActual);
+          container.appendChild(card);
+          
+          // Animate card entrance
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, animationIndex * 100);
+          
+          animationIndex++;
+        });
       });
     }
 
-    function createHoraCard(hora) {
+    // Agrupar registros por mes y año
+    function agruparPorMes(registros) {
+      const grupos = {};
+      
+      registros.forEach(hora => {
+        const mes = hora.mes;
+        const anio = hora.anio;
+        const key = `${anio}-${mes}`;
+        
+        if (!grupos[key]) {
+          grupos[key] = {
+            mes: mes,
+            anio: anio,
+            registros: []
+          };
+        }
+        
+        grupos[key].registros.push(hora);
+      });
+      
+      // Convertir a array y ordenar por fecha (más reciente primero)
+      return Object.values(grupos).sort((a, b) => {
+        if (a.anio !== b.anio) return b.anio - a.anio;
+        return b.mes - a.mes;
+      });
+    }
+
+    // Crear separador de mes
+    function createMonthSeparator(mes, anio, mesActual, anioActual) {
+      const separator = document.createElement('div');
+      separator.className = 'month-separator';
+      
+      const esDelMesActual = mes === mesActual && anio === anioActual;
+      const nombreMes = obtenerNombreMes(mes);
+      const labelText = esDelMesActual ? 
+        `${nombreMes} ${anio} (Mes Actual)` : 
+        `${nombreMes} ${anio}`;
+      
+      separator.innerHTML = `
+        <div class="month-label">
+          <i class="bi ${esDelMesActual ? 'bi-calendar-check-fill' : 'bi-calendar3'}"></i>
+          ${labelText}
+        </div>
+      `;
+      
+      return separator;
+    }
+
+    // Obtener nombre del mes
+    function obtenerNombreMes(mes) {
+      const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      return meses[mes - 1] || 'Mes';
+    }
+
+    function createHoraCard(hora, esDelMesActual = false) {
       const card = document.createElement('div');
-      card.className = 'hora-card';
+      card.className = 'hora-card' + (esDelMesActual ? ' current-month' : '');
       card.style.opacity = '0';
       card.style.transform = 'translateY(20px)';
       card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -243,6 +321,9 @@ document.addEventListener('DOMContentLoaded', function() {
       const formattedHours = formatHours(hora);
 
       card.setAttribute('data-type', typeInfo.key);
+      if (esDelMesActual) {
+        card.setAttribute('data-current-month', 'true');
+      }
       
       // Calcular tiempo restante para eliminar
       const createdAt = new Date(hora.created_at || hora.fecha);

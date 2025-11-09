@@ -1,6 +1,4 @@
-      document.addEventListener('DOMContentLoaded', function() {
-        loadNavbar();
-      });
+
       
       // Back button function
       function goBack() {

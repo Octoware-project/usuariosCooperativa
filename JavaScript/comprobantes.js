@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Combined filter function
     function applyFilters() {
       const cards = document.querySelectorAll('#comprobantesGrid .comprobante-card:not(.skeleton)');
+      const separators = document.querySelectorAll('#comprobantesGrid .month-separator');
       let visibleCount = 0;
       
       cards.forEach(card => {
@@ -108,6 +109,24 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           card.style.display = 'none';
         }
+      });
+
+      // Ocultar/mostrar separadores según si hay tarjetas visibles en su grupo
+      separators.forEach(separator => {
+        let nextElement = separator.nextElementSibling;
+        let hasVisibleCards = false;
+        
+        // Verificar si hay tarjetas visibles después del separador
+        while (nextElement && !nextElement.classList.contains('month-separator')) {
+          if (nextElement.classList.contains('comprobante-card') && 
+              nextElement.style.display !== 'none') {
+            hasVisibleCards = true;
+            break;
+          }
+          nextElement = nextElement.nextElementSibling;
+        }
+        
+        separator.style.display = hasVisibleCards ? 'flex' : 'none';
       });
       
       // Show "no results" message if needed
@@ -290,30 +309,116 @@ document.addEventListener('DOMContentLoaded', function() {
       const container = document.getElementById('comprobantesGrid');
       
       // Clear existing dynamic cards but keep skeleton
-      const existingCards = container.querySelectorAll('.comprobante-card:not(.skeleton)');
+      const existingCards = container.querySelectorAll('.comprobante-card:not(.skeleton), .month-separator');
       existingCards.forEach(card => card.remove());
       
       if (!facturas || facturas.length === 0) {
         showNoComprobantesMessage('No hay comprobantes disponibles.');
         return;
       }
-      
-      facturas.forEach((factura, index) => {
-        const card = createComprobanteCard(factura);
-        container.appendChild(card);
-        
-        // Animate card appearance
-        setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
+
+      // Ordenar facturas por fecha de creación (más recientes primero)
+      const facturasOrdenadas = [...facturas].sort((a, b) => {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);
+        return dateB - dateA;
       });
+
+      // Agrupar facturas por mes
+      const facturasPorMes = agruparPorMes(facturasOrdenadas);
+      
+      // Obtener mes y año actual
+      const now = new Date();
+      const mesActual = now.getMonth() + 1;
+      const anioActual = now.getFullYear();
+      
+      let animationIndex = 0;
+      
+      // Renderizar cada grupo de mes
+      facturasPorMes.forEach(grupo => {
+        // Crear separador de mes
+        const separator = createMonthSeparator(grupo.mes, grupo.anio, mesActual, anioActual);
+        container.appendChild(separator);
+        
+        // Renderizar facturas del mes
+        grupo.facturas.forEach(factura => {
+          const esDelMesActual = grupo.mes === mesActual && grupo.anio === anioActual;
+          const card = createComprobanteCard(factura, esDelMesActual);
+          container.appendChild(card);
+          
+          // Animate card appearance
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, animationIndex * 100);
+          
+          animationIndex++;
+        });
+      });
+    }
+
+    // Agrupar facturas por mes y año
+    function agruparPorMes(facturas) {
+      const grupos = {};
+      
+      facturas.forEach(factura => {
+        const fecha = new Date(factura.created_at);
+        const mes = fecha.getMonth() + 1;
+        const anio = fecha.getFullYear();
+        const key = `${anio}-${mes}`;
+        
+        if (!grupos[key]) {
+          grupos[key] = {
+            mes: mes,
+            anio: anio,
+            facturas: []
+          };
+        }
+        
+        grupos[key].facturas.push(factura);
+      });
+      
+      // Convertir a array y ordenar por fecha (más reciente primero)
+      return Object.values(grupos).sort((a, b) => {
+        if (a.anio !== b.anio) return b.anio - a.anio;
+        return b.mes - a.mes;
+      });
+    }
+
+    // Crear separador de mes
+    function createMonthSeparator(mes, anio, mesActual, anioActual) {
+      const separator = document.createElement('div');
+      separator.className = 'month-separator';
+      
+      const esDelMesActual = mes === mesActual && anio === anioActual;
+      const nombreMes = obtenerNombreMes(mes);
+      const labelText = esDelMesActual ? 
+        `${nombreMes} ${anio} (Mes Actual)` : 
+        `${nombreMes} ${anio}`;
+      
+      separator.innerHTML = `
+        <div class="month-label">
+          <i class="bi ${esDelMesActual ? 'bi-calendar-check-fill' : 'bi-calendar3'}"></i>
+          ${labelText}
+        </div>
+      `;
+      
+      return separator;
+    }
+
+    // Obtener nombre del mes
+    function obtenerNombreMes(mes) {
+      const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      return meses[mes - 1] || 'Mes';
     }
     
     // Create a single comprobante card
-    function createComprobanteCard(factura) {
+    function createComprobanteCard(factura, esDelMesActual = false) {
       const card = document.createElement('div');
-      card.className = 'comprobante-card';
+      card.className = 'comprobante-card' + (esDelMesActual ? ' current-month' : '');
       card.style.opacity = '0';
       card.style.transform = 'translateY(20px)';
       card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -327,6 +432,9 @@ document.addEventListener('DOMContentLoaded', function() {
       const periodDate = formatPeriodDate(factura.fecha_pago);
       
       card.setAttribute('data-status', status.key);
+      if (esDelMesActual) {
+        card.setAttribute('data-current-month', 'true');
+      }
       card.onclick = () => viewComprobante(factura.id);
       
       const viewTitle = window.t ? window.t('payments.view') : 'Ver detalle';

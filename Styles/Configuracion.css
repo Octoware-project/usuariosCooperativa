@@ -422,12 +422,20 @@
       font-weight: 600;
       color: var(--text-primary);
       margin: 0 0 0.25rem 0;
+      transition: color 0.3s ease;
     }
     
     .option-content p {
       font-size: 0.875rem;
       color: var(--text-secondary);
       margin: 0;
+      opacity: 0.9;
+      transition: color 0.3s ease;
+    }
+    
+    .option-card.active .option-content h3,
+    .option-card.active .option-content p {
+      color: var(--primary);
     }
     
     .option-check {

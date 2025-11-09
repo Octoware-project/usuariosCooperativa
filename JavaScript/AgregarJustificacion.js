@@ -1,5 +1,4 @@
       document.addEventListener('DOMContentLoaded', function() {
-        loadNavbar();
         setDefaultYearMonthDay();
       });
 
