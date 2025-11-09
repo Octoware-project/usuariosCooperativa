@@ -403,14 +403,24 @@
     }
     
     .option-flag {
-      font-size: 2rem;
-      background: transparent;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--primary-rgb), 0.2));
     }
     
-    .option-card:hover .option-flag,
+    .option-flag i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .option-card:hover .option-flag {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
     .option-card.active .option-flag {
-      background: transparent;
-      transform: scale(1.15);
+      background: var(--primary);
+    }
+    
+    .option-card.active .option-flag i {
+      color: white;
     }
     
     .option-content {
