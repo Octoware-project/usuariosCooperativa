@@ -586,6 +586,7 @@ async function handleFormSubmit(e) {
     });
     
     if (response.ok) {
+      const result = await response.json();
       showSuccessModal();
     } else {
       let errorMsg = 'Error al guardar el comprobante';
@@ -593,9 +594,17 @@ async function handleFormSubmit(e) {
         const data = await response.json();
         
         // Handle Laravel validation errors
-        if (data && data.errors) {
+        if (data && data.errores) {
+          // Laravel validation errors under 'errores' key
+          const errors = Object.entries(data.errores).map(([field, messages]) => {
+            return `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`;
+          });
+          errorMsg = errors.join('\n');
+        } else if (data && data.errors) {
           const errors = Object.values(data.errors).flat();
           errorMsg = errors.join(', ');
+        } else if (data && data.mensaje) {
+          errorMsg = data.mensaje;
         } else if (data && data.message) {
           errorMsg = data.message;
         } else if (data && data.error) {
@@ -608,7 +617,7 @@ async function handleFormSubmit(e) {
       showNotification(errorMsg, 'error');
     }
   } catch (err) {
-    showNotification('Error de conexión con el servidor', 'error');
+    showNotification('Error de conexión con el servidor: ' + err.message, 'error');
   } finally {
     // Restore button
     submitBtn.innerHTML = originalText;

@@ -198,6 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const token = localStorage.getItem('access_token');
       const comprobanteUrl = API_URLS.cooperativa.comprobante(facturaId);
       
+      console.log('Cargando comprobante desde:', comprobanteUrl);
+      
       fetch(comprobanteUrl, {
         method: 'GET',
         headers: {
@@ -211,77 +213,110 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const contentType = response.headers.get('content-type');
-        return response.blob();
-      })
-      .then(blob => {
-        const imageUrl = URL.createObjectURL(blob);
-        const contentType = blob.type || 'application/octet-stream';
+        console.log('Content-Type recibido:', contentType);
         
-        if (contentType.startsWith('image/')) {
-          container.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%;">
-              <div style="width: 100%; display: flex; justify-content: center; align-items: center; background: var(--surface-variant); border-radius: 12px; padding: 1rem;">
-                <img src="${imageUrl}" alt="Comprobante" 
-                     style="max-width: 100%; height: auto; max-height: 500px; border-radius: 8px; box-shadow: var(--shadow-lg); cursor: pointer;"
-                     onclick="window.open('${imageUrl}', '_blank')"
-                     title="Click para ver en tamaño completo">
-              </div>
-              <button type="button" class="btn btn-primary" onclick="window.open('${imageUrl}', '_blank')" 
-                      style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; color: white; width: 100%;">
-                <i class="bi bi-arrows-fullscreen me-2"></i>Ver en pantalla completa
-              </button>
-            </div>
-          `;
-        } else if (contentType.includes('pdf')) {
+        return response.blob().then(blob => ({ blob, contentType }));
+      })
+      .then(({ blob, contentType }) => {
+        console.log('Blob recibido, tamaño:', blob.size, 'bytes, tipo:', blob.type);
+        
+        // DEBUG: Leer primeros bytes del blob para verificar integridad
+        blob.slice(0, 20).arrayBuffer().then(buffer => {
+          const bytes = new Uint8Array(buffer);
+          const hexStr = Array.from(bytes).map(b => b.toString(16).padStart(2, '0').toUpperCase()).join('-');
+          console.log('🔍 Primeros bytes del blob:', hexStr);
+          
+          // Verificar firmas conocidas
+          if (bytes[0] === 0xFF && bytes[1] === 0xD8) {
+            console.log('✅ Firma JPEG válida detectada');
+          } else if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) {
+            console.log('✅ Firma PNG válida detectada');
+          } else if (bytes[0] === 0x0D && bytes[1] === 0x0A) {
+            console.error('❌ CORRUPCIÓN: Bytes CRLF al inicio (0D 0A)');
+          } else {
+            console.warn('⚠️ Firma de archivo no reconocida');
+          }
+        });
+        
+        // Crear Object URL (más compatible que Data URL)
+        const objectUrl = URL.createObjectURL(blob);
+        console.log('✅ Object URL creado:', objectUrl);
+        
+        // Renderizar imagen o PDF
+        if (contentType && contentType.includes('pdf')) {
+          console.log('Detectado como PDF');
           container.innerHTML = `
             <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
-              <iframe src="${imageUrl}" 
+              <iframe src="${objectUrl}" 
                       style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: var(--shadow-lg); background: white;" 
                       title="Vista previa del comprobante PDF">
               </iframe>
-              <button type="button" class="btn btn-primary" onclick="window.open('${imageUrl}', '_blank')" 
+              <button type="button" class="btn btn-primary" onclick="window.open('${objectUrl}', '_blank')" 
                       style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; color: white; width: 100%;">
                 <i class="bi bi-arrows-fullscreen me-2"></i>Ver en pantalla completa
               </button>
             </div>
           `;
         } else {
-          // Try to display as image anyway (some servers don't set correct content-type)
-          const img = new Image();
-          img.onload = function() {
-            container.innerHTML = `
+          console.log('Detectado como imagen');
+          container.innerHTML = `
               <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%;">
                 <div style="width: 100%; display: flex; justify-content: center; align-items: center; background: var(--surface-variant); border-radius: 12px; padding: 1rem;">
-                  <img src="${imageUrl}" alt="Comprobante" 
+                  <img id="comprobante-img" src="${objectUrl}" alt="Comprobante" 
                        style="max-width: 100%; height: auto; max-height: 500px; border-radius: 8px; box-shadow: var(--shadow-lg); cursor: pointer;"
-                       onclick="window.open('${imageUrl}', '_blank')"
                        title="Click para ver en tamaño completo">
                 </div>
-                <button type="button" class="btn btn-primary" onclick="window.open('${imageUrl}', '_blank')" 
+                <button type="button" class="btn btn-primary" id="fullscreen-btn" 
                         style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; color: white; width: 100%;">
                   <i class="bi bi-arrows-fullscreen me-2"></i>Ver en pantalla completa
                 </button>
               </div>
             `;
-          };
-          img.onerror = function() {
-            // Si no es imagen, intentar mostrar como PDF en iframe
-            container.innerHTML = `
-              <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
-                <iframe src="${imageUrl}" 
-                        style="width: 100%; height: 500px; border: none; border-radius: 12px; box-shadow: var(--shadow-lg); background: white;" 
-                        title="Vista previa del comprobante">
-                </iframe>
-                <button type="button" class="btn btn-primary" onclick="window.open('${imageUrl}', '_blank')" 
-                        style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; color: white; width: 100%;">
-                  <i class="bi bi-arrows-fullscreen me-2"></i>Ver en pantalla completa
-                </button>
-              </div>
-            `;
-          };
-          img.src = imageUrl;
-        }
-      })
+            
+            const imgElement = container.querySelector('#comprobante-img');
+            const fullscreenBtn = container.querySelector('#fullscreen-btn');
+            
+            if (imgElement) {
+              imgElement.onload = function() {
+                console.log('✅ Imagen cargada exitosamente');
+                console.log('Dimensiones:', this.naturalWidth, 'x', this.naturalHeight);
+              };
+              
+              imgElement.onerror = function(e) {
+                console.error('❌ Error al cargar imagen desde Object URL');
+                console.error('Object URL:', objectUrl);
+                console.error('Content type:', contentType);
+                console.error('Blob size:', blob.size);
+                
+                // Mostrar la imagen como descarga en lugar de error
+                container.innerHTML = `
+                  <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem; background: var(--surface-variant); border-radius: 12px;">
+                    <i class="bi bi-file-earmark-image" style="font-size: 3rem; color: var(--primary);"></i>
+                    <div style="text-align: center;">
+                      <h4 style="color: var(--text-primary); margin: 0 0 0.5rem 0; font-size: 1.125rem;">Archivo disponible</h4>
+                      <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">El navegador no puede mostrar este tipo de archivo</p>
+                      <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0.5rem 0 0 0;">Tipo: ${contentType} | Tamaño: ${(blob.size / 1024).toFixed(2)} KB</p>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="window.open('${objectUrl}', '_blank')" 
+                            style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; color: white;">
+                      <i class="bi bi-download me-2"></i>Descargar archivo
+                    </button>
+                  </div>
+                `;
+              };
+              
+              imgElement.onclick = function() {
+                window.open(objectUrl, '_blank');
+              };
+            }
+            
+            if (fullscreenBtn) {
+              fullscreenBtn.onclick = function() {
+                window.open(objectUrl, '_blank');
+              };
+            }
+          }
+        })
       .catch(error => {
         if (container) {
           container.innerHTML = `
@@ -411,17 +446,26 @@ document.addEventListener('DOMContentLoaded', function() {
           if (!filename.includes('.')) {
             const contentType = response.headers.get('content-type');
             if (contentType) {
-              if (contentType.includes('pdf')) {
+              if (contentType.includes('pdf') || contentType === 'application/pdf') {
                 filename += '.pdf';
-              } else if (contentType.includes('image')) {
-                if (contentType.includes('jpeg') || contentType.includes('jpg')) {
+              } else if (contentType.includes('image') || contentType.startsWith('image/')) {
+                if (contentType.includes('jpeg') || contentType.includes('jpg') || contentType === 'image/jpeg') {
                   filename += '.jpg';
-                } else if (contentType.includes('png')) {
+                } else if (contentType.includes('png') || contentType === 'image/png') {
                   filename += '.png';
+                } else if (contentType.includes('gif') || contentType === 'image/gif') {
+                  filename += '.gif';
+                } else if (contentType.includes('webp') || contentType === 'image/webp') {
+                  filename += '.webp';
                 } else {
                   filename += '.jpg';
                 }
+              } else {
+                // Default para tipos desconocidos
+                filename += '.jpg';
               }
+            } else {
+              filename += '.jpg';
             }
           }
           

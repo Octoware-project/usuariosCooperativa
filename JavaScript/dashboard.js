@@ -172,36 +172,46 @@ function redirectToLogin() {
         const data = await comprobantesPromise;
         
         if (data) {
-          const comprobantes = Array.isArray(data) ? data : (data.data || []);
+          const comprobantes = Array.isArray(data) ? data : (data.data || data.facturas || []);
           
-          // Obtener fecha de hace un mes
-          const oneMonthAgo = new Date();
-          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+          // Obtener primer y último día del mes actual
+          const now = new Date();
+          const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
           
-          // Filtrar comprobantes del último mes
-          const recentComprobantes = comprobantes.filter(c => {
-            const createdDate = new Date(c.created_at);
-            return createdDate >= oneMonthAgo;
+          // Filtrar facturas del mes actual usando fecha_pago
+          const currentMonthFacturas = comprobantes.filter(c => {
+            // Usar fecha_pago en lugar de created_at
+            const dateString = c.fecha_pago || c.created_at;
+            
+            // Parsear fecha sin zona horaria para evitar problemas de UTC
+            const parts = dateString.split(/[-T]/);
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1;
+            const day = parseInt(parts[2]);
+            
+            const paymentDate = new Date(year, month, day);
+            return paymentDate >= firstDayOfMonth && paymentDate <= lastDayOfMonth;
           });
           
-          // Separar por estado
-          const pending = recentComprobantes.filter(c => c.Estado_Pago === 'Pendiente');
-          const approved = recentComprobantes.filter(c => c.Estado_Pago === 'Aceptado');
-          const rejected = recentComprobantes.filter(c => c.Estado_Pago === 'Rechazado');
+          // Separar por estado (priorizar rechazados, luego pendientes, luego aceptados)
+          const rejected = currentMonthFacturas.filter(c => c.Estado_Pago === 'Rechazado');
+          const pending = currentMonthFacturas.filter(c => c.Estado_Pago === 'Pendiente');
+          const approved = currentMonthFacturas.filter(c => c.Estado_Pago === 'Aceptado');
           
           // Mostrar notificaciones
           const notificationsContainer = document.getElementById('paymentNotifications');
           if (notificationsContainer) {
             const notifications = [];
             
+            // Agregar rechazados primero (son los más importantes)
+            rejected.forEach(comp => {
+              notifications.push(createNotificationItem(comp, 'rejected'));
+            });
+            
             // Agregar pendientes
             pending.forEach(comp => {
               notifications.push(createNotificationItem(comp, 'pending'));
-            });
-            
-            // Agregar rechazados (primero porque son importantes)
-            rejected.forEach(comp => {
-              notifications.push(createNotificationItem(comp, 'rejected'));
             });
             
             // Agregar aceptados
@@ -210,12 +220,27 @@ function redirectToLogin() {
             });
             
             if (notifications.length > 0) {
-              notificationsContainer.innerHTML = notifications.slice(0, 5).join('');
+              // Mostrar un resumen en la parte superior
+              const monthName = now.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+              const summary = `
+                <div class="month-summary">
+                  <h6 style="margin: 0 0 0.5rem 0; color: var(--text-primary); font-weight: 600;">
+                    <i class="bi bi-calendar-month"></i> ${monthName.charAt(0).toUpperCase() + monthName.slice(1)}
+                  </h6>
+                  <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-secondary); flex-wrap: wrap;">
+                    ${rejected.length > 0 ? `<span><i class="bi bi-x-circle-fill" style="color: var(--error);"></i> ${rejected.length} Rechazada${rejected.length !== 1 ? 's' : ''}</span>` : ''}
+                    ${pending.length > 0 ? `<span><i class="bi bi-clock-history" style="color: var(--warning);"></i> ${pending.length} Pendiente${pending.length !== 1 ? 's' : ''}</span>` : ''}
+                    ${approved.length > 0 ? `<span><i class="bi bi-check-circle-fill" style="color: var(--success);"></i> ${approved.length} Aceptada${approved.length !== 1 ? 's' : ''}</span>` : ''}
+                  </div>
+                </div>
+              `;
+              notificationsContainer.innerHTML = summary + notifications.join('');
             } else {
+              const monthName = now.toLocaleDateString('es-ES', { month: 'long' });
               notificationsContainer.innerHTML = `
                 <div class="empty-state">
-                  <i class="bi bi-check-circle"></i>
-                  <p>No hay notificaciones</p>
+                  <i class="bi bi-inbox"></i>
+                  <p>No hay facturas en ${monthName}</p>
                 </div>
               `;
             }
@@ -229,27 +254,29 @@ function redirectToLogin() {
     // Crear item de notificación
     function createNotificationItem(comprobante, tipo) {
       const amount = formatCurrency(comprobante.Monto);
-      const date = formatShortDate(comprobante.created_at);
+      // Usar fecha_pago en lugar de created_at
+      const date = formatShortDate(comprobante.fecha_pago || comprobante.created_at);
+      const concepto = comprobante.motivo || comprobante.Concepto || 'Sin concepto';
       
       let icon, title, message, cssClass;
       
       switch(tipo) {
         case 'pending':
           icon = 'bi-clock-history';
-          title = 'Pago Pendiente';
-          message = `${amount} esperando aprobación`;
+          title = 'Factura Pendiente';
+          message = `${concepto} - ${amount}`;
           cssClass = 'pending';
           break;
         case 'approved':
           icon = 'bi-check-circle-fill';
-          title = 'Pago Aceptado';
-          message = `${amount} fue aprobado`;
+          title = 'Factura Aceptada';
+          message = `${concepto} - ${amount}`;
           cssClass = 'approved';
           break;
         case 'rejected':
           icon = 'bi-x-circle-fill';
-          title = 'Pago Rechazado';
-          message = `${amount} fue rechazado`;
+          title = 'Factura Rechazada';
+          message = `${concepto} - ${amount}`;
           cssClass = 'rejected';
           break;
       }
@@ -261,7 +288,8 @@ function redirectToLogin() {
           </div>
           <div class="notification-content">
             <h5>${title}</h5>
-            <p>${message} • ${date}</p>
+            <p>${message}</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">${date}</span>
           </div>
         </div>
       `;
@@ -286,7 +314,13 @@ function redirectToLogin() {
     function formatShortDate(dateString) {
       if (!dateString) return 'N/A';
       try {
-        const date = new Date(dateString);
+        // Parsear fecha sin zona horaria para evitar problemas de UTC
+        const parts = dateString.split(/[-T]/);
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const day = parseInt(parts[2]);
+        
+        const date = new Date(year, month, day);
         const now = new Date();
         const diffTime = Math.abs(now - date);
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));

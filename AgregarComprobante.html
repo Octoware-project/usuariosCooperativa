@@ -90,6 +90,7 @@
   <link rel="stylesheet" href="Styles/AntiFlash.css">
   <link rel="stylesheet" href="Styles/PageLoader.css">
   <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
     
     <link rel="stylesheet" href="Styles/AgregarComprobante.css">
     
@@ -121,7 +122,7 @@
               <i class="bi bi-info-circle"></i>
               <div class="step-number">1</div>
             </div>
-            <span class="step-label" data-i18n="payments.basic_data">Datos B�sicos</span>
+            <span class="step-label" data-i18n="payments.basic_data">Datos Básicos</span>
           </div>
           <div class="step-line"></div>
           <div class="step" data-step="2">
@@ -160,8 +161,8 @@
                   <i class="bi bi-calendar-check"></i>
                 </div>
                 <div class="period-title">
-                  <h3 data-i18n="payments.period">Per�odo del Pago</h3>
-                  <p data-i18n="payments.select_period">Selecciona el mes y a�o correspondiente a tu comprobante</p>
+                  <h3 data-i18n="payments.period">Período del Pago</h3>
+                  <p data-i18n="payments.select_period">Selecciona el mes y año correspondiente a tu comprobante</p>
                 </div>
               </div>
 
@@ -176,7 +177,7 @@
                       <i class="bi bi-chevron-right"></i>
                     </div>
                     <div class="selected-year" id="selectedYearDisplay">
-                      <span class="year-label" data-i18n="common.year">A�o</span>
+                      <span class="year-label" data-i18n="common.year">Año</span>
                       <span class="year-number">----</span>
                     </div>
                   </div>
@@ -210,8 +211,8 @@
 
                 <div class="selector-card year-card">
                   <div class="card-header">
-                    <i class="bi bi-calendar-year"></i>
-                    <span data-i18n="common.year">A�o del Pago</span>
+                    <i class="bi bi-calendar-year"><i>
+                    <span data-i18n="common.year">Año del Pago</span>
                   </div>
                   <div class="card-content">
                     <input type="number" id="Anio" name="Anio" min="2000" max="2100" required 
@@ -227,7 +228,7 @@
               <div class="period-info">
                 <div class="info-item">
                   <i class="bi bi-info-circle"></i>
-                  <span data-i18n="payments.period_match_info">Aseg�rate de que el per�odo coincida con tu comprobante de pago</span>
+                  <span data-i18n="payments.period_match_info">Asegúrate de que el período coincida con tu comprobante de pago</span>
                 </div>
               </div>
             </div>
@@ -238,7 +239,7 @@
           <div class="step-content">
             <div class="step-header">
               <h3><i class="bi bi-cash-stack"></i> <span data-i18n="payments.payment_details">Detalles del Pago</span></h3>
-              <p data-i18n="payments.enter_amount">Ingresa el monto y m�todo de pago</p>
+              <p data-i18n="payments.enter_amount">Ingresa el monto y método de pago</p>
             </div>
             
             <div class="input-group">
@@ -257,12 +258,12 @@
               </label>
               <textarea id="motivo" name="motivo" class="modern-textarea" rows="3" maxlength="500" required data-i18n-placeholder="payments.explain_payment"></textarea>
               <div class="input-helper">
-                <small data-i18n="payments.explain_payment">Ejemplo: Cuota mensual, abono a deuda, pago de servicios, etc. (m�n. 5 caracteres, m�x. 500)</small>
+                <small data-i18n="payments.explain_payment">Ejemplo: Cuota mensual, abono a deuda, pago de servicios, etc. (mín. 5 caracteres, máx. 500)</small>
               </div>
             </div>
             
             <div class="payment-methods">
-              <label class="method-label" data-i18n="payments.payment_method">M�todo de Pago</label>
+              <label class="method-label" data-i18n="payments.payment_method">Método de Pago</label>
               <div class="payment-grid">
                 <label class="payment-option">
                   <input type="radio" name="tipo_pago" value="Transferencia" required>
@@ -285,22 +286,22 @@
                 </label>
                 
                 <label class="payment-option">
-                  <input type="radio" name="tipo_pago" value="D�bito" required>
+                  <input type="radio" name="tipo_pago" value="Débito" required>
                   <div class="payment-card">
                     <div class="payment-icon">
                       <i class="bi bi-credit-card"></i>
                     </div>
-                    <span data-i18n="payments.card">D�bito</span>
+                    <span data-i18n="payments.debit">Débito</span>
                   </div>
                 </label>
                 
                 <label class="payment-option">
-                  <input type="radio" name="tipo_pago" value="Cr�dito" required>
+                  <input type="radio" name="tipo_pago" value="Crédito" required>
                   <div class="payment-card">
                     <div class="payment-icon">
                       <i class="bi bi-credit-card-2-front"></i>
                     </div>
-                    <span data-i18n="payments.card">Cr�dito</span>
+                    <span data-i18n="payments.credit">Crédito</span>
                   </div>
                 </label>
               </div>
@@ -321,13 +322,13 @@
                 <div class="upload-icon">
                   <i class="bi bi-cloud-upload"></i>
                 </div>
-                <h4 data-i18n="payments.drag_drop">Arrastra tu archivo aqu�</h4>
+                <h4 data-i18n="payments.drag_drop">Arrastra tu archivo aquí</h4>
                 <p><span data-i18n="payments.or">o</span> <span data-i18n="payments.click_browse">haz clic para seleccionar</span></p>
                 <div class="upload-formats">
                   <span class="format-tag">JPG</span>
                   <span class="format-tag">PNG</span>
                   <span class="format-tag">PDF</span>
-                  <span class="size-limit" data-i18n="payments.supported_formats">M�x. 5MB</span>
+                  <span class="size-limit" data-i18n="payments.supported_formats">Máx. 5MB</span>
                 </div>
               </div>
               
@@ -356,7 +357,7 @@
           <div class="step-content">
             <div class="step-header">
               <h3><i class="bi bi-check2-circle"></i> <span data-i18n="payments.review_confirm">Confirmar Datos</span></h3>
-              <p data-i18n="payments.review_info">Revisa la informaci�n antes de guardar</p>
+              <p data-i18n="payments.review_info">Revisa la información antes de guardar</p>
             </div>
             
             <div class="confirmation-card">
@@ -369,7 +370,7 @@
               
               <div class="confirmation-details">
                 <div class="detail-row">
-                  <span class="detail-label" data-i18n="payments.period">Per�odo:</span>
+                  <span class="detail-label" data-i18n="payments.period">Período:</span>
                   <span class="detail-value" id="confirmPeriod">-</span>
                 </div>
                 <div class="detail-row">
@@ -377,7 +378,7 @@
                   <span class="detail-value amount" id="confirmAmount">-</span>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label" data-i18n="payments.payment_method">M�todo:</span>
+                  <span class="detail-label" data-i18n="payments.payment_method">Método:</span>
                   <span class="detail-value" id="confirmMethod">-</span>
                 </div>
                 <div class="detail-row">
@@ -399,7 +400,7 @@
                     <i class="bi bi-check"></i>
                   </span>
                   <span class="checkbox-text" data-i18n="payments.terms_accept">
-                    Confirmo que la informaci�n proporcionada es correcta y ver�dica
+                    Confirmo que la información proporcionada es correcta y verídica
                   </span>
                 </label>
               </div>
@@ -430,8 +431,8 @@
               <div class="checkmark"></div>
             </div>
           </div>
-          <h3 data-i18n="payments.receipt_saved">�Comprobante Guardado!</h3>
-          <p data-i18n="payments.receipt_submitted">Tu comprobante ha sido enviado correctamente y est� siendo revisado.</p>
+          <h3 data-i18n="payments.receipt_saved">¡Comprobante Guardado!</h3>
+          <p data-i18n="payments.receipt_submitted">Tu comprobante ha sido enviado correctamente y está siendo revisado.</p>
           <button class="btn btn-primary" onclick="goToComprobantes()">
             <span data-i18n="payments.view_receipts">Ver Comprobantes</span>
           </button>

@@ -465,6 +465,32 @@ html, body {
       font-weight: 700;
       color: var(--text-primary);
     }
+
+    /* Month Summary */
+    .month-summary {
+      padding: 1rem;
+      background: var(--surface-variant);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .month-summary h6 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .month-summary i.bi-calendar-month {
+      color: var(--primary);
+    }
+
+    .month-summary span {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
     
     /* ============================================
        MOBILE NAVIGATION STYLES

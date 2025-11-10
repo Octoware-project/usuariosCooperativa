@@ -362,9 +362,13 @@ document.addEventListener('DOMContentLoaded', function() {
       const grupos = {};
       
       facturas.forEach(factura => {
-        const fecha = new Date(factura.created_at);
-        const mes = fecha.getMonth() + 1;
-        const anio = fecha.getFullYear();
+        // Usar fecha_pago en lugar de created_at para agrupar correctamente
+        const dateString = factura.fecha_pago || factura.created_at;
+        
+        // Parsear fecha sin zona horaria para evitar problemas de UTC
+        const parts = dateString.split(/[-T]/);
+        const anio = parseInt(parts[0]);
+        const mes = parseInt(parts[1]);
         const key = `${anio}-${mes}`;
         
         if (!grupos[key]) {
@@ -427,7 +431,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Determine status and icon
       const status = getStatusInfo(factura.Estado_Pago);
       const paymentIcon = getPaymentIcon(factura.tipo_pago);
-      const formattedDate = formatDate(factura.created_at);
+      // Usar fecha_pago en lugar de created_at para mostrar la fecha correcta
+      const formattedDate = formatDate(factura.fecha_pago || factura.created_at);
       const formattedAmount = formatCurrency(factura.Monto);
       const periodDate = formatPeriodDate(factura.fecha_pago);
       
@@ -530,7 +535,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!dateString) return 'N/A';
       
       try {
-        const date = new Date(dateString);
+        // Parsear fecha sin zona horaria para evitar problemas de UTC
+        const parts = dateString.split(/[-T]/);
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1; // Months are 0-indexed
+        const day = parseInt(parts[2]);
+        
+        const date = new Date(year, month, day);
         return date.toLocaleDateString('es-ES', {
           day: '2-digit',
           month: '2-digit',
@@ -560,13 +571,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!fechaPago) return 'N/A';
       
       try {
-        const date = new Date(fechaPago);
+        // Parsear fecha sin zona horaria para evitar problemas de UTC
+        const parts = fechaPago.split(/[-T]/);
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        
         const meses = [
           'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
         ];
         
-        return `${meses[date.getMonth()]} ${date.getFullYear()}`;
+        return `${meses[month]} ${year}`;
       } catch (error) {
         return 'N/A';
       }

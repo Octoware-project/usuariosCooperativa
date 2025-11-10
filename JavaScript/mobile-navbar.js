@@ -171,7 +171,7 @@ const MobileNavbar = {
         if (userDropdown && userIconEl && 
             !userIconEl.contains(e.target) && 
             !userDropdown.contains(e.target)) {
-          userDropdown.classList.remove('active');
+          userDropdown.classList.remove('show');
         }
       }, { passive: true });
       
@@ -238,7 +238,7 @@ const MobileNavbar = {
       const dropdown = document.getElementById('userDropdownMobile');
       
       if (dropdown) {
-        dropdown.classList.toggle('active');
+        dropdown.classList.toggle('show');
       }
     }
   },

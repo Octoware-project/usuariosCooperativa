@@ -21,6 +21,7 @@ const API_URLS = {
         facturas: () => `${API_CONFIG.API_COOPERATIVA}/api/facturas`,
         facturasById: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}`,
         comprobante: (id) => `${API_CONFIG.API_COOPERATIVA}/api/facturas/${id}/comprobante`,
+        comprobantes: () => `${API_CONFIG.API_COOPERATIVA}/api/facturas`,
         planesTrabajoList: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo`,
         planesTrabajoProgreso: (id) => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/${id}/progreso`,
         planesTrabajoDashboard: () => `${API_CONFIG.API_COOPERATIVA}/api/planes-trabajo/dashboard`,
