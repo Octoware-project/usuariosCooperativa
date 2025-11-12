@@ -1,380 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Horas Mensuales</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles_tabla.css">
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      const themes = {
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#ffffff',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+          '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)'
+        },
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#404041',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6',
+          '--navbar-bg': 'rgba(30, 33, 40, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.3)',
+          '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+          '--sidebar-bg': '#1e2128',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #be185d 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(236, 72, 153, 0.15)'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/HorasMensuales.css">
 </head>
 
 <body>
+  
   <div id="navbar"></div>
-  <div class="main-container">
-    <div class="left-panel">
-      <div class="facturas-box">
-        <div class="facturas-header">
-          <h2>Horas Mensuales</h2>
-          <a href="AgregarHoras.html" class="btn btn-agregar">Agregar</a>
+
+  <div class="horas-container">
+    <div class="horas-content">
+      
+      <div class="modern-header">
+        <div class="header-title">
+          <h2><i class="bi bi-clock-history"></i> <span data-i18n="hours.title">Horas Mensuales</span></h2>
+          <p class="header-subtitle" data-i18n="hours.subtitle">Registra y gestiona tus horas de trabajo mensuales</p>
         </div>
-        <table class="hours-table facturas-table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Horas</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-horas-tbody">
-            <!-- Skeleton loader -->
-            <tr class="skeleton-row">
-              <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
-              <td><div class="skeleton-box" style="width:50px;height:18px;"></div></td>
-              <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
-            </tr>
-            <tr class="skeleton-row">
-              <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
-              <td><div class="skeleton-box" style="width:50px;height:18px;"></div></td>
-              <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
-            </tr>
-            <tr class="skeleton-row">
-              <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
-              <td><div class="skeleton-box" style="width:50px;height:18px;"></div></td>
-              <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="header-actions">
+          <button class="btn btn-filter" onclick="toggleFilters()">
+            <i class="bi bi-funnel"></i> <span data-i18n="common.filter">Filtros</span>
+          </button>
+          <a href="AgregarHoras.html" class="btn btn-primary-modern">
+            <i class="bi bi-plus-circle"></i> <span data-i18n="hours.add_hours">Agregar Horas</span>
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="right-panel">
-      <div class="clock-icon-container">
-  <img id="progreso-icono" src="img/clock_icon.svg" alt="Reloj" class="clock-icon" />
+
+      <div class="filters-panel" id="filtersPanel">
+        <div class="filters-content">
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-funnel"></i><span data-i18n="hours.filterByType">Filtrar por tipo</span>
+            </label>
+            <div class="filter-chips">
+              <div class="chip active" onclick="filterByType('all')">
+                <i class="bi bi-collection"></i><span data-i18n="common.all">Todas</span>
+              </div>
+              <div class="chip" onclick="filterByType('horas-reales')">
+                <i class="bi bi-clock"></i><span data-i18n="hours.realHours">Horas Reales</span>
+              </div>
+              <div class="chip" onclick="filterByType('justificacion')">
+                <i class="bi bi-file-earmark-text"></i><span data-i18n="hours.justifications">Justificaciones</span>
+              </div>
+            </div>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-calendar-month"></i><span data-i18n="hours.searchByDate">Buscar por fecha</span>
+            </label>
+            <div class="search-input-group">
+              <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="hours.searchPlaceholder" placeholder="Buscar por fecha o descripción...">
+              <button class="search-btn" onclick="searchHoras()">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="progress-info">
-        <div class="progress-label">Progreso del mes actual</div>
-        <div class="progress-bar-bg" id="progress-bar-bg-skeleton">
-          <div class="skeleton-box" style="width:100%;height:24px;"></div>
+
+      <div class="horas-main-layout">
+        
+        <div class="horas-left-panel">
+          <div class="horas-grid" id="horasGrid">
+            <div class="hora-card skeleton" id="skeletonLoader">
+              <div class="card-header">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-info">
+                  <div class="skeleton-line skeleton-title"></div>
+                  <div class="skeleton-line skeleton-subtitle"></div>
+                </div>
+                <div class="skeleton-badge"></div>
+              </div>
+              <div class="card-body">
+                <div class="skeleton-line skeleton-amount"></div>
+                <div class="skeleton-line skeleton-date"></div>
+              </div>
+            </div>
+            <div class="hora-card skeleton">
+              <div class="card-header">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-info">
+                  <div class="skeleton-line skeleton-title"></div>
+                  <div class="skeleton-line skeleton-subtitle"></div>
+                </div>
+                <div class="skeleton-badge"></div>
+              </div>
+              <div class="card-body">
+                <div class="skeleton-line skeleton-amount"></div>
+                <div class="skeleton-line skeleton-date"></div>
+              </div>
+            </div>
+            <div class="hora-card skeleton">
+              <div class="card-header">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-info">
+                  <div class="skeleton-line skeleton-title"></div>
+                  <div class="skeleton-line skeleton-subtitle"></div>
+                </div>
+                <div class="skeleton-badge"></div>
+              </div>
+              <div class="card-body">
+                <div class="skeleton-line skeleton-amount"></div>
+                <div class="skeleton-line skeleton-date"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="progress-bar-bg" id="progress-bar-bg-real" style="display:none;">
-          <div class="progress-bar-fill" id="progress-bar-fill" style="width:0%"></div>
+
+        <div class="horas-right-panel">
+          <div class="progress-dashboard">
+            <div class="progress-header">
+              <div class="progress-icon-container">
+                <img id="progreso-icono" src="img/clock_icon.svg" alt="Reloj" class="progress-icon" />
+              </div>
+              <h3 data-i18n="hours.monthlyProgress">Progreso Mensual</h3>
+              <p data-i18n="hours.progressTracking">Seguimiento de horas del mes actual</p>
+            </div>
+            
+            <div class="progress-content">
+              <div class="progress-skeleton" id="progress-bar-bg-skeleton">
+                <div class="skeleton-line" style="height: 32px; margin-bottom: 1rem;"></div>
+                <div class="skeleton-line" style="height: 16px; width: 60%;"></div>
+              </div>
+              
+              <div class="progress-container" id="progress-bar-container" style="display:none;">
+                <div class="progress-bar-wrapper">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+                    <div class="progress-text" id="progress-percentage">0%</div>
+                  </div>
+                </div>
+                <div class="progress-details">
+                  <div class="progress-values" id="progress-values"></div>
+                  <div class="progress-finished" id="progress-finished" style="display:none;">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span data-i18n="hours.monthCompleted">Plan del mes completado</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="quick-stats">
+                <div class="stat-item">
+                  <div class="stat-icon success">
+                    <i class="bi bi-clock-fill"></i>
+                  </div>
+                  <div class="stat-info">
+                    <div class="stat-number" id="stat-horas-reales">0</div>
+                    <div class="stat-label" data-i18n="hours.realHours">Horas Reales</div>
+                  </div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-icon warning">
+                    <i class="bi bi-file-text-fill"></i>
+                  </div>
+                  <div class="stat-info">
+                    <div class="stat-number" id="stat-justificaciones">0</div>
+                    <div class="stat-label" data-i18n="hours.justifications">Justificaciones</div>
+                  </div>
+                </div>
+              </div>
+
+              <button id="btn-ver-planes" class="btn-action-modern">
+                <i class="bi bi-calendar-check"></i>
+                <span data-i18n="hours.viewWorkPlans">Ver Planes de Trabajo</span>
+              </button>
+            </div>
+          </div>
         </div>
-  <div class="progress-values" id="progress-values">&nbsp;</div>
-  <div class="progress-finished" id="progress-finished" style="display:none;color:#27ae60;font-weight:600;margin-top:10px;text-align:center;">Plan del mes Terminado</div>
-  <button id="btn-ver-planes" class="btn-ver-planes" style="margin:32px auto 0 auto;display:block;width:100%;max-width:260px;padding:12px 0;font-size:1.1rem;font-weight:600;background:#1976d2;color:#fff;border:none;border-radius:8px;box-shadow:0 2px 8px rgba(25,118,210,0.08);cursor:pointer;transition:background 0.2s;">Ver Planes de Trabajo</button>
+
       </div>
     </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="JavaScript/dashboard.js"></script>
-  <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/loader.js?v=2"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
   <script src="JavaScript/horasmensuales.js"></script>
-  <script>
-    // Redirigir al hacer click en el botón de planes de trabajo
-    document.addEventListener('DOMContentLoaded', function() {
-      var btnPlanes = document.getElementById('btn-ver-planes');
-      if (btnPlanes) {
-        btnPlanes.addEventListener('click', function() {
-          window.location.href = 'PlanesTrabajoUsuario.html';
-        });
-      }
-    });
-    // Mostrar skeleton loaders
-    function mostrarSkeletons() {
-      // Tabla
-      const tbody = document.getElementById('tabla-horas-tbody');
-      if (tbody) {
-        Array.from(tbody.getElementsByClassName('skeleton-row')).forEach(row => row.style.display = '');
-      }
-      // Progreso
-      const barSkeleton = document.getElementById('progress-bar-bg-skeleton');
-      const barReal = document.getElementById('progress-bar-bg-real');
-      if (barSkeleton) barSkeleton.style.display = '';
-      if (barReal) barReal.style.display = 'none';
-      const values = document.getElementById('progress-values');
-      if (values) values.innerHTML = '&nbsp;';
-    }
+  <script src="JavaScript/dashboard.js?v=2"></script>
+  <script src="JavaScript/Navbar.js"></script>
 
-    // Ocultar skeleton loaders
-    function ocultarSkeletons() {
-      // Tabla
-      const tbody = document.getElementById('tabla-horas-tbody');
-      if (tbody) {
-        Array.from(tbody.getElementsByClassName('skeleton-row')).forEach(row => row.style.display = 'none');
-      }
-      // Progreso
-      const barSkeleton = document.getElementById('progress-bar-bg-skeleton');
-      const barReal = document.getElementById('progress-bar-bg-real');
-      if (barSkeleton) barSkeleton.style.display = 'none';
-      if (barReal) barReal.style.display = '';
-    }
-
-    // Cargar progreso de horas trabajadas vs plan de trabajo actual
-    async function cargarProgreso() {
-      mostrarSkeletons();
-      const token = localStorage.getItem('access_token');
-      if (!token) return;
-      const now = new Date();
-      const mes = now.getMonth() + 1;
-      const anio = now.getFullYear();
-      let horasTrabajadas = 0;
-      let horasPlan = 0;
-      let hayPlan = false;
-  try {
-        // Obtener horas trabajadas del mes actual
-        const respHoras = await fetch('http://localhost:8001/api/horas/calcular', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-          },
-          body: JSON.stringify({ mes, anio })
-        });
-        if (respHoras.ok) {
-          const data = await respHoras.json();
-          horasTrabajadas = data.total_horas || 0;
-        }
-        // Obtener plan de trabajo actual del usuario
-        const respPlan = await fetch(`http://localhost:8001/api/planes-trabajo`, {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if (respPlan.ok) {
-          const planes = await respPlan.json();
-          if (Array.isArray(planes)) {
-            const plan = planes.find(p => p.mes == mes && p.anio == anio);
-            if (plan) {
-              horasPlan = plan.horas_requeridas || 0;
-              hayPlan = true;
-            }
-          }
-        }
-  } catch {}
-  // Ocultar skeletons y mostrar datos reales
-  ocultarSkeletons();
-  // Actualizar barra y valores
-      const fill = document.getElementById('progress-bar-fill');
-      const values = document.getElementById('progress-values');
-      const icono = document.getElementById('progreso-icono');
-      const finishedMsg = document.getElementById('progress-finished');
-      let percent = 0;
-      if (horasPlan > 0) percent = Math.min(100, Math.round((horasTrabajadas / horasPlan) * 100));
-      fill.style.width = percent + '%';
-      if (hayPlan) {
-        values.textContent = `${horasTrabajadas} / ${horasPlan} horas`;
-        if (percent === 100) {
-          if (icono) icono.src = 'img/approved_icon.svg'; // Debes tener este icono en tu carpeta img
-          if (finishedMsg) finishedMsg.style.display = 'block';
-        } else {
-          if (icono) icono.src = 'img/clock_icon.svg';
-          if (finishedMsg) finishedMsg.style.display = 'none';
-        }
-      } else {
-        values.textContent = 'No hay plan de trabajo vigente';
-        fill.style.width = '0%';
-        if (icono) icono.src = 'img/clock_icon.svg';
-        if (finishedMsg) finishedMsg.style.display = 'none';
-      }
-    }
-    cargarProgreso();
-  </script>
-  <style>
-    .skeleton-box {
-      background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
-      border-radius: 6px;
-      animation: skeleton-loading 1.2s infinite linear;
-      display: inline-block;
-    }
-    @keyframes skeleton-loading {
-      0% { background-position: -200px 0; }
-      100% { background-position: calc(200px + 100%) 0; }
-    }
-    #navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .main-container {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-      min-height: 100vh;
-      padding: 48px 0 48px 0;
-      gap: 32px;
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      margin: 56px 0 32px 0;
-    }
-    .left-panel {
-      flex: 2;
-      min-width: 350px;
-      max-width: 800px;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .right-panel {
-      flex: 1;
-      min-width: 300px;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      background: rgba(255,255,255,0.7);
-      border-radius: 18px;
-      box-shadow: 0 2px 12px rgba(25,118,210,0.08);
-      padding: 32px 24px 24px 24px;
-      margin-top: 0;
-      height: 100%;
-      /* Ahora la altura es igual a la de la tabla */
-    }
-    .clock-icon-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-    .clock-icon {
-      width: 80px;
-      height: 80px;
-      display: block;
-    }
-    .progress-info {
-      width: 100%;
-      margin-top: 8px;
-    }
-    .progress-label {
-      font-size: 1.1rem;
-      color: #1976d2;
-      font-weight: 600;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 24px;
-      background: #e3f2fd;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 8px;
-      box-shadow: 0 1px 4px rgba(25,118,210,0.08);
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #1976d2 60%, #64b5f6 100%);
-      border-radius: 12px 0 0 12px;
-      transition: width 0.6s cubic-bezier(.4,2,.3,1);
-    }
-    .progress-values {
-      text-align: center;
-      font-size: 1rem;
-      color: #1976d2;
-      font-weight: 500;
-    }
-  body {
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
-    }
-    .facturas-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 48px 0 48px 0;
-    }
-    .facturas-box {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 32px 32px 24px 32px;
-      min-width: 350px;
-      max-width: 1200px;
-      width: 100%;
-    }
-    .facturas-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    .facturas-header h2 {
-      margin: 0;
-      font-size: 2rem;
-      color: #d81b60;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .btn-agregar {
-      background: #d81b60;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 22px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: background 0.2s;
-      box-shadow: 0 2px 8px rgba(216,27,96,0.08);
-    }
-    .btn-agregar:hover {
-      background: #ad1457;
-    }
-    .facturas-table thead {
-      background: #C8EAF1 ;
-    }
-    .facturas-table thead th {
-      color: #154360;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-bottom: 2px solid #C8EAF1;
-      border-radius: 0 !important;
-    }
-    .facturas-table tbody tr {
-      transition: background 0.2s;
-      border-radius: 0 !important;
-    }
-    .facturas-table tbody tr:hover {
-      background: #C8EAF1;
-    }
-    .facturas-table td {
-      border-radius: 0 !important;
-    }
-    .btn-cancelar {
-      background: #fff;
-      color: #d81b60;
-      border: 1px solid #d81b60;
-      border-radius: 6px;
-      padding: 7px 16px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-left: 8px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-cancelar:hover {
-      background: #f8bbd0;
-      color: #ad1457;
-    }
-    .btn-group {
-      margin-top: 18px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    @media (max-width: 600px) {
-      .facturas-box {
-        padding: 16px 4px 12px 4px;
-        min-width: unset;
-        max-width: 100vw;
-      }
-      .facturas-header h2 {
-        font-size: 1.3rem;
-      }
-      .btn-agregar {
-        padding: 8px 12px;
-        font-size: 0.95rem;
-      }
-    }
-  </style>
 </body>
 
 </html>

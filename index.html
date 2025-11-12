@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Minimalista</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/Login.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2 data-i18n="common.login">Iniciar Sesión</h2>
+    <form id="loginForm" autocomplete="on">
+      <input type="email" id="usuario" data-i18n-placeholder="common.email" placeholder="Correo electrónico" autocomplete="username" required />
+      <input type="password" id="password" data-i18n-placeholder="common.password" placeholder="Contraseña" autocomplete="current-password" required />
+      <button type="button" id="boton" data-i18n="common.login">Iniciar Sesión</button>
+    </form>
+    <div class="loader" id="loader" style="display:none;" data-i18n="common.loggingIn">Iniciando sesión...</div>
+    <div class="error" id="error"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/Index.js"></script>
+  </body>
+</html>

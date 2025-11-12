@@ -1,219 +1,338 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Comprobantes</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles_tabla.css">
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
+  <style id="theme-vars">
+    :root {
+      /* Default dark theme variables - will be overridden by script if light theme */
+      --primary: #ec4899;
+      --primary-rgb: 236, 72, 153;
+      --primary-light: #f472b6;
+      --primary-dark: #db2777;
+      --surface: #1e2128;
+      --surface-variant: #282c34;
+      --surface-hover: #2d3139;
+      --bg-gradient: #212529;
+      --text-primary: #e4e4e7;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --text-tertiary: #71717a;
+      --border: #3f3f46;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+      --shadow-lg: none;
+      --shadow-xl: none;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #ec4899;
+      --btn-primary-bg: #ec4899;
+      --btn-primary-hover: #f472b6;
+      --navbar-bg: rgba(30, 33, 40, 0.95);
+      --navbar-border: rgba(63, 63, 70, 0.5);
+      --navbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --icon-success-bg: rgba(16, 185, 129, 0.1);
+      --icon-warning-bg: rgba(245, 158, 11, 0.1);
+      --icon-error-bg: rgba(239, 68, 68, 0.1);
+      --status-approved-bg: rgba(16, 185, 129, 0.1);
+      --status-approved-color: #10b981;
+      --status-pending-bg: rgba(245, 158, 11, 0.1);
+      --status-pending-color: #f59e0b;
+      --status-rejected-bg: rgba(239, 68, 68, 0.1);
+      --status-rejected-color: #ef4444;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --sidebar-bg: #1e2128;
+      --sidebar-header-bg: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+      --sidebar-hover: rgba(236, 72, 153, 0.15);
+    }
+  </style>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      const themes = {
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#212529',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--text-tertiary': '#71717a',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': 'none',
+          '--shadow-xl': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6',
+          '--navbar-bg': 'rgba(30, 33, 40, 0.95)',
+          '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+          '--navbar-shadow': '0 4px 12px rgba(0, 0, 0, 0.4)',
+          '--icon-success-bg': 'rgba(16, 185, 129, 0.1)',
+          '--icon-warning-bg': 'rgba(245, 158, 11, 0.1)',
+          '--icon-error-bg': 'rgba(239, 68, 68, 0.1)',
+          '--status-approved-bg': 'rgba(16, 185, 129, 0.1)',
+          '--status-approved-color': '#10b981',
+          '--status-pending-bg': 'rgba(245, 158, 11, 0.1)',
+          '--status-pending-color': '#f59e0b',
+          '--status-rejected-bg': 'rgba(239, 68, 68, 0.1)',
+          '--status-rejected-color': '#ef4444',
+          '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.4)',
+          '--sidebar-bg': '#1e2128',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #be185d 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(236, 72, 153, 0.15)'
+        },
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#ffffff',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--text-tertiary': '#d1d5db',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
+          '--shadow-xl': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.95)',
+          '--navbar-border': 'rgba(229, 231, 235, 0.5)',
+          '--navbar-shadow': '0 4px 12px rgba(0, 0, 0, 0.1)',
+          '--icon-success-bg': 'rgba(16, 185, 129, 0.1)',
+          '--icon-warning-bg': 'rgba(245, 158, 11, 0.1)',
+          '--icon-error-bg': 'rgba(239, 68, 68, 0.1)',
+          '--status-approved-bg': 'rgba(16, 185, 129, 0.1)',
+          '--status-approved-color': '#059669',
+          '--status-pending-bg': 'rgba(245, 158, 11, 0.1)',
+          '--status-pending-color': '#d97706',
+          '--status-rejected-bg': 'rgba(239, 68, 68, 0.1)',
+          '--status-rejected-color': '#dc2626',
+          '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.08)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  <link rel="stylesheet" href="Styles/Comprobantes.css">
+  
+  <script src="JavaScript/i18n.js"></script>
+ 
 </head>
 
 <body>
+
   <div id="navbar"></div>
+  
   <div class="facturas-container">
     <div class="facturas-box">
-      <div class="facturas-header">
-        <h2>Facturas</h2>
-        <a href="AgregarComprobante.html" class="btn btn-agregar">Agregar</a>
+      <div class="modern-header">
+        <div class="header-title">
+          <h2><i class="bi bi-receipt"></i> <span data-i18n="payments.title">Mis Comprobantes</span></h2>
+          <p class="header-subtitle" data-i18n="payments.subtitle">Gestiona tus pagos y documentos</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-filter" onclick="toggleFilters()">
+            <i class="bi bi-funnel"></i> <span data-i18n="common.filter">Filtros</span>
+          </button>
+          <a href="AgregarComprobante.html" class="btn btn-primary-modern">
+            <i class="bi bi-plus-circle"></i> <span data-i18n="payments.add_receipt">Nuevo Comprobante</span>
+          </a>
+        </div>
       </div>
-      <div class="filtro-mes-container" style="display:flex;align-items:center;margin-bottom:18px;">
-        <label for="filtro-mes" style="font-weight:600;margin-right:8px;">Filtrar por mes:</label>
-        <select id="filtro-mes" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc; margin-right:10px;">
-          <option value="">Todos</option>
-          <option value="1">Enero</option>
-          <option value="2">Febrero</option>
-          <option value="3">Marzo</option>
-          <option value="4">Abril</option>
-          <option value="5">Mayo</option>
-          <option value="6">Junio</option>
-          <option value="7">Julio</option>
-          <option value="8">Agosto</option>
-          <option value="9">Septiembre</option>
-          <option value="10">Octubre</option>
-          <option value="11">Noviembre</option>
-          <option value="12">Diciembre</option>
-        </select>
-        <label for="filtro-anio" style="font-weight:600;margin-right:8px;">Año:</label>
-  <input type="number" id="filtro-anio" min="2000" max="2100" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc;width:100px;">
+      
+      <div class="filters-panel" id="filtersPanel">
+        <div class="filters-content">
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-calendar3"></i> <span data-i18n="payments.period">Período</span>
+            </label>
+            <div class="filter-chips">
+              <button class="chip active" data-period="all" data-i18n="payments.filter_all">Todos</button>
+              <button class="chip" data-period="month" data-i18n="payments.filter_month">Este mes</button>
+              <button class="chip" data-period="quarter" data-i18n="payments.filter_quarter">Trimestre</button>
+              <button class="chip" data-period="year" data-i18n="payments.filter_year">Este año</button>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-tag"></i> <span data-i18n="payments.status">Estado</span>
+            </label>
+            <div class="filter-chips">
+              <button class="chip active" data-status="all" data-i18n="payments.filter_all">Todos</button>
+              <button class="chip" data-status="approved">
+                <i class="bi bi-check-circle"></i> <span data-i18n="payments.filter_approved">Aprobado</span>
+              </button>
+              <button class="chip" data-status="pending">
+                <i class="bi bi-clock"></i> <span data-i18n="payments.filter_pending">Pendiente</span>
+              </button>
+              <button class="chip" data-status="rejected">
+                <i class="bi bi-x-circle"></i> <span data-i18n="payments.filter_rejected">Rechazado</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-search"></i> <span data-i18n="common.search">Buscar</span>
+            </label>
+            <div class="search-input-group">
+              <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="payments.search_placeholder" placeholder="Buscar comprobantes...">
+              <button class="search-btn">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <table class="hours-table facturas-table">
-        <thead>
-          <tr>
-            <th>Ingreso</th>
-            <th>Mes</th>
-            <th>Tipo de Pago</th>
-            <th>Monto</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-comprobantes-tbody">
-          <!-- Skeleton loader -->
-          <tr class="skeleton-row">
-            <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:100px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:60px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
-          </tr>
-          <tr class="skeleton-row">
-            <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:100px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:60px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
-          </tr>
-          <tr class="skeleton-row">
-            <td><div class="skeleton-box" style="width:80px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:100px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:60px;height:18px;"></div></td>
-            <td><div class="skeleton-box" style="width:90px;height:18px;"></div></td>
-          </tr>
-        </tbody>
-  <style>
-    .skeleton-box {
-      background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
-      border-radius: 6px;
-      animation: skeleton-loading 1.2s infinite linear;
-      display: inline-block;
-    }
-    @keyframes skeleton-loading {
-      0% { background-position: -200px 0; }
-      100% { background-position: calc(200px + 100%) 0; }
-    }
-  </style>
-      </table>
+      
+      <div class="comprobantes-grid" id="comprobantesGrid">
+        <div class="skeleton-cards" id="skeletonLoader">
+          <div class="comprobante-card skeleton">
+            <div class="card-header">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-info">
+                <div class="skeleton-line skeleton-title"></div>
+                <div class="skeleton-line skeleton-subtitle"></div>
+              </div>
+              <div class="skeleton-badge"></div>
+            </div>
+            <div class="card-body">
+              <div class="skeleton-line skeleton-amount"></div>
+              <div class="skeleton-line skeleton-date"></div>
+            </div>
+          </div>
+          
+          <div class="comprobante-card skeleton">
+            <div class="card-header">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-info">
+                <div class="skeleton-line skeleton-title"></div>
+                <div class="skeleton-line skeleton-subtitle"></div>
+              </div>
+              <div class="skeleton-badge"></div>
+            </div>
+            <div class="card-body">
+              <div class="skeleton-line skeleton-amount"></div>
+              <div class="skeleton-line skeleton-date"></div>
+            </div>
+          </div>
+          
+          <div class="comprobante-card skeleton">
+            <div class="card-header">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-info">
+                <div class="skeleton-line skeleton-title"></div>
+                <div class="skeleton-line skeleton-subtitle"></div>
+              </div>
+              <div class="skeleton-badge"></div>
+            </div>
+            <div class="card-body">
+              <div class="skeleton-line skeleton-amount"></div>
+              <div class="skeleton-line skeleton-date"></div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div class="legacy-table" style="display: none;">
+        <div class="filtro-mes-container" style="display:flex;align-items:center;margin-bottom:18px;">
+          <label for="filtro-mes" style="font-weight:600;margin-right:8px;">Filtrar por mes:</label>
+          <select id="filtro-mes" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc; margin-right:10px;">
+            <option value="">Todos</option>
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+          <label for="filtro-anio" style="font-weight:600;margin-right:8px;">Año:</label>
+          <input type="number" id="filtro-anio" min="2000" max="2100" style="padding:6px 12px;border-radius:6px;border:1px solid #ccc;width:100px;">
+        </div>
+        <table class="hours-table facturas-table">
+          <thead>
+            <tr>
+              <th>Ingreso</th>
+              <th>Mes</th>
+              <th>Tipo de Pago</th>
+              <th>Monto</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-comprobantes-tbody">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
   <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="JavaScript/comprobantes.js"></script>
-  <script>
-    // Set default year to current year
-  // No setear valor por defecto en el input de año
-  </script>
-  <style>
-    #navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    body {
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
-    }
-    .facturas-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 48px 0 48px 0;
-    }
-    .facturas-box {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 32px 32px 24px 32px;
-  min-width: 350px;
-  max-width: 1200px;
-  width: 100%;
-    }
-    .facturas-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    .facturas-header h2 {
-      margin: 0;
-      font-size: 2rem;
-      color: #d81b60;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .btn-agregar {
-      background: #d81b60;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 22px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: background 0.2s;
-      box-shadow: 0 2px 8px rgba(216,27,96,0.08);
-    }
-    .btn-agregar:hover {
-      background: #ad1457;
-    }
-    .facturas-table thead {
-      background: #C8EAF1 ;
-    }
-    .facturas-table thead th {
-      color: #154360;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-bottom: 2px solid #C8EAF1;
-      border-radius: 0 !important;
-    }
-    .facturas-table tbody tr {
-      transition: background 0.2s;
-      border-radius: 0 !important;
-    }
-    .facturas-table tbody tr:hover {
-      background: #C8EAF1;
-    }
-    .facturas-table td {
-      border-radius: 0 !important;
-    }
-    .btn-cancelar {
-      background: #fff;
-      color: #d81b60;
-      border: 1px solid #d81b60;
-      border-radius: 6px;
-      padding: 7px 16px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-left: 8px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-cancelar:hover {
-      background: #f8bbd0;
-      color: #ad1457;
-    }
-    .btn-action {
-      background: #f8bbd0;
-      color: #ad1457;
-      border: none;
-      border-radius: 6px;
-      padding: 7px 16px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-right: 4px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-action:hover {
-      background: #d81b60;
-      color: #fff;
-    }
-    .btn-group {
-      margin-top: 18px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    @media (max-width: 600px) {
-      .facturas-box {
-        padding: 16px 4px 12px 4px;
-        min-width: unset;
-        max-width: 100vw;
-      }
-      .facturas-header h2 {
-        font-size: 1.3rem;
-      }
-      .btn-agregar {
-        padding: 8px 12px;
-        font-size: 0.95rem;
-      }
-    }
-  </style>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/Navbar.js"></script>
+  
+
+
+
 </body>
 
 

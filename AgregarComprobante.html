@@ -1,162 +1,460 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css"> 
-    <link rel="stylesheet" href="styles_formulario.css">
     <title>Agregar Comprobante</title>
-    <style>
-      /* El botón ya usa .btn */
-    </style>
-</head>
-<body>
-    <div id="navbar"></div>
-    <div class="header">
-        <h2>Agregar Comprobante</h2>
-    </div>
-    <div class="form-container">
-      <form class="add-hours-form" id="addComprobanteForm" enctype="multipart/form-data">
+    <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
 
-          <label for="Mes">Mes:</label>
-          <select id="Mes" name="Mes" required>
-            <option value="">Seleccione un mes</option>
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-            <option value="Marzo">Marzo</option>
-            <option value="Abril">Abril</option>
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Septiembre">Septiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-          </select>
-
-          <label for="Anio">Año:</label>
-          <input type="number" id="Anio" name="Anio" min="2000" max="2100" required placeholder="Ej: 2025">
-
-          <label for="Monto">Monto:</label>
-          <input type="number" id="Monto" name="Monto" step="0.01" required>
-
-          <label for="Archivo_Comprobante">Archivo Comprobante:</label>
-          <input type="file" id="Archivo_Comprobante" name="Archivo_Comprobante" accept="image/*,application/pdf" required>
-
-          <label for="tipo_pago">Tipo de pago:</label>
-          <select id="tipo_pago" name="tipo_pago" required>
-            <option value="">Seleccione un tipo</option>
-            <option value="Transferencia">Transferencia</option>
-            <option value="Efectivo">Efectivo</option>
-            <option value="Débito">Débito</option>
-            <option value="Crédito">Crédito</option>
-          </select>
-
-          <button type="submit" class="btn">Guardar</button>
-      </form>
-    </div>
-    <script src="JavaScript/dashboard.js"></script>
-    <script src="JavaScript/loader.js"></script>
     <script>
-      // Selecciona el mes y año actual por defecto en el formulario
-      (function setDefaultMonthYear() {
-        const meses = [
-          '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-        ];
-        const now = new Date();
-        const mes = now.getMonth() + 1; // 1-12
-        const anio = now.getFullYear();
-        const mesSelect = document.getElementById('Mes');
-        const anioInput = document.getElementById('Anio');
-        if (mesSelect) {
-          for (let i = 0; i < mesSelect.options.length; i++) {
-            if (mesSelect.options[i].value === meses[mes]) {
-              mesSelect.selectedIndex = i;
-              break;
-            }
+      (function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        const themes = {
+          light: {
+            '--primary': '#d946a6',
+            '--primary-rgb': '217, 70, 166',
+            '--primary-light': '#f3e8f8',
+            '--primary-dark': '#b8388a',
+            '--surface': '#ffffff',
+            '--surface-variant': '#f8f9fa',
+            '--surface-hover': '#f0f0f0',
+            '--bg-gradient': '#ffffff',
+            '--text-primary': '#1f2937',
+            '--text-secondary': '#6b7280',
+            '--text-muted': '#9ca3af',
+            '--border': '#e5e7eb',
+            '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+            '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+            '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+            '--success': '#10b981',
+            '--warning': '#f59e0b',
+            '--error': '#ef4444',
+            '--info': '#3b82f6',
+            '--btn-primary-bg': '#d946a6',
+            '--btn-primary-hover': '#b8388a',
+            '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+            '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+            '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+            '--sidebar-bg': '#ffffff',
+            '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+            '--sidebar-hover': 'rgba(217, 70, 166, 0.08)'
+          },
+          dark: {
+            '--primary': '#3b7dd6',
+            '--primary-rgb': '59, 125, 214',
+            '--primary-light': '#4a8ae8',
+            '--primary-dark': '#2d5fa3',
+            '--surface': '#1e2128',
+            '--surface-variant': '#282c34',
+            '--surface-hover': '#2d3139',
+            '--bg-gradient': '#404041',
+            '--text-primary': '#e4e4e7',
+            '--text-secondary': '#d1d5db',
+            '--text-muted': '#9ca3af',
+            '--border': '#3f3f46',
+            '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+            '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+            '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.5)',
+            '--success': '#10b981',
+            '--warning': '#f59e0b',
+            '--error': '#ef4444',
+            '--info': '#ec4899',
+            '--btn-primary-bg': '#ec4899',
+            '--btn-primary-hover': '#f472b6',
+            '--navbar-bg': 'rgba(30, 33, 40, 0.98)',
+            '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.3)',
+            '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+            '--sidebar-bg': '#1e2128',
+            '--sidebar-header-bg': 'linear-gradient(135deg, #2d5fa3 0%, #3b7dd6 100%)',
+            '--sidebar-hover': 'rgba(59, 125, 214, 0.15)'
           }
-        }
-        if (anioInput) {
-          anioInput.value = anio;
+        };
+        const theme = themes[savedTheme];
+        if (theme) {
+          Object.entries(theme).forEach(([key, value]) => {
+            document.documentElement.style.setProperty(key, value);
+          });
         }
       })();
-
-      document.getElementById('addComprobanteForm').onsubmit = async function(e) {
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-
-        // Agregar campo fecha_pago en formato YYYY-MM-01
-        const mesStr = form.Mes.value;
-        const anioStr = form.Anio.value;
-        const meses = {
-          'Enero': '01', 'Febrero': '02', 'Marzo': '03', 'Abril': '04', 'Mayo': '05', 'Junio': '06',
-          'Julio': '07', 'Agosto': '08', 'Septiembre': '09', 'Octubre': '10', 'Noviembre': '11', 'Diciembre': '12'
-        };
-        if (mesStr && anioStr && meses[mesStr]) {
-          const fechaPago = `${anioStr}-${meses[mesStr]}-01`;
-          formData.append('fecha_pago', fechaPago);
-        }
-
-        // Mostrar mensaje de carga
-        let msg = document.getElementById('msg-estado');
-        if (!msg) {
-          msg = document.createElement('div');
-          msg.id = 'msg-estado';
-          msg.style.marginTop = '1rem';
-          msg.style.fontWeight = 'bold';
-          form.parentNode.appendChild(msg);
-        }
-        msg.textContent = 'Enviando...';
-        msg.style.color = '#555';
-
-        try {
-          // Obtener el token guardado en localStorage
-          const token = localStorage.getItem('access_token');
-          if (!token) {
-            msg.textContent = 'No autenticado. Por favor, inicie sesión.';
-            msg.style.color = 'red';
-            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
-            return;
-          }
-          const response = await fetch('http://localhost:8001/api/facturas', {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Authorization': 'Bearer ' + token
-            }
-            // credentials: 'include', // Descomentar si usas cookies/sesión
-          });
-          if (response.ok) {
-            msg.textContent = '¡Comprobante agregado exitosamente!';
-            msg.style.color = 'green';
-            setTimeout(() => { window.location.href = 'comprobantes.html'; }, 1200);
-          } else {
-            const text = await response.text();
-            let showMsg = '';
-            try {
-              const data = JSON.parse(text);
-              if (data && data.error === 'Un monto demasiado grande') {
-                showMsg = 'Monto demasiado alto';
-              } else if (data && data.error) {
-                showMsg = data.error;
-              } else {
-                showMsg = 'Error al agregar comprobante';
-              }
-            } catch {
-              showMsg = 'Error al agregar comprobante';
-            }
-            msg.textContent = showMsg;
-            msg.style.color = 'red';
-          }
-        } catch (err) {
-          msg.textContent = 'Error de conexión con el servidor';
-          msg.style.color = 'red';
-          console.error('Error de red o JS:', err);
-        }
-      };
     </script>
+
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+    
+    <link rel="stylesheet" href="Styles/AgregarComprobante.css">
+    
+    <script src="JavaScript/theme.js"></script>
+    
+    <script src="JavaScript/i18n.js"></script>
+
+</head>
+<body>
+    <!-- Mobile navbar and sidebar will be injected by mobile-navbar.js -->
+    
+    <div id="navbar"></div>
+    
+    <div class="modern-form-container">
+      <div class="form-header">
+        <button class="back-button" onclick="goBack()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="form-title">
+          <h2><i class="bi bi-receipt-cutoff"></i> <span data-i18n="payments.new_receipt">Nuevo Comprobante</span></h2>
+          <p data-i18n="payments.receipt_details">Completa los datos de tu comprobante de pago</p>
+        </div>
+      </div>
+      
+      <div class="stepper-container">
+        <div class="stepper">
+          <div class="step active" data-step="1">
+            <div class="step-icon">
+              <i class="bi bi-info-circle"></i>
+              <div class="step-number">1</div>
+            </div>
+            <span class="step-label" data-i18n="payments.basic_data">Datos Básicos</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" data-step="2">
+            <div class="step-icon">
+              <i class="bi bi-cash-coin"></i>
+              <div class="step-number">2</div>
+            </div>
+            <span class="step-label" data-i18n="payments.payment">Pago</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" data-step="3">
+            <div class="step-icon">
+              <i class="bi bi-cloud-upload"></i>
+              <div class="step-number">3</div>
+            </div>
+            <span class="step-label" data-i18n="payments.file">Archivo</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" data-step="4">
+            <div class="step-icon">
+              <i class="bi bi-check-circle"></i>
+              <div class="step-number">4</div>
+            </div>
+            <span class="step-label" data-i18n="payments.confirm">Confirmar</span>
+          </div>
+        </div>
+      </div>
+      
+      <form class="modern-step-form" id="addComprobanteForm" enctype="multipart/form-data">
+        
+        <div class="form-step active" data-step="1">
+          <div class="step-content">
+            <div class="period-selector-container">
+              <div class="period-header">
+                <div class="period-icon">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="period-title">
+                  <h3 data-i18n="payments.period">Período del Pago</h3>
+                  <p data-i18n="payments.select_period">Selecciona el mes y año correspondiente a tu comprobante</p>
+                </div>
+              </div>
+
+              <div class="period-calendar">
+                <div class="calendar-display">
+                  <div class="current-selection">
+                    <div class="selected-month" id="selectedMonthDisplay">
+                      <span class="month-name" data-i18n="payments.select">Selecciona</span>
+                      <span class="month-number">--</span>
+                    </div>
+                    <div class="calendar-separator">
+                      <i class="bi bi-chevron-right"></i>
+                    </div>
+                    <div class="selected-year" id="selectedYearDisplay">
+                      <span class="year-label" data-i18n="common.year">Año</span>
+                      <span class="year-number">----</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="period-selectors">
+                <div class="selector-card month-card">
+                  <div class="card-header">
+                    <i class="bi bi-calendar3"></i>
+                    <span data-i18n="payments.month">Mes del Pago</span>
+                  </div>
+                  <div class="card-content">
+                    <select id="Mes" name="Mes" required class="modern-select">
+                      <option value="" data-i18n="payments.select_month">Elige un mes</option>
+                      <option value="Enero" data-number="01" data-i18n="months.january">Enero</option>
+                      <option value="Febrero" data-number="02" data-i18n="months.february">Febrero</option>
+                      <option value="Marzo" data-number="03" data-i18n="months.march">Marzo</option>
+                      <option value="Abril" data-number="04" data-i18n="months.april">Abril</option>
+                      <option value="Mayo" data-number="05" data-i18n="months.may">Mayo</option>
+                      <option value="Junio" data-number="06" data-i18n="months.june">Junio</option>
+                      <option value="Julio" data-number="07" data-i18n="months.july">Julio</option>
+                      <option value="Agosto" data-number="08" data-i18n="months.august">Agosto</option>
+                      <option value="Septiembre" data-number="09" data-i18n="months.september">Septiembre</option>
+                      <option value="Octubre" data-number="10" data-i18n="months.october">Octubre</option>
+                      <option value="Noviembre" data-number="11" data-i18n="months.november">Noviembre</option>
+                      <option value="Diciembre" data-number="12" data-i18n="months.december">Diciembre</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="selector-card year-card">
+                  <div class="card-header">
+                    <i class="bi bi-calendar-year"><i>
+                    <span data-i18n="common.year">Año del Pago</span>
+                  </div>
+                  <div class="card-content">
+                    <input type="number" id="Anio" name="Anio" min="2000" max="2100" required 
+                           class="modern-input" data-i18n-placeholder="payments.enter_year">
+                    <div class="year-suggestions">
+                      <button type="button" class="year-btn" data-year="2024">2024</button>
+                      <button type="button" class="year-btn" data-year="2025">2025</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="period-info">
+                <div class="info-item">
+                  <i class="bi bi-info-circle"></i>
+                  <span data-i18n="payments.period_match_info">Asegúrate de que el período coincida con tu comprobante de pago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-step" data-step="2">
+          <div class="step-content">
+            <div class="step-header">
+              <h3><i class="bi bi-cash-stack"></i> <span data-i18n="payments.payment_details">Detalles del Pago</span></h3>
+              <p data-i18n="payments.enter_amount">Ingresa el monto y método de pago</p>
+            </div>
+            
+            <div class="input-group">
+              <label for="Monto" class="form-label">
+                <i class="bi bi-currency-dollar"></i> <span data-i18n="payments.amount_paid">Monto de pago</span>
+              </label>
+              <input type="number" id="Monto" name="Monto" step="0.01" required class="monto-input" placeholder="$ 0.00">
+              <div class="input-helper">
+                <small data-i18n="payments.enter_amount">Ingresa el monto exacto que aparece en tu comprobante</small>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="motivo" class="form-label">
+                <i class="bi bi-chat-text"></i> <span data-i18n="payments.payment_reason">Motivo del pago</span>
+              </label>
+              <textarea id="motivo" name="motivo" class="modern-textarea" rows="3" maxlength="500" required data-i18n-placeholder="payments.explain_payment"></textarea>
+              <div class="input-helper">
+                <small data-i18n="payments.explain_payment">Ejemplo: Cuota mensual, abono a deuda, pago de servicios, etc. (mín. 5 caracteres, máx. 500)</small>
+              </div>
+            </div>
+            
+            <div class="payment-methods">
+              <label class="method-label" data-i18n="payments.payment_method">Método de Pago</label>
+              <div class="payment-grid">
+                <label class="payment-option">
+                  <input type="radio" name="tipo_pago" value="Transferencia" required>
+                  <div class="payment-card">
+                    <div class="payment-icon">
+                      <i class="bi bi-bank"></i>
+                    </div>
+                    <span data-i18n="payments.transfer">Transferencia</span>
+                  </div>
+                </label>
+                
+                <label class="payment-option">
+                  <input type="radio" name="tipo_pago" value="Efectivo" required>
+                  <div class="payment-card">
+                    <div class="payment-icon">
+                      <i class="bi bi-cash-coin"></i>
+                    </div>
+                    <span data-i18n="payments.cash">Efectivo</span>
+                  </div>
+                </label>
+                
+                <label class="payment-option">
+                  <input type="radio" name="tipo_pago" value="Débito" required>
+                  <div class="payment-card">
+                    <div class="payment-icon">
+                      <i class="bi bi-credit-card"></i>
+                    </div>
+                    <span data-i18n="payments.debit">Débito</span>
+                  </div>
+                </label>
+                
+                <label class="payment-option">
+                  <input type="radio" name="tipo_pago" value="Crédito" required>
+                  <div class="payment-card">
+                    <div class="payment-icon">
+                      <i class="bi bi-credit-card-2-front"></i>
+                    </div>
+                    <span data-i18n="payments.credit">Crédito</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-step" data-step="3">
+          <div class="step-content">
+            <div class="step-header">
+              <h3><i class="bi bi-cloud-arrow-up"></i> <span data-i18n="payments.upload_file">Subir Comprobante</span></h3>
+              <p data-i18n="payments.file">Adjunta la imagen o PDF de tu comprobante</p>
+            </div>
+            
+            <div class="upload-area" id="uploadArea">
+              <input type="file" id="Archivo_Comprobante" name="Archivo_Comprobante" accept="image/*,application/pdf" required hidden>
+              <div class="upload-content" id="uploadContent">
+                <div class="upload-icon">
+                  <i class="bi bi-cloud-upload"></i>
+                </div>
+                <h4 data-i18n="payments.drag_drop">Arrastra tu archivo aquí</h4>
+                <p><span data-i18n="payments.or">o</span> <span data-i18n="payments.click_browse">haz clic para seleccionar</span></p>
+                <div class="upload-formats">
+                  <span class="format-tag">JPG</span>
+                  <span class="format-tag">PNG</span>
+                  <span class="format-tag">PDF</span>
+                  <span class="size-limit" data-i18n="payments.supported_formats">Máx. 5MB</span>
+                </div>
+              </div>
+              
+              <div class="file-preview" id="filePreview" style="display: none;">
+                <div class="preview-content">
+                  <div class="file-icon">
+                    <i class="bi bi-file-earmark"></i>
+                  </div>
+                  <div class="file-info">
+                    <div class="file-name"></div>
+                    <div class="file-size"></div>
+                  </div>
+                  <button type="button" class="remove-file" onclick="removeFile()" data-i18n="payments.remove_file">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
+                </div>
+                <div class="upload-progress">
+                  <div class="progress-bar" id="progressBar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-step" data-step="4">
+          <div class="step-content">
+            <div class="step-header">
+              <h3><i class="bi bi-check2-circle"></i> <span data-i18n="payments.review_confirm">Confirmar Datos</span></h3>
+              <p data-i18n="payments.review_info">Revisa la información antes de guardar</p>
+            </div>
+            
+            <div class="confirmation-card">
+              <div class="confirmation-header">
+                <div class="confirmation-icon">
+                  <i class="bi bi-receipt"></i>
+                </div>
+                <h4 data-i18n="payments.receipt">Resumen del Comprobante</h4>
+              </div>
+              
+              <div class="confirmation-details">
+                <div class="detail-row">
+                  <span class="detail-label" data-i18n="payments.period">Período:</span>
+                  <span class="detail-value" id="confirmPeriod">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label" data-i18n="payments.amount">Monto:</span>
+                  <span class="detail-value amount" id="confirmAmount">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label" data-i18n="payments.payment_method">Método:</span>
+                  <span class="detail-value" id="confirmMethod">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label" data-i18n="payments.file">Archivo:</span>
+                  <span class="detail-value" id="confirmFile">-</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label" data-i18n="payments.payment_reason">Motivo:</span>
+                  <span class="detail-value" id="confirmMotivo">-</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="terms-agreement">
+              <div class="modern-checkbox-wrapper">
+                <input type="checkbox" id="termsAccept" class="modern-checkbox" data-required="true">
+                <label for="termsAccept" class="modern-checkbox-label">
+                  <span class="checkbox-icon">
+                    <i class="bi bi-check"></i>
+                  </span>
+                  <span class="checkbox-text" data-i18n="payments.terms_accept">
+                    Confirmo que la información proporcionada es correcta y verídica
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-navigation">
+          <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">
+            <i class="bi bi-arrow-left"></i> <span data-i18n="payments.previous">Anterior</span>
+          </button>
+          
+          <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
+            <span data-i18n="payments.next">Siguiente</span> <i class="bi bi-arrow-right"></i>
+          </button>
+          
+          <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+            <i class="bi bi-check-circle"></i> <span data-i18n="payments.save_receipt">Guardar Comprobante</span>
+          </button>
+        </div>
+        
+      </form>
+      
+      <div class="success-modal" id="successModal">
+        <div class="success-content">
+          <div class="success-animation">
+            <div class="checkmark-circle">
+              <div class="checkmark"></div>
+            </div>
+          </div>
+          <h3 data-i18n="payments.receipt_saved">¡Comprobante Guardado!</h3>
+          <p data-i18n="payments.receipt_submitted">Tu comprobante ha sido enviado correctamente y está siendo revisado.</p>
+          <button class="btn btn-primary" onclick="goToComprobantes()">
+            <span data-i18n="payments.view_receipts">Ver Comprobantes</span>
+          </button>
+        </div>
+      </div>
+    </div>
+      <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
+    <script src="JavaScript/loader.js"></script>
+    <script src="JavaScript/navbar-functions.js"></script>
+    <script src="JavaScript/mobile-navbar.js"></script>
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/AgregarComprobante.js"></script>
+    <script src="JavaScript/Navbar.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        loadNavbar();
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const themes = {
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#ffffff',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+          '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)',
+          '--sidebar-text': '#334155',
+          '--sidebar-divider': '#e2e8f0',
+          '--mobile-nav-bg': 'rgba(255, 255, 255, 0.95)',
+          '--mobile-nav-shadow': '0 2px 20px rgba(249, 168, 212, 0.2)',
+          '--mobile-nav-border': 'rgba(249, 168, 212, 0.1)'
+        },
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#404041',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6',
+          '--navbar-bg': 'rgba(30, 33, 40, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.3)',
+          '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+          '--sidebar-bg': '#1e2128',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #be185d 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(236, 72, 153, 0.15)',
+          '--sidebar-text': '#e4e4e7',
+          '--sidebar-divider': '#3f3f46',
+          '--mobile-nav-bg': 'rgba(30, 33, 40, 0.95)',
+          '--mobile-nav-shadow': '0 2px 20px rgba(0, 0, 0, 0.3)',
+          '--mobile-nav-border': 'rgba(63, 63, 70, 0.3)'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Asambleas - Cooperativa</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/Asambleas.css">
+</head>
+
+<body>
+  
+
+  <div id="navbar"></div>
+  
+
+  <div class="asambleas-container">
+    <div class="asambleas-content">
+      <div class="asambleas-box">
+        <div class="page-header">
+          <div class="header-left">
+            <div class="header-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="header-content">
+              <h2 data-i18n="assemblies.title">Asambleas</h2>
+              <p data-i18n="assemblies.subtitle">Consulta las asambleas programadas y pasadas de la cooperativa</p>
+            </div>
+          </div>
+          <button class="btn btn-filter" onclick="toggleFilters()">
+            <i class="bi bi-funnel"></i> <span data-i18n="common.filter">Filtros</span>
+          </button>
+        </div>
+
+        <div class="modern-header">
+          <div class="header-title">
+            <h2><i class="bi bi-people-fill"></i><span data-i18n="assemblies.title">Asambleas</span></h2>
+            <p class="header-subtitle" data-i18n="assemblies.subtitle">Consulta las asambleas programadas y pasadas de la cooperativa</p>
+          </div>
+        </div>
+
+      <div class="filter-tabs" id="filtersPanel">
+        <div class="filters-content">
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-calendar3"></i> <span data-i18n="assemblies.period">Período</span>
+            </label>
+            <div class="filter-chips">
+              <div class="filter-tab active" data-filter="todas">
+                <i class="bi bi-list-ul"></i><span data-i18n="assemblies.all">Todas las Asambleas</span>
+              </div>
+              <div class="filter-tab" data-filter="futuras">
+                <i class="bi bi-calendar-plus"></i><span data-i18n="assemblies.upcoming">Próximas</span>
+              </div>
+              <div class="filter-tab" data-filter="pasadas">
+                <i class="bi bi-calendar-check"></i><span data-i18n="assemblies.past">Realizadas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="asambleas-grid" class="asambleas-grid">
+        <!-- Skeleton Loaders -->
+        <div class="asamblea-card skeleton" id="skeleton-1">
+          <div class="card-header">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-info">
+              <div class="skeleton-line skeleton-title"></div>
+              <div class="skeleton-line skeleton-subtitle"></div>
+            </div>
+            <div class="skeleton-badge"></div>
+          </div>
+          <div class="card-body">
+            <div class="skeleton-line skeleton-date"></div>
+            <div class="skeleton-line skeleton-description"></div>
+          </div>
+        </div>
+        
+        <div class="asamblea-card skeleton" id="skeleton-2">
+          <div class="card-header">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-info">
+              <div class="skeleton-line skeleton-title"></div>
+              <div class="skeleton-line skeleton-subtitle"></div>
+            </div>
+            <div class="skeleton-badge"></div>
+          </div>
+          <div class="card-body">
+            <div class="skeleton-line skeleton-date"></div>
+            <div class="skeleton-line skeleton-description"></div>
+          </div>
+        </div>
+        
+        <div class="asamblea-card skeleton" id="skeleton-3">
+          <div class="card-header">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-info">
+              <div class="skeleton-line skeleton-title"></div>
+              <div class="skeleton-line skeleton-subtitle"></div>
+            </div>
+            <div class="skeleton-badge"></div>
+          </div>
+          <div class="card-body">
+            <div class="skeleton-line skeleton-date"></div>
+            <div class="skeleton-line skeleton-description"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <i class="bi bi-calendar-x"></i>
+        <h3 data-i18n="assemblies.no_assemblies">No hay asambleas</h3>
+        <p data-i18n="assemblies.no_assemblies_msg">No se encontraron asambleas que mostrar en este momento.</p>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/Asambleas.js"></script>
+  
+</body>
+
+</html>

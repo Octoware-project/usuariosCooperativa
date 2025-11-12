@@ -1,17 +1,145 @@
+<link rel="stylesheet" href="Styles/Navbar.css">
+
+<nav class="mobile-nav">
+  <button class="menu-btn" onclick="toggleMenu()">
+    <i class="bi bi-list"></i>
+  </button>
+  <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
+  <div class="user-dropdown-mobile" id="userDropdownMobile">
+    <a href="PerfilUsuario.html">
+      <i class="bi bi-person-circle"></i>
+      <span data-i18n="nav.myProfile">Mi Perfil</span>
+    </a>
+    <button onclick="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span data-i18n="nav.logout">Cerrar Sesión</span>
+    </button>
+  </div>
+</nav>
+
+<div class="sidebar-menu" id="sidebarMenu">
+  <div class="sidebar-header">
+    <h3 data-i18n="nav.mainMenu">Menú Principal</h3>
+    <p data-i18n="nav.navigation">Navegación</p>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="dashboard.html">
+      <i class="bi bi-house-door"></i>
+      <span data-i18n="nav.dashboard">Dashboard</span>
+    </a>
+    <a href="HorasMensuales.html">
+      <i class="bi bi-clock-history"></i>
+      <span data-i18n="nav.monthlyHours">Horas Mensuales</span>
+    </a>
+    <a href="PlanesTrabajoUsuario.html">
+      <i class="bi bi-calendar-check"></i>
+      <span data-i18n="nav.workPlans">Planes de Trabajo</span>
+    </a>
+    <a href="Comprobantes.html">
+      <i class="bi bi-receipt"></i>
+      <span data-i18n="nav.payments">Pagos</span>
+    </a>
+    <a href="Asambleas.html">
+      <i class="bi bi-people-fill"></i>
+      <span data-i18n="nav.assemblies">Asambleas</span>
+    </a>
+    <div class="divider"></div>
+    <a href="PerfilUsuario.html">
+      <i class="bi bi-person-circle"></i>
+      <span data-i18n="nav.myProfile">Mi Perfil</span>
+    </a>
+    <a href="configuracion.html">
+      <i class="bi bi-gear"></i>
+      <span data-i18n="nav.settings">Configuración</span>
+    </a>
+    <a href="#" onclick="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span data-i18n="nav.logout">Cerrar Sesión</span>
+    </a>
+  </nav>
+</div>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
 <nav>
   <a href="dashboard.html" class="logo" aria-label="Ir a página principal">
-    <img src="img/Logo.jpg" alt="Logo de Cooperativa - Pulpo" style="height: 40px; width: auto;">
+    <img id="navbarLogo" src="img/IconoClaro.jpeg" alt="Logo de Cooperativa - Pulpo" style="height: 40px; width: auto; border-radius: 20px;">
   </a>
   <div class="nav-links" role="navigation" aria-label="Menú principal">
-  <a href="HorasMensuales.html">Horas Mensuales</a>
-  <a href="Comprobantes.html">Pagos</a>
-
+    <a href="HorasMensuales.html" data-i18n="nav.monthlyHours">Horas Mensuales</a>
+    <a href="PlanesTrabajoUsuario.html" data-i18n="nav.workPlans">Planes de Trabajo</a>
+    <a href="Comprobantes.html" data-i18n="nav.payments">Pagos</a>
+    <a href="Asambleas.html" data-i18n="nav.assemblies">Asambleas</a>
   </div>
-  <div class="user-menu" id="userMenuBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Menú usuario">
-    <div class="user-icon" title="Menú usuario">U</div>
-    <div class="dropdown" id="userDropdown" role="menu" aria-label="Menú usuario">
-      <button id="verDatosBtn" role="menuitem">Ver datos</button>
-      <button id="logoutBtn" role="menuitem">Cerrar sesión</button>
+  <div class="nav-actions">
+    <a href="configuracion.html" class="config-btn" title="Configuración">
+      <i class="bi bi-gear"></i>
+    </a>
+    <div class="user-menu" id="userMenuBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Menú usuario">
+      <div class="user-icon" title="Menú usuario">U</div>
+      <div class="dropdown" id="userDropdown" role="menu" aria-label="Menú usuario">
+        <a href="PerfilUsuario.html" id="verDatosBtn" role="menuitem" data-i18n="nav.myProfile">Mi Perfil</a>
+        <button id="logoutBtn" role="menuitem" onclick="logout()" data-i18n="nav.logout">Cerrar Sesión</button>
+      </div>
     </div>
   </div>
 </nav>
+
+<div class="config-modal" id="configModal">
+  <div class="config-modal-overlay" onclick="closeConfigModal()"></div>
+  <div class="config-modal-content">
+    <div class="config-modal-header">
+      <h3><i class="bi bi-gear"></i> Configuración</h3>
+      <button class="config-modal-close" onclick="closeConfigModal()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="config-modal-body">
+      <div class="config-section">
+        <div class="config-section-header">
+          <i class="bi bi-palette"></i>
+          <h4>Apariencia</h4>
+        </div>
+        <div class="config-option">
+          <div class="config-option-info">
+            <label for="themeToggle">Tema</label>
+            <p class="config-option-description">Cambia entre modo claro y oscuro</p>
+          </div>
+          <div class="theme-toggle">
+            <button class="theme-option" id="lightThemeBtn" onclick="setTheme('light')">
+              <i class="bi bi-sun"></i>
+              <span>Claro</span>
+            </button>
+            <button class="theme-option active" id="darkThemeBtn" onclick="setTheme('dark')">
+              <i class="bi bi-moon-stars"></i>
+              <span>Oscuro</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="config-section">
+        <div class="config-section-header">
+          <i class="bi bi-bell"></i>
+          <h4>Notificaciones</h4>
+        </div>
+        <div class="config-option">
+          <div class="config-option-info">
+            <label>Notificaciones de pagos</label>
+            <p class="config-option-description">Recibe alertas sobre tus pagos</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="notificationToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="config-modal-footer">
+      <button class="btn-secondary" onclick="closeConfigModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script src="JavaScript/Navbar.js"></script>
+
