@@ -2,14 +2,13 @@
 <html lang="es">
 <head>
     <script>
-      // Aplicar tema antes de que se cargue la página para evitar parpadeo
       (function() {
         const themes = {
           light: {
             '--primary': '#d946a6',
             '--primary-dark': '#c2348f',
             '--secondary': '#c084fc',
-            '--bg-gradient': '#fafcfe',
+            '--bg-gradient': '#ffffff',
             '--surface': '#ffffff',
             '--surface-variant': '#f3e8f8',
             '--text-primary': '#1e293b',
@@ -76,897 +75,86 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css"> 
-    <link rel="stylesheet" href="styles_formulario.css">
+
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
-    <!-- Google Fonts - Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
     
     <title>Agregar Horas</title>
+
   <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
-    <style>
-      html, body {
-        overflow-x: hidden;
-        max-width: 100%;
-      }
-      
-      /* ============================================
-         MOBILE NAVIGATION STYLES
-      ============================================ */
-      .mobile-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: var(--navbar-bg);
-        backdrop-filter: blur(20px);
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1000;
-        box-shadow: var(--navbar-shadow);
-        border-bottom: 1px solid var(--navbar-border);
-      }
-      
-      .menu-btn {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: var(--primary);
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-      }
-      
-      .menu-btn:hover {
-        background: var(--surface-variant);
-        transform: scale(1.05);
-      }
-      
-      .user-icon-mobile {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--btn-primary-bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 1.2rem;
-        box-shadow: none;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        border: none;
-        outline: none;
-      }
-      
-      .user-icon-mobile:hover {
-        transform: scale(1.05);
-        box-shadow: none;
-      }
-      
-      .user-icon-mobile:active {
-        transform: scale(0.98);
-        transition: all 0.1s ease;
-      }
-      
-      /* Sidebar Menu */
-      .sidebar-menu {
-        position: fixed;
-        top: 0;
-        left: -300px;
-        width: 280px;
-        height: 100vh;
-        background: var(--sidebar-bg);
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-        z-index: 1001;
-        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow-y: auto;
-      }
-      
-      .sidebar-menu.open {
-        left: 0;
-      }
-      
-      .sidebar-header {
-        background: var(--btn-primary-bg);
-        padding: 2rem 1.5rem;
-        color: white;
-        text-align: center;
-      }
-      
-      .sidebar-header h3 {
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: 600;
-      }
-      
-      .sidebar-header p {
-        margin: 0.5rem 0 0 0;
-        opacity: 0.9;
-        font-size: 0.9rem;
-      }
-      
-      .sidebar-nav {
-        padding: 1rem 0;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .sidebar-nav a {
-        display: flex;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        color: var(--sidebar-text);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border-bottom: 1px solid var(--sidebar-divider);
-        width: 100%;
-        box-sizing: border-box;
-      }
-      
-      .sidebar-nav a:last-child {
-        border-bottom: none;
-      }
-      
-      .sidebar-nav a:hover {
-        background: var(--sidebar-hover);
-        color: white;
-        transform: translateX(5px);
-      }
-      
-      .sidebar-nav a i {
-        width: 20px;
-        margin-right: 1rem;
-        font-size: 1.1rem;
-      }
-      
-      .sidebar-nav .divider {
-        height: 1px;
-        background: var(--sidebar-divider);
-        margin: 0.5rem 1.5rem;
-        flex-shrink: 0;
-      }
-      
-      /* Overlay */
-      .menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-      }
-      
-      .menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-      }
-      
-      /* User dropdown mobile */
-      .user-dropdown-mobile {
-        position: absolute;
-        top: 60px;
-        right: 1rem;
-        background: var(--surface);
-        border-radius: 12px;
-        box-shadow: var(--shadow-xl);
-        min-width: 180px;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        z-index: 1002;
-        border: 1px solid var(--border);
-      }
-      
-      .user-dropdown-mobile.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-      
-      .user-dropdown-mobile a {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        color: #334155;
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border-bottom: 1px solid #f1f5f9;
-      }
-      
-      .user-dropdown-mobile a:last-child {
-        border-bottom: none;
-        border-radius: 0 0 12px 12px;
-      }
-      
-      .user-dropdown-mobile a:first-child {
-        border-radius: 12px 12px 0 0;
-      }
-      
-      .user-dropdown-mobile a:hover {
-        background: var(--sidebar-hover);
-        color: white;
-      }
-      
-      .user-dropdown-mobile a i {
-        width: 16px;
-        margin-right: 0.75rem;
-      }
-      
-      body {
-        background: var(--bg-gradient);
-        padding-top: 0;
-        min-height: 100vh;
-      }
-      
-      .modern-form-container {
-        max-width: 1100px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-      }
-      
-      .form-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border);
-      }
-      
-      .back-button {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--surface-variant);
-        border: 1px solid var(--border);
-        color: var(--text-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 1.2rem;
-      }
-      
-      .back-button:hover {
-        background: var(--primary);
-        color: white;
-        transform: translateX(-2px);
-      }
-      
-      .form-title h2 {
-        margin: 0;
-        color: var(--text-primary);
-        font-size: 1.75rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-      
-      .form-title h2 i {
-        color: var(--primary);
-      }
-      
-      .form-title p {
-        margin: 0.5rem 0 0 0;
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-      }
-      
-      .modern-step-form {
-        background: var(--surface);
-        border-radius: 16px;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border);
-        overflow: hidden;
-      }
-      
-      .form-step {
-        padding: 2.5rem 2rem;
-      }
-      
-      .step-content {
-        max-width: 900px;
-        margin: 0 auto;
-      }
-      
-      .step-header {
-        text-align: center;
-        margin-bottom: 2.5rem;
-      }
-      
-      .step-header h3 {
-        margin: 0 0 0.625rem 0;
-        color: var(--text-primary);
-        font-size: 1.625rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.625rem;
-      }
-      
-      .step-header h3 i {
-        color: var(--primary);
-        font-size: 1.5rem;
-      }
-      
-      .step-header p {
-        margin: 0;
-        color: var(--text-secondary);
-        font-size: 1rem;
-        font-weight: 400;
-      }
-      
-      .form-group-row {
-        display: grid;
-        grid-template-columns: 1fr 1.5fr 1fr;
-        gap: 1.25rem;
-        margin-bottom: 2rem;
-      }
-      
-      .input-group {
-        margin-bottom: 1.75rem;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        font-size: 0.95rem;
-      }
-      
-      .form-label i {
-        margin-right: 0.5rem;
-        color: var(--primary);
-      }
-      
-      .modern-select, .modern-input {
-        width: 100%;
-        padding: 1.25rem 1.5rem;
-        border: 2px solid var(--border);
-        border-radius: 20px !important;
-        font-size: 0.95rem;
-        font-weight: 500;
-        background: var(--surface-variant);
-        color: var(--text-primary);
-        transition: all 0.3s ease;
-        outline: none;
-      }
-      
-      .modern-select:focus, .modern-input:focus {
-        border-color: var(--primary);
-        background: var(--surface);
-        box-shadow: none;
-        transform: translateY(-1px);
-      }
-      
-      .modern-input:hover, .modern-select:hover {
-        border-color: var(--primary);
-        background: var(--surface);
-      }
-      
-      .modern-select {
-        cursor: pointer;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-      }
-      
-      .hours-input {
-        width: 100% !important;
-        max-width: 300px !important;
-        margin: 0 auto !important;
-        padding: 1rem 1.5rem !important;
-        border: 2px solid var(--border) !important;
-        border-radius: 20px !important;
-        font-size: 1rem !important;
-        font-weight: 500 !important;
-        background: var(--surface-variant) !important;
-        transition: all 0.3s ease !important;
-        outline: none !important;
-        text-align: center !important;
-        letter-spacing: 0.3px !important;
-        display: block !important;
-        color: var(--text-primary) !important;
-        min-height: 48px !important;
-        box-sizing: border-box !important;
-      }
-      
-      .hours-input:focus {
-        border-color: var(--primary) !important;
-        background: var(--surface) !important;
-        box-shadow: none !important;
-        transform: translateY(-2px) scale(1.02) !important;
-        color: var(--text-primary) !important;
-      }
-      
-      .hours-input:hover {
-        border-color: var(--primary) !important;
-        background: var(--surface) !important;
-        transform: translateY(-1px) !important;
-        color: var(--text-primary) !important;
-      }
-      
-      .hours-input::placeholder {
-        color: var(--text-secondary) !important;
-        opacity: 0.7 !important;
-      }
-      
-      .form-navigation {
-        padding: 1.5rem 2rem;
-        background: var(--surface-variant);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-      }
-      
-      .btn {
-        padding: 0.875rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.625rem;
-        border: none;
-        text-decoration: none;
-        min-height: 48px;
-      }
-      
-      .btn i {
-        font-size: 1.125rem;
-      }
-      
-      .btn-primary {
-        background: var(--btn-primary-bg);
-        color: white;
-        box-shadow: none;
-      }
-      
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: none;
-        background: var(--btn-primary-hover);
-        color: white !important;
-      }
-      
-      .btn-secondary {
-        background: var(--surface) !important;
-        color: var(--primary) !important;
-        border: 2px solid var(--border) !important;
-        box-shadow: none;
-      }
-      
-      .btn-secondary:hover {
-        background: var(--surface-variant) !important;
-        border-color: var(--primary) !important;
-        transform: translateY(-2px);
-        box-shadow: none;
-        color: var(--primary) !important;
-      }
-      
-      .justificacion-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 0;
-      }
-      
-      #msg-estado {
-        margin-top: 1rem;
-        padding: 1rem;
-        border-radius: 12px;
-        text-align: center;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-      
-      #msg-estado.success {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid var(--success);
-        color: var(--success);
-      }
-      
-      #msg-estado.error {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid var(--error);
-        color: var(--error);
-      }
-      
-      #msg-estado.info {
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid var(--info);
-        color: var(--info);
-      }
-      
-      /* Success Modal */
-      .success-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-      }
-      
-      .success-modal.show {
-        opacity: 1;
-        visibility: visible;
-      }
-      
-      .success-content {
-        background: var(--surface);
-        border-radius: 24px;
-        padding: 3rem 2rem;
-        text-align: center;
-        max-width: 400px;
-        margin: 1rem;
-        transform: translateY(-50px);
-        transition: transform 0.3s ease;
-        box-shadow: var(--shadow-xl);
-      }
-      
-      .success-modal.show .success-content {
-        transform: translateY(0);
-      }
-      
-      .success-animation {
-        margin-bottom: 2rem;
-      }
-      
-      .checkmark-circle {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: var(--success);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        animation: scaleIn 0.5s ease-out;
-      }
-      
-      .checkmark {
-        font-size: 2.5rem;
-        color: white;
-        animation: checkmarkDraw 0.5s ease-out 0.3s both;
-      }
-      
-      @keyframes scaleIn {
-        0% {
-          transform: scale(0);
-        }
-        50% {
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-      
-      @keyframes checkmarkDraw {
-        0% {
-          opacity: 0;
-          transform: scale(0);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-      
-      .success-content h3 {
-        margin: 0 0 1rem 0;
-        color: var(--text-primary);
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-      
-      .success-content p {
-        margin: 0 0 2rem 0;
-        color: var(--text-secondary);
-        line-height: 1.6;
-      }
-      
-      @media (min-width: 768px) {
-        .mobile-nav {
-          display: none;
-        }
-        
-        .sidebar-menu,
-        .menu-overlay,
-        .user-dropdown-mobile {
-          display: none;
-        }
-        
-        body {
-          padding-top: 0;
-        }
-        
-        .modern-form-container {
-          margin-top: 2rem;
-        }
-      }
-      
-      @media (max-width: 767px) {
-        #navbar {
-          display: none;
-        }
-        
-        body {
-          padding-top: 70px;
-        }
-        
-        .modern-form-container {
-          padding: 0 0.5rem;
-        }
-        
-        .form-header {
-          padding: 1rem;
-          margin-bottom: 1rem;
-        }
-        
-        .form-title h2 {
-          font-size: 1.4rem;
-        }
-        
-        .form-step {
-          padding: 1.5rem 1rem;
-        }
-        
-        .step-header h3 {
-          font-size: 1.25rem;
-        }
-        
-        .form-group-row {
-          grid-template-columns: 1fr 1.5fr 1fr;
-          gap: 0.75rem;
-        }
-        
-        .modern-select,
-        .modern-input {
-          padding: 0.875rem 1.25rem;
-          font-size: 0.9rem;
-        }
-        
-        .hours-input {
-          max-width: 100% !important;
-          padding: 0.875rem 1.25rem !important;
-          font-size: 0.95rem !important;
-        }
-        
-        .form-navigation {
-          padding: 1rem;
-          flex-direction: column;
-        }
-        
-        .btn {
-          width: 100%;
-          justify-content: center;
-        }
-      }
-      
-      @media (max-width: 600px) {
-        .form-title h2 {
-          font-size: 1.3rem;
-        }
-        
-        .modern-select,
-        .modern-input {
-          padding: 0.75rem 1rem;
-          font-size: 0.85rem;
-        }
-      }
-      
-      @media (max-width: 480px) {
-        .sidebar-menu {
-          width: 260px;
-        }
-        
-        .form-header {
-          padding: 0.75rem;
-        }
-        
-        .form-title h2 {
-          font-size: 1.2rem;
-        }
-        
-        .form-step {
-          padding: 1.25rem 0.875rem;
-        }
-        
-        .step-header {
-          margin-bottom: 1.75rem;
-        }
-        
-        .step-header h3 {
-          font-size: 1.125rem;
-        }
-        
-        .step-header p {
-          font-size: 0.875rem;
-        }
-        
-        .form-group-row {
-          grid-template-columns: 1fr 1.5fr 1fr;
-          gap: 0.5rem;
-        }
-        
-        .modern-select,
-        .modern-input {
-          padding: 0.625rem 0.875rem;
-          font-size: 0.8rem;
-        }
-        
-        .hours-input {
-          padding: 0.75rem 1rem !important;
-          font-size: 0.9rem !important;
-          max-width: 100% !important;
-        }
-        
-        .btn {
-          padding: 0.75rem 1.5rem;
-          font-size: 0.9rem;
-          min-height: 44px;
-        }
-        
-        .btn i {
-          font-size: 1rem;
-        }
-      }
-    </style>
+  <link rel="stylesheet" href="Styles/AgregarHoras.css">
+
+   <script src="JavaScript/theme.js"></script>
+    
+    <script src="JavaScript/i18n.js"></script>
 </head>
 <body>
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav">
-      <button class="menu-btn" onclick="toggleMenu()">
-        <i class="bi bi-list"></i>
-      </button>
-      <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
-      <!-- User Dropdown Mobile -->
-      <div class="user-dropdown-mobile" id="userDropdownMobile">
-        <a href="EditarPerfilModerno.html">
-          <i class="bi bi-person-circle"></i>Ver Perfil
-        </a>
-        <a href="#" onclick="logout()">
-          <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-        </a>
-      </div>
-    </nav>
+  
     
-    <!-- Desktop Navbar Container -->
+
     <div id="navbar"></div>
-    
-    <!-- Sidebar Menu -->
-    <div class="sidebar-menu" id="sidebarMenu">
-      <div class="sidebar-header">
-        <h3>Menú Principal</h3>
-        <p>Navegación</p>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="dashboard.html">
-          <i class="bi bi-house"></i>Dashboard
-        </a>
-        <a href="Comprobantes.html">
-          <i class="bi bi-credit-card"></i>Pagos
-        </a>
-        <a href="HorasMensuales.html">
-          <i class="bi bi-clock"></i>Horas Mensuales
-        </a>
-        <a href="PlanesTrabajoUsuario.html">
-          <i class="bi bi-calendar-check"></i>Planes de Trabajo
-        </a>
-        <a href="Asambleas.html">
-          <i class="bi bi-people-fill"></i>Asambleas
-        </a>
-        <div class="divider"></div>
-        <a href="EditarPerfilModerno.html">
-          <i class="bi bi-person-circle"></i>Mi Perfil
-        </a>
-        <a href="configuracion.html">
-          <i class="bi bi-gear"></i>Configuración
-        </a>
-        <a href="#" onclick="logout()">
-          <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-        </a>
-      </nav>
-    </div>
-    
-    <!-- Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-    
-    <!-- Modern Step Form Container -->
+
     <div class="modern-form-container">
-      <!-- Header with Back Button -->
       <div class="form-header">
         <button class="back-button" onclick="goBack()">
           <i class="bi bi-arrow-left"></i>
         </button>
         <div class="form-title">
-          <h2><i class="bi bi-clock-history"></i> Agregar Horas</h2>
-          <p>Registra tus horas de trabajo del día</p>
+          <h2><i class="bi bi-clock-history"></i> <span data-i18n="hours.add_hours">Agregar Horas</span></h2>
+          <p data-i18n="hours.registerDailyHours">Registra tus horas de trabajo del dáa</p>
         </div>
       </div>
       
-      <!-- Modern Form -->
       <div class="modern-step-form">
         <form class="form-step" id="addHoursForm">
           <div class="step-content">
             <div class="step-header">
-              <h3><i class="bi bi-calendar-event"></i> Información de la Fecha</h3>
-              <p>Selecciona el día y las horas trabajadas</p>
+              <h3><i class="bi bi-calendar-event"></i> <span data-i18n="hours.dateInformation">Información de la Fecha</span></h3>
+              <p data-i18n="hours.selectDayAndHours">Selecciona el día y las horas trabajadas</p>
             </div>
             
             <div class="form-group-row">
               <div class="input-group">
                 <label class="form-label" for="anio">
-                  <i class="bi bi-calendar3"></i>Año
+                  <i class="bi bi-calendar3"></i> <span data-i18n="common.year">Año</span>
                 </label>
                 <input type="number" id="anio" name="anio" min="2000" max="2100" class="modern-input" required>
               </div>
               
               <div class="input-group">
                 <label class="form-label" for="mes">
-                  <i class="bi bi-calendar2-month"></i>Mes
+                  <i class="bi bi-calendar2-month"></i> <span data-i18n="common.month">Mes</span>
                 </label>
                 <select id="mes" name="mes" class="modern-select" required>
-                  <option value="">Seleccione un mes</option>
-                  <option value="1">Enero</option>
-                  <option value="2">Febrero</option>
-                  <option value="3">Marzo</option>
-                  <option value="4">Abril</option>
-                  <option value="5">Mayo</option>
-                  <option value="6">Junio</option>
-                  <option value="7">Julio</option>
-                  <option value="8">Agosto</option>
-                  <option value="9">Septiembre</option>
-                  <option value="10">Octubre</option>
-                  <option value="11">Noviembre</option>
-                  <option value="12">Diciembre</option>
+                  <option value="" data-i18n="common.selectMonth">Seleccione un mes</option>
+                  <option value="1" data-i18n="month.1">Enero</option>
+                  <option value="2" data-i18n="month.2">Febrero</option>
+                  <option value="3" data-i18n="month.3">Marzo</option>
+                  <option value="4" data-i18n="month.4">Abril</option>
+                  <option value="5" data-i18n="month.5">Mayo</option>
+                  <option value="6" data-i18n="month.6">Junio</option>
+                  <option value="7" data-i18n="month.7">Julio</option>
+                  <option value="8" data-i18n="month.8">Agosto</option>
+                  <option value="9" data-i18n="month.9">Septiembre</option>
+                  <option value="10" data-i18n="month.10">Octubre</option>
+                  <option value="11" data-i18n="month.11">Noviembre</option>
+                  <option value="12" data-i18n="month.12">Diciembre</option>
                 </select>
               </div>
               
               <div class="input-group">
                 <label class="form-label" for="dia">
-                  <i class="bi bi-calendar-day"></i>Día
+                  <i class="bi bi-calendar-day"></i> <span data-i18n="common.day">Día</span>
                 </label>
                 <input type="number" id="dia" name="dia" min="1" max="31" class="modern-input" required>
               </div>
@@ -974,7 +162,7 @@
             
             <div class="input-group">
               <label class="form-label" for="Cantidad_Horas" style="text-align: center;">
-                <i class="bi bi-clock"></i>Cantidad de Horas
+                <i class="bi bi-clock"></i> <span data-i18n="hours.hoursAmount">Cantidad de Horas</span>
               </label>
               <input type="number" id="Cantidad_Horas" name="Cantidad_Horas" step="0.1" class="hours-input" placeholder="0.0" required>
             </div>
@@ -986,17 +174,16 @@
         <div class="form-navigation">
           <button type="button" class="btn btn-secondary" id="btnJustificacion">
             <i class="bi bi-file-earmark-arrow-up"></i>
-            Subir Justificación
+            <span data-i18n="hours.uploadJustification">Subir Justificación</span>
           </button>
           <button type="submit" form="addHoursForm" class="btn btn-primary">
             <i class="bi bi-check-circle"></i>
-            Guardar Horas
+            <span data-i18n="hours.saveHours">Guardar Horas</span>
           </button>
         </div>
       </div>
     </div>
     
-    <!-- Success Modal -->
     <div class="success-modal" id="successModal">
       <div class="success-content">
         <div class="success-animation">
@@ -1004,111 +191,24 @@
             <i class="bi bi-check-lg checkmark"></i>
           </div>
         </div>
-        <h3>¡Horas Registradas!</h3>
-        <p>Tus horas han sido guardadas correctamente.</p>
+        <h3 data-i18n="hours.hoursRegistered">¡Horas Registradas!</h3>
+        <p data-i18n="hours.hoursSavedSuccessfully">Tus horas han sido guardadas correctamente.</p>
         <button class="btn btn-primary" onclick="goToHorasMensuales()">
-          Ver Horas Mensuales
+          <span data-i18n="hours.viewMonthlyHours">Ver Horas Mensuales</span>
         </button>
       </div>
     </div>
 
-    <script src="JavaScript/config.js"></script>
-    <script src="JavaScript/navbar-functions.js"></script>
-    <script src="JavaScript/dashboard.js"></script>
+      <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
     <script src="JavaScript/loader.js"></script>
-    <script>
-      // Load navbar after page loads
-      document.addEventListener('DOMContentLoaded', function() {
-        loadNavbar();
-      });
-      
-      // Back button function
-      function goBack() {
-        window.location.href = 'HorasMensuales.html';
-      }
-      
-      function goToHorasMensuales() {
-        window.location.href = 'HorasMensuales.html';
-      }
-      
-      function showSuccessModal() {
-        const modal = document.getElementById('successModal');
-        modal.classList.add('show');
-      }
-      
-      // Set default year and month
-      (function setDefaultYearMonthDay() {
-        const now = new Date();
-        document.getElementById('anio').value = now.getFullYear();
-        document.getElementById('mes').value = (now.getMonth() + 1).toString();
-        document.getElementById('dia').value = now.getDate();
-      })();
-
-      // Show message helper
-      function showMessage(message, type = 'info') {
-        let msg = document.getElementById('msg-estado');
-        if (!msg) {
-          msg = document.createElement('div');
-          msg.id = 'msg-estado';
-          document.querySelector('.step-content').appendChild(msg);
-        }
-        msg.textContent = message;
-        msg.className = type;
-      }
-
-      document.getElementById('addHoursForm').onsubmit = async function(e) {
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-        
-        showMessage('Enviando...', 'info');
-        
-        try {
-          const token = localStorage.getItem('access_token');
-          if (!token) {
-            showMessage('No autenticado. Por favor, inicie sesión.', 'error');
-            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
-            return;
-          }
-          
-          // Convertir FormData a objeto para JSON
-          const data = {};
-          formData.forEach((value, key) => { data[key] = value; });
-          
-          const response = await fetch(API_URLS.cooperativa.horas(), {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify(data)
-          });
-          
-          if (response.ok) {
-            showSuccessModal();
-          } else {
-            let errorMsg = 'Error al registrar horas';
-            try {
-              const text = await response.text();
-              const data = JSON.parse(text);
-              if (data && data.error) errorMsg += ': ' + data.error;
-              else errorMsg += ': ' + text;
-            } catch {
-              // Si no es JSON
-            }
-            showMessage(errorMsg, 'error');
-          }
-        } catch (err) {
-          showMessage('Error de conexión con el servidor', 'error');
-        }
-      };
-
-      document.getElementById('btnJustificacion').onclick = function() {
-        window.location.href = 'AgregarJustificacion.html';
-      };
-    </script>
-    
-    <!-- Bootstrap JS -->
+    <script src="JavaScript/navbar-functions.js"></script>
+    <script src="JavaScript/mobile-navbar.js"></script>
+    <script src="JavaScript/AgregarHoras.js"></script>
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/Navbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

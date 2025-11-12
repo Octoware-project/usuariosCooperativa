@@ -1,4 +1,3 @@
-// Funciones globales para skeleton loaders en tablas
 function mostrarSkeletonsTabla(tbodyId) {
   const tbody = document.getElementById(tbodyId);
   if (tbody) {
@@ -21,11 +20,9 @@ async function loadNavbar() {
       const response = await fetch("navbar.html");
       const navbarHTML = await response.text();
       
-      // Create temp div to parse HTML
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = navbarHTML;
       
-      // Extract and apply styles from navbar.html to <head>
       const styles = tempDiv.querySelectorAll('style');
       
       styles.forEach((style) => {
@@ -35,8 +32,6 @@ async function loadNavbar() {
         style.remove();
       });
       
-      // IMPORTANTE: Remover navbar mobile, sidebar y overlay del HTML 
-      // porque ya existen en el HTML de la página
       const mobileNavToRemove = tempDiv.querySelector('.mobile-nav');
       const sidebarToRemove = tempDiv.querySelector('.sidebar-menu');
       const overlayToRemove = tempDiv.querySelector('.menu-overlay');
@@ -45,10 +40,8 @@ async function loadNavbar() {
       if (sidebarToRemove) sidebarToRemove.remove();
       if (overlayToRemove) overlayToRemove.remove();
       
-      // Get cleaned HTML (without <style> tags and mobile nav elements)
       const cleanedHTML = tempDiv.innerHTML;
       
-      // Insert cleaned HTML into containers
       if (navbarContainer) {
         navbarContainer.innerHTML = cleanedHTML;
       }
@@ -57,7 +50,6 @@ async function loadNavbar() {
         mobileNavbarContainer.innerHTML = cleanedHTML;
       }
       
-      // Extract and execute scripts from navbar.html
       const scripts = tempDiv.querySelectorAll('script');
       
       scripts.forEach((script) => {
@@ -70,7 +62,6 @@ async function loadNavbar() {
         document.head.appendChild(newScript);
       });
       
-      // Attach navbar events after scripts are loaded
       setTimeout(() => {
         attachNavbarEvents();
         
@@ -81,9 +72,13 @@ async function loadNavbar() {
         if (typeof initDesktopNavbar === 'function') {
           initDesktopNavbar();
         }
+        
+        // Update translations after navbar is loaded
+        if (typeof LanguageManager !== 'undefined' && typeof LanguageManager.updatePageLanguage === 'function') {
+          LanguageManager.updatePageLanguage();
+        }
       }, 100);
     } catch (error) {
-      // Error cargando navbar
     }
   }
 }
@@ -192,12 +187,12 @@ function attachNavbarEvents() {
       if (userMenuBtn && userMenuBtn.classList) {
         userMenuBtn.classList.remove('menu-open');
       }
-      window.location.href = 'EditarPerfilModerno.html';
+      window.location.href = 'PerfilUsuario.html';
     });
   }
 
   // Mobile ver datos buttons
-  const mobileVerDatosBtns = document.querySelectorAll('a[href="EditarPerfilModerno.html"]');
+  const mobileVerDatosBtns = document.querySelectorAll('a[href="PerfilUsuario.html"]');
   mobileVerDatosBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       if (userDropdownMobile) {

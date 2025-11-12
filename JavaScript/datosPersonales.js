@@ -1,4 +1,4 @@
-// Variables globales para datos del usuario
+
 let userData = {};
 let personaData = {};
 
@@ -11,7 +11,6 @@ async function cargarDatosPersonales() {
   const datosContent = document.getElementById('datosContent');
   const actionButtons = document.getElementById('actionButtons');
   
-  // Mostrar loading
   datosContent.innerHTML = `
     <div class="loading-container">
       <p>Cargando datos...</p>
@@ -37,17 +36,14 @@ async function cargarDatosPersonales() {
     
     const data = await res.json();
     
-    // Procesar datos de la respuesta
     const persona = Array.isArray(data.persona) ? data.persona[0] : data.persona;
     const user = Array.isArray(data.user) ? data.user[0] : data.user;
     
     userData = user || {};
     personaData = persona || {};
     
-    // Mostrar datos en la interfaz
     mostrarDatos();
     
-    // Mostrar botones de acción
     if (actionButtons) {
       actionButtons.style.display = 'flex';
     }
@@ -148,14 +144,3 @@ function mostrarError(mensaje) {
     </div>
   `;
 }
-
-// Verificar token al cargar página
-window.addEventListener('load', () => {
-  const token = localStorage.getItem('access_token');
-  if (!token) {
-    redirectToLogin();
-  }
-});
-
-// Hacer función global para compatibilidad
-window.cargarDatosPersonales = cargarDatosPersonales;

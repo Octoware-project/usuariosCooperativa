@@ -1,0 +1,50 @@
+/* Ocultar scrollbar en todas las páginas - Estilo moderno */
+
+/* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+/* Para Edge e IE (legacy) */
+body {
+  -ms-overflow-style: none;
+}
+
+/* Método alternativo más agresivo */
+html {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Asegurar que el contenido siga siendo scrollable */
+html,
+body {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad de scroll */
+body::-webkit-scrollbar {
+  display: none;
+}

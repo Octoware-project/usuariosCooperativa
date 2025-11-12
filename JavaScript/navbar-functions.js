@@ -1,93 +1,114 @@
-// ============================================
-// NAVBAR FUNCTIONS - Mobile & Desktop
-// ============================================
+// Cachear referencias DOM para optimizar performance
+const NavbarCache = {
+  sidebar: null,
+  overlay: null,
+  userDropdown: null,
+  
+  init() {
+    this.sidebar = document.getElementById('sidebarMenu');
+    this.overlay = document.getElementById('menuOverlay');
+    this.userDropdown = document.getElementById('userDropdownMobile');
+  },
+  
+  refresh() {
+    // Refrescar referencias si es necesario
+    if (!this.sidebar) this.sidebar = document.getElementById('sidebarMenu');
+    if (!this.overlay) this.overlay = document.getElementById('menuOverlay');
+    if (!this.userDropdown) this.userDropdown = document.getElementById('userDropdownMobile');
+  }
+};
 
-// Mobile menu functionality
 function toggleMenu() {
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
-  const userDropdown = document.getElementById('userDropdownMobile');
+  NavbarCache.refresh();
   
-  // Close user dropdown if open
-  if (userDropdown) {
-    userDropdown.classList.remove('show');
+  if (NavbarCache.userDropdown) {
+    NavbarCache.userDropdown.classList.remove('show');
   }
   
-  if (sidebar) {
-    sidebar.classList.toggle('open');
+  if (NavbarCache.sidebar) {
+    NavbarCache.sidebar.classList.toggle('open');
   }
-  if (overlay) {
-    overlay.classList.toggle('active');
+  if (NavbarCache.overlay) {
+    NavbarCache.overlay.classList.toggle('active');
   }
 }
 
 function closeMenu() {
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
+  NavbarCache.refresh();
   
-  if (sidebar) {
-    sidebar.classList.remove('open');
+  if (NavbarCache.sidebar) {
+    NavbarCache.sidebar.classList.remove('open');
   }
-  if (overlay) {
-    overlay.classList.remove('active');
+  if (NavbarCache.overlay) {
+    NavbarCache.overlay.classList.remove('active');
   }
 }
 
 function toggleUserDropdown() {
-  const dropdown = document.getElementById('userDropdownMobile');
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
+  NavbarCache.refresh();
   
-  // Close sidebar if open
-  if (sidebar) {
-    sidebar.classList.remove('open');
+  if (NavbarCache.sidebar) {
+    NavbarCache.sidebar.classList.remove('open');
   }
-  if (overlay) {
-    overlay.classList.remove('active');
+  if (NavbarCache.overlay) {
+    NavbarCache.overlay.classList.remove('active');
   }
   
-  // Toggle dropdown
-  if (dropdown) {
-    dropdown.classList.toggle('show');
+  if (NavbarCache.userDropdown) {
+    NavbarCache.userDropdown.classList.toggle('show');
   }
 }
 
-// Close dropdowns when clicking outside
-document.addEventListener('click', function(event) {
-  const userIcon = document.getElementById('userIconMobile');
-  const userDropdown = document.getElementById('userDropdownMobile');
-  const menuBtn = document.querySelector('.menu-btn');
-  const sidebar = document.getElementById('sidebarMenu');
-  const overlay = document.getElementById('menuOverlay');
-  
-  // Close mobile user dropdown if clicking outside
-  if (userIcon && userDropdown && !userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
-    userDropdown.classList.remove('show');
-  }
-  
-  // Close sidebar if clicking on overlay
-  if (overlay && overlay.contains(event.target)) {
-    closeMenu();
-  }
-});
+// Usar delegación de eventos y cachear elementos
+let globalClickHandlerAttached = false;
 
-// Initialize user icon - Keep it simple with 'U'
+function attachGlobalClickHandler() {
+  if (globalClickHandlerAttached) return;
+  
+  document.addEventListener('click', function(event) {
+    const target = event.target;
+    
+    // Usar delegación - verificar clases en lugar de consultar DOM
+    const userDropdown = document.getElementById('userDropdownMobile');
+    const userIcon = document.getElementById('userIconMobile');
+    
+    if (userIcon && userDropdown && !userIcon.contains(target) && !userDropdown.contains(target)) {
+      userDropdown.classList.remove('show');
+    }
+    
+    // Verificar si el click fue en el overlay
+    if (target.classList.contains('menu-overlay') || target.id === 'menuOverlay') {
+      closeMenu();
+    }
+  }, { passive: true });
+  
+  globalClickHandlerAttached = true;
+}
+
+// Llamar al final de la inicialización
+attachGlobalClickHandler();
+
 function initUserIcon() {
   const userIcon = document.getElementById('userIconMobile');
   
   if (!userIcon) return;
   
-  // Keep icon as 'U' - don't fetch user name
   const token = localStorage.getItem('access_token');
   if (token) {
     userIcon.textContent = 'U';
   }
 }
 
-// Desktop navbar user menu toggle
+// Cachear elementos del desktop navbar
+let desktopNavbarInitialized = false;
+let userMenuBtn = null;
+let userDropdown = null;
+
 function initDesktopNavbar() {
-  const userMenuBtn = document.getElementById('userMenuBtn');
-  const userDropdown = document.getElementById('userDropdown');
+  if (desktopNavbarInitialized) return;
+  
+  userMenuBtn = document.getElementById('userMenuBtn');
+  userDropdown = document.getElementById('userDropdown');
   
   if (userMenuBtn && userDropdown) {
     userMenuBtn.addEventListener('click', (e) => {
@@ -104,44 +125,41 @@ function initDesktopNavbar() {
       }
     });
     
-    // Close desktop dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-      if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+    // Solo agregar este listener una vez
+    document.addEventListener('click', function desktopDropdownHandler(event) {
+      if (userMenuBtn && userDropdown && 
+          !userMenuBtn.contains(event.target) && 
+          !userDropdown.contains(event.target)) {
         userDropdown.classList.remove('show');
         userMenuBtn.classList.remove('menu-open');
       }
-    });
+    }, { passive: true });
+    
+    desktopNavbarInitialized = true;
   }
 }
 
-// Logout function
 function logout() {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('userData');
-  localStorage.removeItem('authToken');
+  // Limpiar todo el localStorage de una vez en lugar de múltiples llamadas
+  const keysToRemove = ['access_token', 'userData', 'authToken'];
+  keysToRemove.forEach(key => localStorage.removeItem(key));
+  
   window.location.href = 'index.html';
 }
 
-// Initialize navbar after it's loaded
 function initNavbarAfterLoad() {
+  NavbarCache.init();
   initUserIcon();
   initDesktopNavbar();
 }
 
-// Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', function() {
-    // Wait a bit for navbar to be loaded by loader.js
     setTimeout(initNavbarAfterLoad, 200);
   });
 } else {
-  // DOM already loaded
   setTimeout(initNavbarAfterLoad, 200);
 }
-
-// ============================================
-// CONFIGURATION MODAL FUNCTIONS
-// ============================================
 
 function openConfigModal() {
   const modal = document.getElementById('configModal');
@@ -149,7 +167,6 @@ function openConfigModal() {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     
-    // Update theme buttons state
     updateThemeButtons();
   }
 }
@@ -186,7 +203,6 @@ function updateThemeButtons() {
   }
 }
 
-// Close modal with ESC key
 document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape') {
     closeConfigModal();

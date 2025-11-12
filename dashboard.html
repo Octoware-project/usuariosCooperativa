@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Inline Theme Loader - MUST BE FIRST to prevent FOUC -->
   <script>
     (function() {
       const savedTheme = localStorage.getItem('theme') || 'light';
@@ -14,14 +13,14 @@
           '--surface': '#ffffff',
           '--surface-variant': '#f8f9fa',
           '--surface-hover': '#f0f0f0',
-          '--bg-gradient': '#fafcfe',
+          '--bg-gradient': '#ffffff',
           '--text-primary': '#1f2937',
           '--text-secondary': '#6b7280',
           '--text-muted': '#9ca3af',
           '--border': '#e5e7eb',
           '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
           '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
-          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
           '--success': '#10b981',
           '--warning': '#f59e0b',
           '--error': '#ef4444',
@@ -55,7 +54,7 @@
           '--border': '#3f3f46',
           '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
           '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
-          '--shadow-lg': '0 10px 15px rgba(0, 0, 0, 0.5)',
+          '--shadow-lg': 'none',
           '--success': '#10b981',
           '--warning': '#f59e0b',
           '--error': '#ef4444',
@@ -88,856 +87,109 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard</title>
   <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
-  <link rel="stylesheet" href="styles.css">
   
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   
-  <!-- Google Fonts - Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Theme Manager -->
+  <!-- Ocultar Scrollbar -->
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  
+  <!-- Anti-Flash CSS (CRÍTICO - debe cargarse primero) -->
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  
+  <!-- Page Loader CSS -->
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  
+  <!-- Navbar Skeleton CSS -->
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  
   <script src="JavaScript/theme.js"></script>
   
-  <style>
-    html, body {
-      overflow-x: hidden;
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-gradient);
-      min-height: 100vh;
-    }
-    
-    .dashboard-container {
-      max-width: 1400px;
-      margin: 2rem auto;
-      padding: 0 1rem 2rem 1rem;
-    }
-    
-    .welcome-section {
-      background: var(--surface);
-      border-radius: 24px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-    
-    .welcome-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 2rem;
-      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
-      flex-shrink: 0;
-    }
-    
-    .welcome-content h1 {
-      margin: 0 0 0.5rem 0;
-      color: var(--text-primary);
-      font-size: 2rem;
-      font-weight: 700;
-    }
-    
-    .welcome-content p {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 1rem;
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    
-    .stat-card {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--primary);
-    }
-    
-    .stat-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-    
-    .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: white;
-    }
-    
-    .stat-icon.primary {
-      background: linear-gradient(135deg, #fce7f3, #fbcfe8);
-      color: var(--primary);
-    }
-    
-    .stat-icon.secondary {
-      background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
-      color: var(--secondary);
-    }
-    
-    .stat-icon.success {
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-      color: var(--success);
-    }
-    
-    .stat-icon.info {
-      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-      color: var(--info);
-    }
-    
-    .stat-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: var(--surface-variant);
-      color: var(--text-secondary);
-    }
-    
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 0 0 0.5rem 0;
-    }
-    
-    .stat-label {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin: 0;
-    }
-    
-    .content-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 2rem;
-      align-items: start;
-    }
-    
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-    
-    .section-card {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-    
-    .section-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-    
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 0;
-      color: var(--text-primary);
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-    
-    .section-title i {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.1rem;
-    }
-    
-    .btn-view-all {
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      background: var(--surface-variant);
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border: 1px solid var(--border);
-    }
-    
-    .btn-view-all:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      transform: translateY(-1px);
-    }
-    
-    .quick-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .action-btn {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: var(--surface-variant);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--text-primary);
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border: 1px solid var(--border);
-    }
-    
-    .action-btn:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      transform: translateX(5px);
-    }
-    
-    .action-btn i {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      color: var(--primary);
-      transition: all 0.2s ease;
-    }
-    
-    .action-btn:hover i {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-    }
-    
-    .sidebar-card {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border);
-    }
-    
-    .progress-item {
-      margin-bottom: 1.5rem;
-    }
-    
-    .progress-item:last-child {
-      margin-bottom: 0;
-    }
-    
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-    
-    .progress-label {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .progress-value {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    
-    .progress-bar-bg {
-      width: 100%;
-      height: 8px;
-      background: var(--surface-variant);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 4px;
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .upcoming-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .upcoming-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: var(--surface-variant);
-      border-radius: 12px;
-      transition: all 0.2s ease;
-    }
-    
-    .upcoming-item:hover {
-      background: var(--border);
-      transform: translateX(5px);
-    }
-    
-    .upcoming-date {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      flex-shrink: 0;
-    }
-    
-    .upcoming-day {
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1;
-    }
-    
-    .upcoming-month {
-      font-size: 0.65rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      opacity: 0.9;
-    }
-    
-    .upcoming-info h4 {
-      margin: 0 0 0.25rem 0;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .upcoming-info p {
-      margin: 0;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 2rem;
-      color: var(--text-secondary);
-    }
-    
-    .empty-state i {
-      font-size: 3rem;
-      color: var(--text-tertiary);
-      margin-bottom: 1rem;
-      display: block;
-    }
-    
-    /* ============================================
-       MOBILE NAVIGATION STYLES
-    ============================================ */
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: var(--mobile-nav-bg);
-      backdrop-filter: blur(20px);
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: var(--mobile-nav-shadow);
-      border-bottom: 1px solid var(--mobile-nav-border);
-    }
-    
-    .menu-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: var(--primary);
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-    
-    .menu-btn:hover {
-      background: var(--sidebar-hover);
-      transform: scale(1.05);
-    }
-    
-    .user-icon-mobile {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.4);
-      transition: all 0.2s ease;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      border: none;
-      outline: none;
-    }
-    
-    .user-icon-mobile:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.5);
-    }
-    
-    .user-icon-mobile:active {
-      transform: scale(0.98);
-      transition: all 0.1s ease;
-    }
-    
-    /* Sidebar Menu */
-    .sidebar-menu {
-      position: fixed;
-      top: 0;
-      left: -300px;
-      width: 280px;
-      height: 100vh;
-      background: var(--sidebar-bg);
-      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-      z-index: 1001;
-      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow-y: auto;
-    }
-    
-    .sidebar-menu.open {
-      left: 0;
-    }
-    
-    .sidebar-header {
-      background: var(--sidebar-header-bg);
-      padding: 2rem 1.5rem;
-      color: white;
-      text-align: center;
-    }
-    
-    .sidebar-header h3 {
-      margin: 0;
-      font-size: 1.3rem;
-      font-weight: 600;
-    }
-    
-    .sidebar-header p {
-      margin: 0.5rem 0 0 0;
-      opacity: 0.9;
-      font-size: 0.9rem;
-    }
-    
-    .sidebar-nav {
-      padding: 1rem 0;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .sidebar-nav a {
-      display: flex;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      color: var(--sidebar-text);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid var(--sidebar-divider);
-      width: 100%;
-      box-sizing: border-box;
-    }
-    
-    .sidebar-nav a:last-child {
-      border-bottom: none;
-    }
-    
-    .sidebar-nav a:hover {
-      background: var(--sidebar-hover);
-      color: var(--primary);
-      transform: translateX(5px);
-    }
-    
-    .sidebar-nav a i {
-      width: 20px;
-      margin-right: 1rem;
-      font-size: 1.1rem;
-    }
-    
-    .sidebar-nav .divider {
-      height: 1px;
-      background: var(--sidebar-divider);
-      margin: 0.5rem 1.5rem;
-      flex-shrink: 0;
-    }
-    
-    /* Overlay */
-    .menu-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    /* User dropdown mobile */
-    .user-dropdown-mobile {
-      position: absolute;
-      top: 60px;
-      right: 1rem;
-      background: var(--surface);
-      border-radius: 12px;
-      box-shadow: var(--shadow-xl);
-      border: 1px solid var(--border);
-      min-width: 180px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1002;
-    }
-    
-    .user-dropdown-mobile.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    
-    .user-dropdown-mobile a {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      color: var(--text-primary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .user-dropdown-mobile a:last-child {
-      border-bottom: none;
-      border-radius: 0 0 12px 12px;
-    }
-    
-    .user-dropdown-mobile a:first-child {
-      border-radius: 12px 12px 0 0;
-    }
-    
-    .user-dropdown-mobile a:hover {
-      background: var(--sidebar-hover);
-      color: var(--primary);
-    }
-    
-    .user-dropdown-mobile a i {
-      width: 16px;
-      margin-right: 0.75rem;
-    }
-    
-    /* Mobile Responsive */
-    @media (min-width: 768px) {
-      .mobile-nav {
-        display: none;
-      }
-      
-      .sidebar-menu,
-      .menu-overlay,
-      .user-dropdown-mobile {
-        display: none;
-      }
-    }
-    
-    @media (max-width: 767px) {
-      #navbar {
-        display: none;
-      }
-      
-      body {
-        padding-top: 70px;
-      }
-      
-      .dashboard-container {
-        padding: 0.5rem 0.5rem 2rem 0.5rem;
-        margin: 1rem auto;
-      }
-      
-      .welcome-section {
-        flex-direction: column;
-        padding: 1.5rem;
-        text-align: center;
-      }
-      
-      .welcome-content h1 {
-        font-size: 1.5rem;
-      }
-      
-      .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-      
-      .content-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      
-      .section-card {
-        padding: 1.5rem;
-      }
-      
-      .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-      
-      .action-btn {
-        padding: 1rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .sidebar-menu {
-        width: 260px;
-      }
-      
-      .dashboard-container {
-        padding: 0.25rem 0.25rem 2rem 0.25rem;
-      }
-      
-      .welcome-section {
-        padding: 1rem;
-      }
-      
-      .welcome-icon {
-        width: 56px;
-        height: 56px;
-        font-size: 1.75rem;
-      }
-      
-      .welcome-content h1 {
-        font-size: 1.3rem;
-      }
-      
-      .section-card {
-        padding: 1rem;
-      }
-      
-      .section-title {
-        font-size: 1.1rem;
-      }
-      
-      .stat-value {
-        font-size: 1.75rem;
-      }
-    }
-  </style>
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/Dashboard.css">
+
 </head>
 <body>
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav">
-    <button class="menu-btn" onclick="toggleMenu()">
-      <i class="bi bi-list"></i>
-    </button>
-    <div class="user-icon-mobile" onclick="toggleUserDropdown()" id="userIconMobile">U</div>
-    <!-- User Dropdown Mobile -->
-    <div class="user-dropdown-mobile" id="userDropdownMobile">
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Ver Perfil
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </div>
-  </nav>
-  
-  <!-- Desktop Navbar Container -->
+
   <div id="navbar"></div>
   
-  <!-- Sidebar Menu -->
-  <div class="sidebar-menu" id="sidebarMenu">
-    <div class="sidebar-header">
-      <h3>Menú Principal</h3>
-      <p>Navegación</p>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="dashboard.html">
-        <i class="bi bi-house"></i>Dashboard
-      </a>
-      <a href="Comprobantes.html">
-        <i class="bi bi-credit-card"></i>Pagos
-      </a>
-      <a href="HorasMensuales.html">
-        <i class="bi bi-clock"></i>Horas Mensuales
-      </a>
-      <a href="PlanesTrabajoUsuario.html">
-        <i class="bi bi-calendar-check"></i>Planes de Trabajo
-      </a>
-      <a href="Asambleas.html">
-        <i class="bi bi-people-fill"></i>Asambleas
-      </a>
-      <div class="divider"></div>
-      <a href="EditarPerfilModerno.html">
-        <i class="bi bi-person-circle"></i>Mi Perfil
-      </a>
-      <a href="configuracion.html">
-        <i class="bi bi-gear"></i>Configuración
-      </a>
-      <a href="#" onclick="logout()">
-        <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
-      </a>
-    </nav>
-  </div>
-  
-  <!-- Menu Overlay -->
-  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-
   <div class="dashboard-container">
-    <!-- Welcome Section -->
     <div class="welcome-section">
       <div class="welcome-icon">
         <i class="bi bi-house-heart"></i>
       </div>
       <div class="welcome-content">
-        <h1>¡Bienvenido/a, <span id="userName">Usuario</span>!</h1>
-        <p>Aquí tienes un resumen de tu actividad y accesos rápidos a las funciones principales</p>
+        <h1><span data-i18n="dashboard.welcome">¡Bienvenido/a</span>, <span id="userName">Usuario</span>!</h1>
+        <p data-i18n="dashboard.subtitle">Aquí tienes un resumen de tu actividad y accesos rápidos a las funciones principales</p>
       </div>
     </div>
 
-    <!-- Content Grid -->
     <div class="content-grid">
-      <!-- Main Content -->
       <div class="main-content">
-        <!-- Quick Actions -->
         <div class="section-card">
           <div class="section-header">
             <h3 class="section-title">
               <i class="bi bi-lightning-charge-fill"></i>
-              Acciones Rápidas
+              <span data-i18n="dashboard.quickActions">Acciones Rápidas</span>
             </h3>
           </div>
           <div class="quick-actions">
             <a href="AgregarHoras.html" class="action-btn">
               <i class="bi bi-plus-circle"></i>
-              <span>Agregar Horas</span>
+              <span data-i18n="dashboard.addHours">Agregar Horas</span>
             </a>
             <a href="AgregarComprobante.html" class="action-btn">
               <i class="bi bi-receipt"></i>
-              <span>Nuevo Comprobante</span>
+              <span data-i18n="dashboard.newReceipt">Nuevo Comprobante</span>
             </a>
             <a href="AgregarJustificacion.html" class="action-btn">
               <i class="bi bi-file-earmark-text"></i>
-              <span>Agregar Justificación</span>
+              <span data-i18n="dashboard.addJustification">Agregar Justificación</span>
             </a>
           </div>
         </div>
 
-        <!-- Mission Section -->
         <div class="section-card">
           <div class="section-header">
             <h3 class="section-title">
               <i class="bi bi-flag-fill"></i>
-              Nuestra Cooperativa
+              <span data-i18n="dashboard.ourCooperative">Nuestra Cooperativa</span>
             </h3>
           </div>
           <div style="color: var(--text-secondary); line-height: 1.8;">
             <p style="margin-bottom: 1rem;">
               <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">
-                <i class="bi bi-bullseye" style="color: var(--primary);"></i> Misión
+                <i class="bi bi-bullseye" style="color: var(--primary);"></i> <span data-i18n="dashboard.mission">Misión</span>
               </strong>
-              Promover la participación activa y transparente de todos los asociados, fomentando el desarrollo comunitario y el bienestar colectivo.
+              <span data-i18n="dashboard.missionText">Promover la participación activa y transparente de todos los asociados, fomentando el desarrollo comunitario y el bienestar colectivo.</span>
             </p>
             <p style="margin-bottom: 1rem;">
               <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">
-                <i class="bi bi-eye-fill" style="color: var(--secondary);"></i> Visión
+                <i class="bi bi-eye-fill" style="color: var(--secondary);"></i> <span data-i18n="dashboard.vision">Visión</span>
               </strong>
-              Ser un referente de gestión comunitaria eficiente y justa, reconocido por nuestra transparencia y compromiso con el bienestar de nuestros asociados.
+              <span data-i18n="dashboard.visionText">Ser un referente de gestión comunitaria eficiente y justa, reconocido por nuestra transparencia y compromiso con el bienestar de nuestros asociados.</span>
             </p>
             <p style="margin: 0;">
               <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">
-                <i class="bi bi-heart-fill" style="color: var(--error);"></i> Valores
+                <i class="bi bi-heart-fill" style="color: var(--error);"></i> <span data-i18n="dashboard.values">Valores</span>
               </strong>
-              Transparencia, Compromiso, Respeto, Solidaridad y Trabajo en Equipo.
+              <span data-i18n="dashboard.valuesText">Transparencia, Compromiso, Respeto, Solidaridad y Trabajo en Equipo.</span>
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Sidebar -->
       <div>
-        <!-- Upcoming Events -->
         <div class="sidebar-card">
           <div class="section-header" style="margin-bottom: 1.5rem;">
             <h3 class="section-title" style="font-size: 1.1rem;">
               <i class="bi bi-calendar-event" style="width: 36px; height: 36px; font-size: 1rem;"></i>
-              Próximos Eventos
+              <span data-i18n="dashboard.upcomingEvents">Próximos Eventos</span>
             </h3>
           </div>
           <div id="upcomingEvents" class="upcoming-list">
@@ -947,144 +199,41 @@
             </div>
           </div>
         </div>
+
+        <div class="sidebar-card" style="margin-top: 1.5rem;">
+          <div class="section-header" style="margin-bottom: 1.5rem;">
+            <h3 class="section-title" style="font-size: 1.1rem;">
+              <i class="bi bi-receipt-cutoff" style="width: 36px; height: 36px; font-size: 1rem;"></i>
+              <span data-i18n="dashboard.monthlyInvoices">Facturas del Mes</span>
+            </h3>
+          </div>
+          <div id="paymentNotifications" class="notifications-list">
+            <div class="empty-state">
+              <i class="bi bi-check-circle"></i>
+              <p>No hay notificaciones</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+    <!-- Universal Loader (debe cargarse primero) -->
+    <script src="JavaScript/universal-loader.js"></script>
+    
+    <!-- Navbar Skeleton -->
+    <script src="JavaScript/navbar-skeleton.js"></script>
+    
+    <!-- Page Loader -->
+    <script src="JavaScript/page-loader.js"></script>
+    
     <script src="JavaScript/config.js"></script>
+    <script src="JavaScript/loader.js"></script>
     <script src="JavaScript/navbar-functions.js"></script>
+    <script src="JavaScript/mobile-navbar.js"></script>
     <script src="JavaScript/dashboard.js"></script>
-  <script src="JavaScript/loader.js"></script>
-  <script>
-    // Load navbar after page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      loadNavbar();
-    });
-    
-    // Load dashboard data
-    async function loadDashboardData() {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = 'index.html';
-        return;
-      }
+    <script src="JavaScript/Navbar.js"></script>
 
-      try {
-        // Validate user
-        const validateRes = await fetch(API_URLS.usuarios.validate(), {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (!validateRes.ok) throw new Error('No se pudo validar el token');
-        
-        const userData = await validateRes.json();
-        
-        // Check user status
-        if (userData.persona && userData.persona.estadoRegistro === 'Inactivo') {
-          alert('Debes completar todos tus datos');
-          window.location.href = 'completarDatos.html';
-          return;
-        }
-        
-        if (userData.persona && userData.persona.estadoRegistro !== 'Aceptado') {
-          window.location.href = 'index.html';
-          return;
-        }
-        
-        // Get user data from cooperativa API
-        try {
-          const userDataRes = await fetch(API_URLS.cooperativa.datosUsuario(), {
-            headers: {
-              'Authorization': 'Bearer ' + token,
-              'Accept': 'application/json'
-            }
-          });
-          
-          if (userDataRes.ok) {
-            const userInfo = await userDataRes.json();
-            
-            // Get name from persona object
-            const userName = userInfo.persona?.name || 
-                           userInfo.user?.name || 
-                           (userData.persona ? userData.persona.nombre : 'Usuario');
-            
-            document.getElementById('userName').textContent = userName;
-          } else {
-            // Fallback to validation data
-            const userName = userData.persona ? userData.persona.nombre : 'Usuario';
-            document.getElementById('userName').textContent = userName;
-          }
-        } catch (err) {
-          // Fallback to validation data
-          const userName = userData.persona ? userData.persona.nombre : 'Usuario';
-          document.getElementById('userName').textContent = userName;
-        }
-        
-        // Load upcoming events
-        await loadAsambleasStats();
-        
-      } catch (err) {
-        window.location.href = 'index.html';
-      }
-    }
-    
-    // Load asambleas statistics
-    async function loadAsambleasStats() {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await fetch(API_URLS.cooperativa.asambleas ? API_URLS.cooperativa.asambleas() : 'http://127.0.0.1:8001/api/asambleas', {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          const asambleas = Array.isArray(data) ? data : (data.data || []);
-          
-          // Filter future asambleas
-          const now = new Date();
-          const futureAsambleas = asambleas.filter(a => new Date(a.fecha_raw) >= now);
-          
-          // Show upcoming events
-          const upcomingContainer = document.getElementById('upcomingEvents');
-          if (upcomingContainer && futureAsambleas.length > 0) {
-            upcomingContainer.innerHTML = futureAsambleas.slice(0, 3).map(asamblea => {
-              // Parse date correctly to avoid timezone issues
-              const fechaParts = asamblea.fecha_raw.split('-');
-              const fecha = new Date(fechaParts[0], fechaParts[1] - 1, fechaParts[2]);
-              const day = fecha.getDate();
-              const month = fecha.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase();
-              
-              return `
-                <div class="upcoming-item">
-                  <div class="upcoming-date">
-                    <div class="upcoming-day">${day}</div>
-                    <div class="upcoming-month">${month}</div>
-                  </div>
-                  <div class="upcoming-info">
-                    <h4>${asamblea.titulo || 'Asamblea'}</h4>
-                    <p>${asamblea.lugar || 'Por definir'} ${asamblea.hora ? '• ' + asamblea.hora : ''}</p>
-                  </div>
-                </div>
-              `;
-            }).join('');
-          }
-        }
-      } catch (err) {
-        }
-    }
-    
-    // Initialize dashboard
-    document.addEventListener('DOMContentLoaded', function() {
-      loadNavbar();
-      loadDashboardData();
-    });
-  </script>
-
+ 
 </body>
 </html>
