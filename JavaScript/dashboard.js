@@ -3,6 +3,67 @@ function redirectToLogin() {
   localStorage.removeItem('access_token');
   window.location.href = 'index.html';
 }
+
+    // Mostrar skeletons inmediatamente al cargar la página
+    function showInitialSkeletons() {
+      const upcomingContainer = document.getElementById('upcomingEvents');
+      if (upcomingContainer) {
+        upcomingContainer.innerHTML = `
+          <div class="skeleton-upcoming">
+            <div class="skeleton-item">
+              <div class="skeleton-date"></div>
+              <div class="skeleton-info">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-text"></div>
+              </div>
+            </div>
+            <div class="skeleton-item">
+              <div class="skeleton-date"></div>
+              <div class="skeleton-info">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-text"></div>
+              </div>
+            </div>
+            <div class="skeleton-item">
+              <div class="skeleton-date"></div>
+              <div class="skeleton-info">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-text"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      const notificationsContainer = document.getElementById('paymentNotifications');
+      if (notificationsContainer) {
+        notificationsContainer.innerHTML = `
+          <div class="skeleton-notifications">
+            <div class="skeleton-notification-item">
+              <div class="skeleton-notification-icon"></div>
+              <div class="skeleton-notification-content">
+                <div class="skeleton-notification-title"></div>
+                <div class="skeleton-notification-text"></div>
+              </div>
+            </div>
+            <div class="skeleton-notification-item">
+              <div class="skeleton-notification-icon"></div>
+              <div class="skeleton-notification-content">
+                <div class="skeleton-notification-title"></div>
+                <div class="skeleton-notification-text"></div>
+              </div>
+            </div>
+            <div class="skeleton-notification-item">
+              <div class="skeleton-notification-icon"></div>
+              <div class="skeleton-notification-content">
+                <div class="skeleton-notification-title"></div>
+                <div class="skeleton-notification-text"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
     
     async function loadDashboardData() {
       const token = localStorage.getItem('access_token');
@@ -121,8 +182,9 @@ function redirectToLogin() {
           
           // Show upcoming events
           const upcomingContainer = document.getElementById('upcomingEvents');
-          if (upcomingContainer && futureAsambleas.length > 0) {
-            upcomingContainer.innerHTML = futureAsambleas.slice(0, 3).map(asamblea => {
+          if (upcomingContainer) {
+            if (futureAsambleas.length > 0) {
+              upcomingContainer.innerHTML = futureAsambleas.slice(0, 3).map(asamblea => {
               // Parse date correctly to avoid timezone issues
               const fechaParts = asamblea.fecha_raw.split('-');
               const fecha = new Date(fechaParts[0], fechaParts[1] - 1, fechaParts[2]);
@@ -141,11 +203,28 @@ function redirectToLogin() {
                   </div>
                 </div>
               `;
-            }).join('');
+              }).join('');
+            } else {
+              upcomingContainer.innerHTML = `
+                <div class="empty-state">
+                  <i class="bi bi-calendar-x"></i>
+                  <p>No hay eventos próximos</p>
+                </div>
+              `;
+            }
           }
         }
       } catch (err) {
+        const upcomingContainer = document.getElementById('upcomingEvents');
+        if (upcomingContainer) {
+          upcomingContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-exclamation-triangle"></i>
+              <p>Error al cargar eventos</p>
+            </div>
+          `;
         }
+      }
     }
 
     // Load payment notifications
@@ -248,6 +327,15 @@ function redirectToLogin() {
         }
       } catch (err) {
         console.error('Error cargando notificaciones:', err);
+        const notificationsContainer = document.getElementById('paymentNotifications');
+        if (notificationsContainer) {
+          notificationsContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-exclamation-triangle"></i>
+              <p>Error al cargar facturas</p>
+            </div>
+          `;
+        }
       }
     }
 
@@ -341,6 +429,9 @@ function redirectToLogin() {
       const isDashboardPage = window.location.pathname.includes('dashboard.html');
       
       if (isDashboardPage) {
+        // Mostrar skeletons inmediatamente
+        showInitialSkeletons();
+        
         try {
           await loadDashboardData();
         } catch (error) {

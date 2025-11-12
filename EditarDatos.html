@@ -30,6 +30,14 @@
       --info: #ec4899;
       --btn-primary-bg: #ec4899;
       --btn-primary-hover: #f472b6;
+      --navbar-bg: rgba(30, 33, 40, 0.98);
+      --navbar-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      --navbar-border: rgba(63, 63, 70, 0.5);
+      --sidebar-bg: #1e2128;
+      --sidebar-header-bg: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+      --sidebar-hover: rgba(236, 72, 153, 0.15);
+      --sidebar-text: #e4e4e7;
+      --sidebar-divider: #3f3f46;
       --header-bg: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
       --content-bg: #282c34;
     }
@@ -61,6 +69,14 @@
           '--info': '#3b82f6',
           '--btn-primary-bg': '#d946a6',
           '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+          '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)',
+          '--sidebar-text': '#334155',
+          '--sidebar-divider': '#e2e8f0',
           '--header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%)',
           '--content-bg': '#fafafa'
         };
@@ -98,7 +114,7 @@
     <div class="edit-card">
       <div class="edit-header">
         <h2><i class="bi bi-person-gear me-2"></i> <span data-i18n="profile.editPersonalData">Editar Datos Personales</span></h2>
-        <div class="subtitle" data-i18n="profile.updateYourInfo">Actualiza tu información personal</div>
+        <div class="subtitle" data-i18n="profile.updateYourInfo">Actualiza tu informaciï¿½n personal</div>
       </div>
       
       <div class="edit-content">
@@ -107,17 +123,17 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="telefono" class="form-label">
-                  <i class="bi bi-telephone me-1"></i><span data-i18n="profile.phone">Teléfono</span>
+                  <i class="bi bi-telephone me-1"></i><span data-i18n="profile.phone">Telï¿½fono</span>
                 </label>
                 <input type="text" class="form-control" id="telefono" name="telefono" required>
               </div>
               
               <div class="col-md-6">
                 <label for="genero" class="form-label">
-                  <i class="bi bi-person me-1"></i><span data-i18n="profile.gender">Género</span>
+                  <i class="bi bi-person me-1"></i><span data-i18n="profile.gender">Gï¿½nero</span>
                 </label>
                 <select class="form-control" id="genero" name="genero" required>
-                  <option value="" data-i18n="profile.selectGender">Seleccionar género</option>
+                  <option value="" data-i18n="profile.selectGender">Seleccionar gï¿½nero</option>
                   <option value="Masculino" data-i18n="profile.male">Masculino</option>
                   <option value="Femenino" data-i18n="profile.female">Femenino</option>
                   <option value="Otro" data-i18n="profile.other">Otro</option>
@@ -143,14 +159,14 @@
                   <option value="Casado/a" data-i18n="profile.married">Casado/a</option>
                   <option value="Divorciado/a" data-i18n="profile.divorced">Divorciado/a</option>
                   <option value="Viudo/a" data-i18n="profile.widowed">Viudo/a</option>
-                  <option value="Unión libre" data-i18n="profile.commonLaw">Unión libre</option>
+                  <option value="Uniï¿½n libre" data-i18n="profile.commonLaw">Uniï¿½n libre</option>
                 </select>
               </div>
             </div>
             
             <div class="mb-3">
               <label for="direccion" class="form-label">
-                <i class="bi bi-geo-alt me-1"></i><span data-i18n="profile.address">Dirección</span>
+                <i class="bi bi-geo-alt me-1"></i><span data-i18n="profile.address">Direcciï¿½n</span>
               </label>
               <input type="text" class="form-control" id="direccion" name="direccion" required>
             </div>
@@ -158,7 +174,7 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="ocupacion" class="form-label">
-                  <i class="bi bi-briefcase me-1"></i><span data-i18n="profile.occupation">Ocupación</span>
+                  <i class="bi bi-briefcase me-1"></i><span data-i18n="profile.occupation">Ocupaciï¿½n</span>
                 </label>
                 <input type="text" class="form-control" id="ocupacion" name="ocupacion" required>
               </div>

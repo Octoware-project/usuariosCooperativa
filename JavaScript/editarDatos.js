@@ -129,12 +129,22 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(event) {
+      // Mobile dropdown
       const userIcon = document.getElementById('userIconMobile');
       const userDropdown = document.getElementById('userDropdownMobile');
-      const menuBtn = document.querySelector('.menu-btn');
       
       if (userIcon && userDropdown && !userIcon.contains(event.target) && !userDropdown.contains(event.target)) {
         userDropdown.classList.remove('show');
+      }
+      
+      // Desktop dropdown
+      const userMenuBtn = document.getElementById('userMenuBtn');
+      const userDropdownDesktop = document.getElementById('userDropdown');
+      
+      if (userMenuBtn && userDropdownDesktop && 
+          !userMenuBtn.contains(event.target) && !userDropdownDesktop.contains(event.target)) {
+        userDropdownDesktop.classList.remove('show');
+        userMenuBtn.classList.remove('menu-open');
       }
     });
     
