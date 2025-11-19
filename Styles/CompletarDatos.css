@@ -1,29 +1,24 @@
-/* Light Theme Variables */
+/* Variables CSS que se actualizan dinámicamente con theme.js */
 :root {
+  /* Valores por defecto - se sobrescriben por theme.js */
   --primary: #d946a6;
   --primary-rgb: 217, 70, 166;
-  --primary-light: #f3e8f8;
-  --primary-dark: #b8388a;
   --surface: #ffffff;
   --surface-variant: #f8f9fa;
   --surface-hover: #f0f0f0;
-  --bg-gradient: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
   --text-primary: #1f2937;
   --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
   --border: #e5e7eb;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 40px rgba(255, 193, 227, 0.3);
   --success: #10b981;
-  --warning: #f59e0b;
   --error: #ef4444;
-  --info: #3b82f6;
-  --btn-primary-bg: #d946a6;
-  --btn-primary-hover: #b8388a;
+  --btn-primary-bg: linear-gradient(135deg, #d946a6, #a855f7);
+  --btn-primary-hover: linear-gradient(135deg, #c026d3, #9333ea);
   --header-bg: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
   --content-bg: #fafafa;
+  --card-bg: #ffffff;
 }
 
 body {
@@ -35,16 +30,18 @@ body {
   background: var(--bg-gradient) !important;
   margin: 0;
   padding: 1rem;
+  transition: background 0.3s ease;
 }
 
 .completar-container {
-  background: var(--surface);
+  background: var(--card-bg);
   max-width: 600px;
   width: 100%;
   border-radius: 24px;
   box-shadow: var(--shadow-xl);
   overflow: hidden;
-  border: none;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
 }
 
 .completar-header {
@@ -72,7 +69,7 @@ p {
 
 .completar-content {
   padding: 2rem;
-  background: var(--content-bg);
+  background: var(--card-bg);
 }
 
 .form-group {
@@ -125,7 +122,7 @@ input[type="email"][readonly] {
 .btn {
   width: 100%;
   padding: 0.75rem 2rem;
-  background: var(--header-bg);
+  background: var(--btn-primary-bg);
   border: none;
   border-radius: 25px;
   color: white;
@@ -142,9 +139,9 @@ input[type="email"][readonly] {
 }
 
 .btn:hover:not(:disabled) {
+  background: var(--btn-primary-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-  filter: brightness(1.1);
 }
 
 .btn:disabled {

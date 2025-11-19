@@ -81,3 +81,8 @@
         document.getElementById('mensaje').innerHTML = '<span style="color:red;">Error de conexión.</span>';
         }
     });
+
+    // Inicializar traducciones cuando se carga la página
+    if (typeof LanguageManager !== 'undefined') {
+      LanguageManager.init();
+    }

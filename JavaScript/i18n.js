@@ -236,6 +236,14 @@ LanguageManager = {
       
       // Profile (Perfil de Usuario)
       'profile.title': 'Perfil de Usuario',
+      'profile.completeYourData': 'Completa tus datos',
+      'profile.activateAccountMessage': 'Para activar tu cuenta, por favor completa todos los datos requeridos',
+      'profile.name': 'Nombre',
+      'profile.lastName': 'Apellido',
+      'profile.idCard': 'Cédula de Identidad',
+      'profile.birthDate': 'Fecha de Nacimiento',
+      'profile.maritalStatus': 'Estado Civil',
+      'profile.saveAndActivate': 'Guardar y Activar Cuenta',
       'profile.loading': 'Cargando...',
       'profile.user': 'Usuario',
       'profile.birth_date': 'Nacimiento',
@@ -688,6 +696,14 @@ LanguageManager = {
       
       // Profile (Perfil de Usuario)
       'profile.title': 'User Profile',
+      'profile.completeYourData': 'Complete your data',
+      'profile.activateAccountMessage': 'To activate your account, please complete all required data',
+      'profile.name': 'Name',
+      'profile.lastName': 'Last Name',
+      'profile.idCard': 'ID Card',
+      'profile.birthDate': 'Birth Date',
+      'profile.maritalStatus': 'Marital Status',
+      'profile.saveAndActivate': 'Save and Activate Account',
       'profile.loading': 'Loading...',
       'profile.user': 'User',
       'profile.birth_date': 'Birth Date',
