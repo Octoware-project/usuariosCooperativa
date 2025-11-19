@@ -1,87 +1,233 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const themes = {
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#ffffff',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.05)',
+          '--navbar-border': 'rgba(226, 232, 240, 0.5)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%)',
+          '--sidebar-hover': 'rgba(217, 70, 166, 0.08)',
+          '--sidebar-text': '#334155',
+          '--sidebar-divider': '#e2e8f0',
+          '--mobile-nav-bg': 'rgba(255, 255, 255, 0.95)',
+          '--mobile-nav-shadow': '0 2px 20px rgba(249, 168, 212, 0.2)',
+          '--mobile-nav-border': 'rgba(249, 168, 212, 0.1)'
+        },
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#404041',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6',
+          '--navbar-bg': 'rgba(30, 33, 40, 0.98)',
+          '--navbar-shadow': '0 2px 10px rgba(0, 0, 0, 0.3)',
+          '--navbar-border': 'rgba(63, 63, 70, 0.5)',
+          '--sidebar-bg': '#1e2128',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #be185d 0%, #ec4899 100%)',
+          '--sidebar-hover': 'rgba(236, 72, 153, 0.15)',
+          '--sidebar-text': '#e4e4e7',
+          '--sidebar-divider': '#3f3f46',
+          '--mobile-nav-bg': 'rgba(30, 33, 40, 0.95)',
+          '--mobile-nav-shadow': '0 2px 20px rgba(0, 0, 0, 0.3)',
+          '--mobile-nav-border': 'rgba(63, 63, 70, 0.3)'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    html, body {
-      overflow: hidden !important;
-      height: 100%;
-    }
-  </style>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Ocultar Scrollbar -->
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  
+  <!-- Anti-Flash CSS (CRÍTICO - debe cargarse primero) -->
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  
+  <!-- Page Loader CSS -->
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  
+  <!-- Navbar Skeleton CSS -->
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/Dashboard.css">
+
 </head>
 <body>
 
-  <!-- Aquí se cargará automáticamente el navbar -->
   <div id="navbar"></div>
-
-  <main>
-    <section class="novedades">
-      <h2>Novedades</h2>
-      <p>Aquí estarán los mensajes y novedades de la asamblea.</p>
-    </section>
-    <section class="mision">
-      <h2>Misión, Visión y Valores</h2>
-      <p>
-        Nuestra misión es promover la participación activa y transparente de todos los asociados.<br>
-        Nuestra visión es ser un referente de gestión comunitaria eficiente y justa.<br>
-        Nuestros valores: Transparencia, Compromiso, Respeto y Solidaridad.
-      </p>
-    </section>
-  </main>
-    <!-- Modal para mostrar datos usuario y editar -->
-    <div class="modal-bg" id="modalBg">
-  <div class="modal" style="overflow-y: auto; max-height: 90vh;">
-        <h3>Datos del Usuario</h3>
-        <div id="modalContent"><p>Cargando...</p></div>
-        <div class="modal-buttons" id="modalButtons">
-          <button class="btn-edit" id="editBtn">Editar</button>
-          <button class="btn-close" id="closeModalBtn">Cerrar</button>
-        </div>
+  
+  <div class="dashboard-container">
+    <div class="welcome-section">
+      <div class="welcome-icon">
+        <i class="bi bi-house-heart"></i>
+      </div>
+      <div class="welcome-content">
+        <h1><span data-i18n="dashboard.welcome">¡Bienvenido/a</span>, <span id="userName">Usuario</span>!</h1>
+        <p data-i18n="dashboard.subtitle">Aquí tienes un resumen de tu actividad y accesos rápidos a las funciones principales</p>
       </div>
     </div>
 
-    <script src="JavaScript/config.js"></script>
-    <script src="JavaScript/dashboard.js"></script>
-  <script src="JavaScript/loader.js"></script>
-  <script>
-    // Validación de token y estado de usuario al cargar el dashboard
-    document.addEventListener('DOMContentLoaded', async function() {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = 'index.html';
-        return;
-      }
-      try {
-        const res = await fetch(API_URLS.usuarios.validate(), {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-          }
-        });
-        if (!res.ok) throw new Error('No se pudo validar el token');
-        const data = await res.json();
-        // Si el usuario tiene estadoRegistro 'Inactivo', muestra alerta y redirige
-        if (data.persona && data.persona.estadoRegistro === 'Inactivo') {
-          alert('Debes completar todos tus datos');
-          window.location.href = 'completarDatos.html';
-          return;
-        }
-        // Si el usuario no está aceptado, redirige a login
-        if (data.persona && data.persona.estadoRegistro !== 'Aceptado') {
-          window.location.href = 'index.html';
-          return;
-        }
-        // Puedes guardar los datos en localStorage si lo necesitas
-        // localStorage.setItem('user', JSON.stringify(data.user));
-        // localStorage.setItem('persona', JSON.stringify(data.persona));
-      } catch (err) {
-        window.location.href = 'index.html';
-      }
-    });
-  </script>
+    <div class="content-grid">
+      <div class="main-content">
+        <div class="section-card">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="bi bi-lightning-charge-fill"></i>
+              <span data-i18n="dashboard.quickActions">Acciones Rápidas</span>
+            </h3>
+          </div>
+          <div class="quick-actions">
+            <a href="AgregarHoras.html" class="action-btn">
+              <i class="bi bi-plus-circle"></i>
+              <span data-i18n="dashboard.addHours">Agregar Horas</span>
+            </a>
+            <a href="AgregarComprobante.html" class="action-btn">
+              <i class="bi bi-receipt"></i>
+              <span data-i18n="dashboard.newReceipt">Nuevo Comprobante</span>
+            </a>
+            <a href="AgregarJustificacion.html" class="action-btn">
+              <i class="bi bi-file-earmark-text"></i>
+              <span data-i18n="dashboard.addJustification">Agregar Justificación</span>
+            </a>
+          </div>
+        </div>
 
+        <div class="section-card">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="bi bi-flag-fill"></i>
+              <span data-i18n="dashboard.ourCooperative">Nuestra Cooperativa</span>
+            </h3>
+          </div>
+          <div style="color: var(--text-secondary); line-height: 1.8;">
+            <p style="margin-bottom: 1rem;">
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">
+                <i class="bi bi-bullseye" style="color: var(--primary);"></i> <span data-i18n="dashboard.mission">Misión</span>
+              </strong>
+              <span data-i18n="dashboard.missionText">Promover la participación activa y transparente de todos los asociados, fomentando el desarrollo comunitario y el bienestar colectivo.</span>
+            </p>
+            <p style="margin-bottom: 1rem;">
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">
+                <i class="bi bi-eye-fill" style="color: var(--secondary);"></i> <span data-i18n="dashboard.vision">Visión</span>
+              </strong>
+              <span data-i18n="dashboard.visionText">Ser un referente de gestión comunitaria eficiente y justa, reconocido por nuestra transparencia y compromiso con el bienestar de nuestros asociados.</span>
+            </p>
+            <p style="margin: 0;">
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.5rem;">
+                <i class="bi bi-heart-fill" style="color: var(--error);"></i> <span data-i18n="dashboard.values">Valores</span>
+              </strong>
+              <span data-i18n="dashboard.valuesText">Transparencia, Compromiso, Respeto, Solidaridad y Trabajo en Equipo.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sidebar-card">
+          <div class="section-header" style="margin-bottom: 1.5rem;">
+            <h3 class="section-title" style="font-size: 1.1rem;">
+              <i class="bi bi-calendar-event" style="width: 36px; height: 36px; font-size: 1rem;"></i>
+              <span data-i18n="dashboard.upcomingEvents">Próximos Eventos</span>
+            </h3>
+          </div>
+          <div id="upcomingEvents" class="upcoming-list">
+            <!-- Skeleton se mostrará aquí inicialmente -->
+          </div>
+        </div>
+
+        <div class="sidebar-card" style="margin-top: 1.5rem;">
+          <div class="section-header" style="margin-bottom: 1.5rem;">
+            <h3 class="section-title" style="font-size: 1.1rem;">
+              <i class="bi bi-receipt-cutoff" style="width: 36px; height: 36px; font-size: 1rem;"></i>
+              <span data-i18n="dashboard.monthlyInvoices">Facturas del Mes</span>
+            </h3>
+          </div>
+          <div id="paymentNotifications" class="notifications-list">
+            <!-- Skeleton se mostrará aquí inicialmente -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Universal Loader (debe cargarse primero) -->
+    <script src="JavaScript/universal-loader.js"></script>
+    
+    <!-- Navbar Skeleton -->
+    <script src="JavaScript/navbar-skeleton.js"></script>
+    
+    <!-- Page Loader -->
+    <script src="JavaScript/page-loader.js"></script>
+    
+    <script src="JavaScript/config.js"></script>
+    <script src="JavaScript/loader.js"></script>
+    <script src="JavaScript/navbar-functions.js"></script>
+    <script src="JavaScript/mobile-navbar.js"></script>
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/Navbar.js"></script>
+
+ 
 </body>
 </html>

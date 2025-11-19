@@ -1,199 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
+    <script>
+      (function() {
+        const themes = {
+          light: {
+            '--primary': '#d946a6',
+            '--primary-dark': '#c2348f',
+            '--secondary': '#c084fc',
+            '--bg-gradient': '#ffffff',
+            '--surface': '#ffffff',
+            '--surface-variant': '#f3e8f8',
+            '--text-primary': '#1e293b',
+            '--text-secondary': '#64748b',
+            '--text-disabled': '#94a3b8',
+            '--border': '#e2e8f0',
+            '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            '--shadow-lg': 'none',
+            '--shadow-xl': 'none',
+            '--navbar-bg': 'rgba(255, 255, 255, 0.95)',
+            '--navbar-shadow': '0 2px 20px rgba(249, 168, 212, 0.2)',
+            '--navbar-border': 'rgba(249, 168, 212, 0.1)',
+            '--sidebar-bg': '#ffffff',
+            '--sidebar-hover': '#f9a8d4',
+            '--sidebar-text': '#334155',
+            '--sidebar-divider': '#e2e8f0',
+            '--btn-primary-bg': 'linear-gradient(135deg, #f9a8d4 0%, #ec4899 100%)',
+            '--btn-primary-hover': 'linear-gradient(135deg, #f472b6 0%, #db2777 100%)',
+            '--info': '#3b82f6',
+            '--success': '#10b981',
+            '--warning': '#f59e0b',
+            '--error': '#ef4444'
+          },
+          dark: {
+            '--primary': '#ec4899',
+            '--primary-dark': '#db2777',
+            '--secondary': '#f472b6',
+            '--bg-gradient': '#404041',
+            '--surface': '#1e2128',
+            '--surface-variant': '#2d3139',
+            '--text-primary': '#e4e4e7',
+            '--text-secondary': '#a1a1aa',
+            '--text-disabled': '#71717a',
+            '--border': '#3f3f46',
+            '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+            '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.4)',
+            '--shadow-lg': 'none',
+            '--shadow-xl': 'none',
+            '--navbar-bg': 'rgba(30, 33, 40, 0.95)',
+            '--navbar-shadow': '0 2px 20px rgba(0, 0, 0, 0.3)',
+            '--navbar-border': 'rgba(63, 63, 70, 0.3)',
+            '--sidebar-bg': '#1e2128',
+            '--sidebar-hover': '#ec4899',
+            '--sidebar-text': '#e4e4e7',
+            '--sidebar-divider': '#3f3f46',
+            '--btn-primary-bg': 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
+            '--btn-primary-hover': 'linear-gradient(135deg, #db2777 0%, #ec4899 100%)',
+            '--info': '#ec4899',
+            '--success': '#34d399',
+            '--warning': '#fbbf24',
+            '--error': '#f87171'
+          }
+        };
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        const themeColors = themes[currentTheme];
+        
+        const root = document.documentElement;
+        Object.entries(themeColors).forEach(([property, value]) => {
+          root.style.setProperty(property, value);
+        });
+      })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles_formulario.css">
-    <title>Agregar Justificaci贸n</title>
-    <style>
-      input[type="number"],
-      input[type="text"],
-      select {
-        width: 100%;
-        padding: 10px 12px;
-        margin-bottom: 16px;
-        border: 1px solid #bdbdbd;
-        border-radius: 8px;
-        box-sizing: border-box;
-        font-size: 1rem;
-        background: #f7fafd;
-        transition: border-color 0.2s;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      }
-      input[type="number"]:focus,
-      input[type="text"]:focus,
-      select:focus {
-        border-color: #1976d2;
-        outline: none;
-        background: #fff;
-      }
-      body {
-        background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
-      }
-      .form-container {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-        padding: 32px 32px 24px 32px;
-        min-width: 350px;
-        max-width: 600px;
-        width: 100%;
-        margin: 48px auto 0 auto;
-      }
-      .header {
-        text-align: center;
-        margin-top: 32px;
-        margin-bottom: 16px;
-      }
-      @media (max-width: 600px) {
-        .form-container {
-          padding: 16px 4px 12px 4px;
-          min-width: unset;
-          max-width: 100vw;
-        }
-        .header h2 {
-          font-size: 1.3rem;
-        }
-      }
-      .btn-guardar {
-        border-radius: 24px !important;
-        padding-left: 32px !important;
-        padding-right: 32px !important;
-      }
-      .btn-guardar:hover {
-        color: #fff !important;
-      }
-    </style>
+  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+    
+    <title>Agregar Justificaci髇</title>
+    <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+    <link rel="stylesheet" href="Styles/AgregarJustificacion.css">
+    
+    <script src="JavaScript/theme.js"></script>
+    
+    <script src="JavaScript/i18n.js"></script>
 </head>
 <body>
+   
+    
     <div id="navbar"></div>
-    <div class="header">
-        <h2>Agregar Justificaci贸n</h2>
+    
+    
+    
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    
+    <div class="modern-form-container">
+      <div class="form-header">
+        <a href="HorasMensuales.html" class="back-button">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <div class="form-title">
+          <h2><i class="bi bi-file-earmark-text"></i> <span data-i18n="dashboard.addJustification">Agregar Justificaci髇</span></h2>
+          <p data-i18n="hours.registerJustificationAbsence">Registra una justificaci髇 para ausencias o faltas</p>
+        </div>
+      </div>
+      
+      <div class="form-card">
+        <form id="addJustificacionForm" class="form-step">
+          <div class="step-content">
+            <div class="step-header">
+              <h3><i class="bi bi-calendar-event"></i> <span data-i18n="hours.justificationInformation">Informaci髇 de Justificaci髇</span></h3>
+              <p data-i18n="hours.completeJustificationData">Completa los datos de la justificaci髇</p>
+            </div>
+            
+            <div class="date-selection-grid">
+              <div class="input-group">
+                <label class="form-label" for="anio">
+                  <i class="bi bi-calendar3"></i> <span data-i18n="common.year">A駉</span>
+                </label>
+                <input type="number" id="anio" name="anio" min="2000" max="2100" class="form-input modern-input" required>
+              </div>
+              
+              <div class="input-group">
+                <label class="form-label" for="mes">
+                  <i class="bi bi-calendar2-month"></i> <span data-i18n="common.month">Mes</span>
+                </label>
+                <select id="mes" name="mes" class="form-input modern-select" required>
+                  <option value="" data-i18n="common.selectMonth">Seleccione un mes</option>
+                  <option value="1" data-i18n="month.1">Enero</option>
+                  <option value="2" data-i18n="month.2">Febrero</option>
+                  <option value="3" data-i18n="month.3">Marzo</option>
+                  <option value="4" data-i18n="month.4">Abril</option>
+                  <option value="5" data-i18n="month.5">Mayo</option>
+                  <option value="6" data-i18n="month.6">Junio</option>
+                  <option value="7" data-i18n="month.7">Julio</option>
+                  <option value="8" data-i18n="month.8">Agosto</option>
+                  <option value="9" data-i18n="month.9">Septiembre</option>
+                  <option value="10" data-i18n="month.10">Octubre</option>
+                  <option value="11" data-i18n="month.11">Noviembre</option>
+                  <option value="12" data-i18n="month.12">Diciembre</option>
+                </select>
+              </div>
+              
+              <div class="input-group">
+                <label class="form-label" for="dia">
+                  <i class="bi bi-calendar-day"></i> <span data-i18n="common.day">D韆</span>
+                </label>
+                <input type="number" id="dia" name="dia" min="1" max="31" class="form-input modern-input" required>
+              </div>
+            </div>
+
+            <div class="standard-input">
+              <label class="form-label" for="Motivo_Falla">
+                <i class="bi bi-exclamation-triangle"></i> <span data-i18n="hours.failureReason">Motivo de Falla</span>
+              </label>
+              <input type="text" id="Motivo_Falla" name="Motivo_Falla" required>
+            </div>
+
+            <div class="standard-input">
+              <label class="form-label" for="Tipo_Justificacion">
+                <i class="bi bi-bookmark"></i> <span data-i18n="hours.justificationType">Tipo de Justificaci髇</span>
+              </label>
+              <input type="text" id="Tipo_Justificacion" name="Tipo_Justificacion" required>
+            </div>
+
+            <div class="input-group">
+              <label class="form-label" for="Monto_Compensario" style="text-align: center;">
+                <i class="bi bi-currency-dollar"></i> <span data-i18n="hours.compensatoryAmount">Monto Compensatorio</span>
+              </label>
+              <input type="number" id="Monto_Compensario" name="Monto_Compensario" step="0.01" class="monto-input" placeholder="0.00" required>
+            </div>
+            
+            <div id="msg-estado"></div>
+          </div>
+          
+        </form>
+        
+        <div class="form-navigation">
+          <a href="HorasMensuales.html" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            <span data-i18n="common.back">Volver</span>
+          </a>
+          <button type="submit" form="addJustificacionForm" class="btn btn-primary">
+            <i class="bi bi-check-circle"></i>
+            <span data-i18n="hours.saveJustification">Guardar Justificaci髇</span>
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="form-container">
-      <form class="add-justificacion-form" id="addJustificacionForm">
-        <label for="anio">A帽o:</label>
-        <input type="number" id="anio" name="anio" min="2000" max="2100" required>
-
-        <label for="mes">Mes:</label>
-        <select id="mes" name="mes" required>
-          <option value="">Seleccione un mes</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-        </select>
-
-
-  <label for="dia">D铆a:</label>
-  <input type="number" id="dia" name="dia" min="1" max="31" required>
-
-  <label for="Motivo_Falla">Motivo de Falla:</label>
-  <input type="text" id="Motivo_Falla" name="Motivo_Falla" required>
-
-        <label for="Tipo_Justificacion">Tipo de Justificaci贸n:</label>
-        <input type="text" id="Tipo_Justificacion" name="Tipo_Justificacion" required>
-
-        <label for="Monto_Compensario">Monto Compensatorio:</label>
-        <input type="number" id="Monto_Compensario" name="Monto_Compensario" step="0.01" required>
-
-        <button type="submit" class="btn">Guardar Justificaci贸n</button>
-      <style>
-        .btn {
-          background: #1976d2 !important;
-          color: #fff !important;
-          border-radius: 18px !important;
-          font-size: 0.95rem !important;
-          padding: 8px 20px !important;
-          min-width: 0;
-          box-shadow: 0 2px 8px rgba(25,118,210,0.08);
-          border: none;
-        }
-        .btn:hover {
-          background: #115293 !important;
-        }
-      </style>
-      </form>
+    
+    <div class="success-modal" id="successModal">
+      <div class="success-content">
+        <div class="success-animation">
+          <div class="checkmark-circle">
+            <i class="bi bi-check-lg checkmark"></i>
+          </div>
+        </div>
+        <h3 data-i18n="hours.justificationSaved">ustificaci髇 Guardada!</h3>
+        <p data-i18n="hours.justificationRegisteredSuccessfully">Tu justificaci髇 ha sido registrada correctamente.</p>
+        <button class="btn btn-primary" onclick="goToHorasMensuales()">
+          <span data-i18n="hours.viewMonthlyHours">Ver Horas Mensuales</span>
+        </button>
+      </div>
     </div>
-    <script src="JavaScript/config.js"></script>
-    <script src="JavaScript/dashboard.js"></script>
+    
+      <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
     <script src="JavaScript/loader.js"></script>
-    <script>
-      // Set default year and month
-
-      (function setDefaultYearMonthDay() {
-        const now = new Date();
-        document.getElementById('anio').value = now.getFullYear();
-        document.getElementById('mes').value = (now.getMonth() + 1).toString();
-        document.getElementById('dia').value = now.getDate();
-      })();
-
-      document.getElementById('addJustificacionForm').onsubmit = async function(e) {
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-        // Mostrar mensaje de estado
-        let msg = document.getElementById('msg-estado');
-        if (!msg) {
-          msg = document.createElement('div');
-          msg.id = 'msg-estado';
-          msg.style.marginTop = '1rem';
-          msg.style.fontWeight = 'bold';
-          form.parentNode.appendChild(msg);
-        }
-        msg.textContent = 'Enviando...';
-        msg.style.color = '#555';
-        try {
-          const token = localStorage.getItem('access_token');
-          if (!token) {
-            msg.textContent = 'No autenticado. Por favor, inicie sesi贸n.';
-            msg.style.color = 'red';
-            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
-            return;
-          }
-          // Convertir FormData a objeto para JSON
-          const data = {};
-          formData.forEach((value, key) => { data[key] = value; });
-          const response = await fetch(API_URLS.cooperativa.horasJustificacion(), {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            },
-            body: JSON.stringify(data)
-          });
-          if (response.ok) {
-            msg.textContent = '隆Justificaci贸n registrada exitosamente!';
-            msg.style.color = 'green';
-            setTimeout(() => { window.location.href = 'HorasMensuales.html'; }, 1200);
-          } else {
-            let errorMsg = 'Error al registrar justificaci贸n';
-            try {
-              const text = await response.text();
-              const data = JSON.parse(text);
-              if (data && data.error) errorMsg += ': ' + data.error;
-              else errorMsg += ': ' + text;
-            } catch {
-              // Si no es JSON
-            }
-            msg.textContent = errorMsg;
-            msg.style.color = 'red';
-          }
-        } catch (err) {
-          msg.textContent = 'Error de conexi贸n con el servidor';
-          msg.style.color = 'red';
-          console.error('Error de red o JS:', err);
-        }
-      };
-    </script>
+    <script src="JavaScript/navbar-functions.js"></script>
+    <script src="JavaScript/mobile-navbar.js"></script>
+    <script src="JavaScript/AgregarJustificacion.js"></script>
+    <script src="JavaScript/dashboard.js"></script>
+    <script src="JavaScript/Navbar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

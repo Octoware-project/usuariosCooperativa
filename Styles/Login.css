@@ -1,0 +1,89 @@
+* {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-container {
+      background: #ffffff;
+      width: 400px; /* Más ancho */
+      padding: 3rem 2.5rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(255, 193, 227, 0.6);
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+    }
+    h2 {
+      color: #de5f88; /* rosado fuerte */
+      margin-bottom: 2rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      font-size: 2.2rem;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 1.2rem;
+      font-size: 1.1rem;
+      border: 2.5px solid #A3D8F4; /* celeste */
+      border-radius: 12px;
+      transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      /* Para que el movimiento no afecte el layout */
+      display: block;
+    }
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #de5f88; /* rosado */
+      background-color: #fff0f6;
+      box-shadow: 0 4px 12px rgba(222, 95, 136, 0.6);
+      transform: translateY(-3px);
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    button {
+      width: 100%;
+      padding: 16px 0;
+      background-color: #de5f88; /* rosado */
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.15s ease;
+    }
+    button:hover:not(:disabled) {
+      background-color: #c94f76;
+      transform: scale(1.05);
+    }
+    button:disabled {
+      background-color: #f7a7c1;
+      cursor: not-allowed;
+    }
+    .error {
+      margin-top: 1rem;
+      min-height: 1.3rem;
+      color: #de5f88;
+      font-weight: 600;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+    .loader {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #4ea9f7; /* celeste más fuerte */
+      display: none;
+      user-select: none;
+    }

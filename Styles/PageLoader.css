@@ -1,0 +1,176 @@
+/* Sistema de carga de página - Octoware */
+
+.page-loader {
+  position: fixed;
+  top: 70px; /* Debajo del navbar */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 70px);
+  background: var(--bg-gradient, var(--surface, #ffffff));
+  z-index: 999; /* Menor que el navbar para que quede debajo */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.page-loader.active {
+  display: flex;
+}
+
+.page-loader.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loader-logo-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
+  position: relative;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+}
+
+.loader-spinner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: var(--primary, #d946a6);
+  border-right-color: var(--primary, #d946a6);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loader-spinner::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 3px solid transparent;
+  border-top-color: var(--primary, #d946a6);
+  opacity: 0.3;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite reverse;
+}
+
+.loader-text {
+  font-size: 1rem;
+  color: var(--text-secondary, #6b7280);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  animation: fadeInOut 1.5s ease-in-out infinite;
+}
+
+/* Animaciones */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Adaptación para temas - ahora usa variables CSS automáticamente */
+/* El loader se adapta automáticamente a las variables CSS del tema activo */
+
+/* Z-index hierarchy consolidado */
+.sidebar-menu {
+  z-index: 1002 !important; /* Por encima del overlay */
+}
+
+.menu-overlay {
+  z-index: 1000 !important;
+}
+
+nav, .mobile-nav {
+  z-index: 1000 !important; /* Por encima del loader */
+}
+
+/* Permitir interacción con el navbar incluso durante la carga */
+.page-loader.active {
+  pointer-events: none; /* El loader no captura clics */
+}
+
+.page-loader.active .loader-content {
+  pointer-events: all; /* Solo el contenido del loader es clickeable si es necesario */
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .page-loader {
+    top: 60px; /* Ajuste para navbar móvil */
+    height: calc(100% - 60px);
+  }
+
+  .loader-logo-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .loader-logo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .loader-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Ocultar solo el contenido principal durante la carga */
+body.loading .dashboard-container,
+body.loading .container,
+body.loading main,
+body.loading .content-wrapper {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+body:not(.loading) .dashboard-container,
+body:not(.loading) .container,
+body:not(.loading) main,
+body:not(.loading) .content-wrapper {
+  opacity: 1;
+}

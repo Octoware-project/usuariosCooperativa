@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración - Sistema de Temas</title>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      const themes = {
+        light: {
+          '--primary': '#d946a6',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#ffffff',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a'
+        },
+        dark: {
+          '--primary': '#ec4899',
+          '--primary-rgb': '236, 72, 153',
+          '--primary-light': '#f472b6',
+          '--primary-dark': '#db2777',
+          '--surface': '#1e2128',
+          '--surface-variant': '#282c34',
+          '--surface-hover': '#2d3139',
+          '--bg-gradient': '#404041',
+          '--text-primary': '#e4e4e7',
+          '--text-secondary': '#d1d5db',
+          '--text-muted': '#9ca3af',
+          '--border': '#3f3f46',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.4)',
+          '--shadow-lg': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#ec4899',
+          '--btn-primary-bg': '#ec4899',
+          '--btn-primary-hover': '#f472b6'
+        }
+      };
+      const theme = themes[savedTheme];
+      if (theme) {
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+
+  <link rel="stylesheet" href="Styles/Configuracion.css">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+</head>
+<body>
+
+  <div id="navbar"></div>
+  
+  <div class="toast" id="toast">
+    <i class="bi bi-check-circle-fill"></i>
+    <span class="toast-message" id="toastMessage">Tema aplicado correctamente</span>
+  </div>
+  
+  <div class="config-container">
+    <div class="config-box">
+      <div class="config-header">
+        <h1>
+          <i class="bi bi-gear-fill"></i>
+          <span data-i18n="config.title">Configuración</span>
+        </h1>
+        <p class="config-subtitle" data-i18n="config.subtitle">
+          Personaliza tu experiencia
+        </p>
+      </div>
+      
+      <!-- Tema Section -->
+      <div class="config-section">
+        <h2 class="section-title">
+          <i class="bi bi-palette-fill"></i>
+          <span data-i18n="config.appearance">Apariencia</span>
+        </h2>
+        
+        <div class="option-group">
+          <div class="option-card" data-theme="light" onclick="selectTheme('light')">
+            <div class="option-icon">
+              <i class="bi bi-sun-fill"></i>
+            </div>
+            <div class="option-content">
+              <h3 data-i18n="config.light_mode">Modo Claro</h3>
+              <p data-i18n="config.light_description">Ideal para el día</p>
+            </div>
+            <div class="option-check">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+          </div>
+          
+          <div class="option-card" data-theme="dark" onclick="selectTheme('dark')">
+            <div class="option-icon">
+              <i class="bi bi-moon-stars-fill"></i>
+            </div>
+            <div class="option-content">
+              <h3 data-i18n="config.dark_mode">Modo Oscuro</h3>
+              <p data-i18n="config.dark_description">Perfecto para la noche</p>
+            </div>
+            <div class="option-check">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Idioma Section -->
+      <div class="config-section">
+        <h2 class="section-title">
+          <i class="bi bi-translate"></i>
+          <span data-i18n="config.language_settings">Idioma</span>
+        </h2>
+        
+        <div class="option-group">
+          <div class="option-card" data-language="es" onclick="selectLanguage('es')">
+            <div class="option-icon option-flag">
+              <i class="bi bi-flag-fill"></i>
+            </div>
+            <div class="option-content">
+              <h3 data-i18n="config.spanish">Español</h3>
+              <p data-i18n="config.spanish_description">Interfaz en español</p>
+            </div>
+            <div class="option-check">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+          </div>
+          
+          <div class="option-card" data-language="en" onclick="selectLanguage('en')">
+            <div class="option-icon option-flag">
+              <i class="bi bi-flag-fill"></i>
+            </div>
+            <div class="option-content">
+              <h3 data-i18n="config.english">English</h3>
+              <p data-i18n="config.english_description">Interface in English</p>
+            </div>
+            <div class="option-check">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
+  <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
+  <script src="JavaScript/FrontConfiguracion.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/Navbar.js"></script>
+  
+</body>
+</html>

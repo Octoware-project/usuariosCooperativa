@@ -2,158 +2,195 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Detalle de Factura</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles_tabla.css">
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  
+  <style id="theme-vars">
+    :root {
+      --primary: #ec4899;
+      --secondary: #a855f7;
+      --primary-rgb: 236, 72, 153;
+      --primary-light: #f472b6;
+      --primary-dark: #db2777;
+      --surface: #1e2128;
+      --surface-variant: #282c34;
+      --surface-hover: #2d3139;
+      --bg-gradient: linear-gradient(135deg, #1e2128 0%, #282c34 100%);
+      --text-primary: #e4e4e7;
+      --text-secondary: #d1d5db;
+      --text-muted: #9ca3af;
+      --border: #3f3f46;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+      --shadow-lg: none;
+      --shadow-xl: none;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #ec4899;
+      --btn-primary-bg: #ec4899;
+      --btn-primary-hover: #f472b6;
+      --navbar-bg: rgba(30, 33, 40, 0.95);
+      --navbar-border: rgba(63, 63, 70, 0.5);
+      --navbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --header-bg: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+      --sidebar-bg: #1e2128;
+      --sidebar-header-bg: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+      --sidebar-hover: rgba(236, 72, 153, 0.15);
+    }
+  </style>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') {
+        const lightTheme = {
+          '--primary': '#d946a6',
+          '--secondary': '#c084fc',
+          '--primary-rgb': '217, 70, 166',
+          '--primary-light': '#f3e8f8',
+          '--primary-dark': '#b8388a',
+          '--surface': '#ffffff',
+          '--surface-variant': '#f8f9fa',
+          '--surface-hover': '#f0f0f0',
+          '--bg-gradient': '#ffffff',
+          '--text-primary': '#1f2937',
+          '--text-secondary': '#6b7280',
+          '--text-muted': '#9ca3af',
+          '--border': '#e5e7eb',
+          '--shadow': '0 2px 8px rgba(0, 0, 0, 0.1)',
+          '--shadow-sm': '0 1px 2px rgba(0, 0, 0, 0.05)',
+          '--shadow-md': '0 4px 6px rgba(0, 0, 0, 0.1)',
+          '--shadow-lg': 'none',
+          '--shadow-xl': 'none',
+          '--success': '#10b981',
+          '--warning': '#f59e0b',
+          '--error': '#ef4444',
+          '--info': '#3b82f6',
+          '--btn-primary-bg': '#d946a6',
+          '--btn-primary-hover': '#b8388a',
+          '--navbar-bg': 'rgba(255, 255, 255, 0.95)',
+          '--navbar-border': 'rgba(229, 231, 235, 0.5)',
+          '--navbar-shadow': '0 4px 12px rgba(0, 0, 0, 0.1)',
+          '--header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%)',
+          '--sidebar-bg': '#ffffff',
+          '--sidebar-header-bg': 'linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%)',
+          '--sidebar-hover': '#fce7f3'
+        };
+        Object.entries(lightTheme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }
+    })();
+  </script>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  
+  <script src="JavaScript/i18n.js"></script>
+  
+  <link rel="stylesheet" href="Styles/FacturaDetalle.css">
 </head>
 <body>
-  <!-- Navbar insertado -->
-  <nav>
-    <a href="dashboard.html" class="logo" aria-label="Ir a página principal">
-      <img src="img/Logo.jpg" alt="Logo de Cooperativa - Pulpo" style="height: 40px; width: auto;">
-    </a>
-    <div class="nav-links" role="navigation" aria-label="Menú principal">
-      <a href="HorasMensuales.html">Horas Mensuales</a>
-      <a href="Comprobantes.html">Pagos</a>
-    </div>
-    <div class="user-menu" id="userMenuBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Menú usuario">
-      <div class="user-icon" title="Menú usuario">U</div>
-      <div class="dropdown" id="userDropdown" role="menu" aria-label="Menú usuario">
-        <button id="verDatosBtn" role="menuitem">Ver datos</button>
-        <button id="logoutBtn" role="menuitem">Cerrar sesión</button>
-      </div>
-    </div>
-  </nav>
+
   <div id="navbar"></div>
-  <div class="facturas-container" style="padding-top: 48px;">
-    <div class="facturas-box" style="max-width:1200px;margin:0 32px;display:flex;flex-direction:row;gap:40px;align-items:stretch; border-radius: 20px; padding: 40px 32px 32px 32px;">
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-        <h2 class="detalle-titulo">Detalle de la factura</h2>
-  <style>
-    .detalle-titulo {
-      text-align: center;
-      margin-bottom: 28px;
-      font-family: 'Segoe UI', 'Montserrat', 'Arial', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #d81b60;
-      letter-spacing: 1.5px;
-      text-shadow: 0 2px 8px #f8bbd0;
-    }
-  </style>
-        <div class="factura-detalle-list-box">
-          <div id="factura-detalle" class="factura-detalle-list" style="margin-bottom:32px;"></div>
+
+  <div class="container">
+    <div class="row justify-content-center w-100">
+      <div class="col-12">
+        <div class="detail-header-card">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <div class="back-button" onclick="window.location.href='Comprobantes.html'">
+                <i class="bi bi-arrow-left"></i>
+              </div>
+              <div>
+                <h1 class="page-title">
+                  <i class="bi bi-receipt"></i> <span data-i18n="invoice.detail">Detalle de Comprobante</span>
+                </h1>
+                <p class="page-subtitle" data-i18n="invoice.viewReceiptDetails">Información completa de tu factura</p>
+              </div>
+            </div>
+            <div class="action-buttons d-none d-md-flex">
+              <button class="btn-action" id="downloadBtn">
+                <i class="bi bi-download"></i>
+                <span data-i18n="invoice.downloadReceipt">Descargar</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="volver-container">
-          <a href="Comprobantes.html" class="btn-volver">Volver</a>
+
+        <div class="row g-4">
+          <div class="col-12 col-lg-6">
+            <div class="detail-card">
+              <div class="card-header">
+                <div class="header-icon">
+                  <i class="bi bi-info-circle"></i>
+                </div>
+                <div>
+                  <h3 class="card-title" data-i18n="invoice.receiptDetails">Información del Comprobante</h3>
+                  <p class="card-subtitle" data-i18n="invoice.receiptImage">Detalles de la factura</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="factura-detalle" class="detail-list">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="detail-card image-card">
+              <div class="card-header">
+                <div class="header-icon">
+                  <i class="bi bi-file-earmark-image"></i>
+                </div>
+                <div>
+                  <h3 class="card-title" data-i18n="payments.receipt">Comprobante</h3>
+                  <p class="card-subtitle" data-i18n="invoice.receiptImage">Imagen del documento</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="image-container">
+                  <div id="factura-imagen" class="image-content">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-  <style>
-    .volver-container {
-      text-align: center;
-      margin-top: 32px;
-    }
-    .btn-volver {
-      background: #fff;
-      color: #d81b60;
-      border: 2px solid #d81b60;
-      border-radius: 18px;
-      padding: 12px 38px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      box-shadow: 0 2px 8px #f8bbd0;
-      transition: background 0.2s, color 0.2s, border 0.2s;
-      cursor: pointer;
-      display: inline-block;
-      margin: 0 auto;
-    }
-    .btn-volver:hover {
-      background: #f8bbd0;
-      color: #ad1457;
-      border-color: #ad1457;
-    }
-  </style>
+
+        <div class="mobile-actions d-md-none">
+          <button class="btn-mobile-action" id="downloadBtnMobile">
+            <i class="bi bi-download"></i>
+            <span>Descargar Comprobante</span>
+          </button>
+        </div>
       </div>
-  <style>
-    .factura-detalle-list-box {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 32px 28px 24px 28px;
-      margin-bottom: 32px;
-    }
-  </style>
-  <div class="factura-imagen-box" style="margin: 0 0 0 12px;">
-        <div id="factura-imagen" style="display:flex;align-items:center;justify-content:center;"></div>
-      </div>
-  <style>
-    .factura-imagen-box {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 32px 28px 24px 28px;
-      margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 320px;
-      max-width: 420px;
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-    }
-    @media (max-width: 900px) {
-      .factura-imagen-box {
-        max-width: 100%;
-        min-width: unset;
-        padding: 18px 8px 12px 8px;
-      }
-    }
-  </style>
     </div>
   </div>
-  <style>
-    .factura-detalle-list {
-      padding: 0;
-      margin: 0;
-    }
-    .factura-detalle-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .factura-detalle-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 1.08rem;
-    }
-    .factura-detalle-list li:last-child {
-      border-bottom: none;
-    }
-    .factura-detalle-list .label {
-      color: #d81b60;
-      font-weight: 600;
-      min-width: 120px;
-    }
-    .factura-detalle-list .valor {
-      color: #333;
-      font-weight: 400;
-      text-align: right;
-    }
-    @media (max-width: 900px) {
-      .facturas-box {
-        flex-direction: column !important;
-      }
-      #factura-imagen {
-        margin-top: 32px;
-      }
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
   <script src="JavaScript/config.js"></script>
+  <script src="JavaScript/loader.js"></script>
+  <script src="JavaScript/navbar-functions.js"></script>
+  <script src="JavaScript/mobile-navbar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="JavaScript/factura_detalle.js"></script>
+  <script src="JavaScript/dashboard.js"></script>
+  <script src="JavaScript/Navbar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

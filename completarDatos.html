@@ -4,236 +4,90 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Completar Datos</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #FFC1E3 0%, #A3D8F4 100%);
-    }
-    .completar-container {
-      background: #fff;
-      width: 400px;
-      padding: 3rem 2.5rem;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(255, 193, 227, 0.6);
-      text-align: center;
-      transition: box-shadow 0.3s ease;
-    }
-    h1 {
-      color: #de5f88;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      font-size: 2rem;
-    }
-    p {
-      color: #555;
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-    }
-    .form-group {
-      margin-bottom: 1.2rem;
-      text-align: left;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.4rem;
-      color: #4ea9f7;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 16px 20px;
-      margin-bottom: 1.2rem;
-      font-size: 1.1rem;
-      border: 2.5px solid #A3D8F4;
-      border-radius: 12px;
-      transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-      display: block;
-    }
-    input[type="text"]:focus {
-      outline: none;
-      border-color: #de5f88;
-      background-color: #fff0f6;
-      box-shadow: 0 4px 12px rgba(222, 95, 136, 0.6);
-      transform: translateY(-3px);
-    }
-    .btn {
-      width: 100%;
-      padding: 16px 0;
-      background-color: #de5f88;
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.15rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.15s ease;
-    }
-    .btn:hover:not(:disabled) {
-      background-color: #c94f76;
-      transform: scale(1.05);
-    }
-    .btn:disabled {
-      background-color: #f7a7c1;
-      cursor: not-allowed;
-    }
-    #mensaje {
-      min-height: 1.3rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-      user-select: none;
-    }
-  </style>
+  <link rel="icon" type="image/jpeg" href="img/Logo.jpg">
+  <link rel="stylesheet" href="Styles/CompletarDatos.css" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="Styles/HideScrollbar.css">
+  <link rel="stylesheet" href="Styles/AntiFlash.css">
+  <link rel="stylesheet" href="Styles/PageLoader.css">
+  <link rel="stylesheet" href="Styles/NavbarSkeleton.css">
+  <link rel="stylesheet" href="Styles/Navbar.css">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  
+  <script src="JavaScript/theme.js"></script>
+  
+  <script src="JavaScript/i18n.js"></script>
+ 
 </head>
 <body>
-  <div class="completar-container" style="margin-top: 40px;">
-    <h1>Completa tus datos</h1>
-    <p>Para activar tu cuenta, por favor completa todos los datos requeridos en el siguiente formulario.</p>
-    <form id="completarDatosForm">
+  <div class="completar-container">
+    <div class="completar-header">
+      <h1><i class="bi bi-person-check me-2"></i><span data-i18n="profile.completeYourData">Completa tus datos</span></h1>
+      <p data-i18n="profile.activateAccountMessage">Para activar tu cuenta, por favor completa todos los datos requeridos</p>
+    </div>
+    
+    <div class="completar-content">
+      <form id="completarDatosForm">
       <div class="form-group">
-        <label for="nombre">Nombre:</label>
+        <label for="nombre"><i class="bi bi-person me-1"></i><span data-i18n="profile.name">Nombre:</span></label>
         <input type="text" id="nombre" name="nombre" required readonly>
       </div>
       <div class="form-group">
-        <label for="apellido">Apellido:</label>
+        <label for="apellido"><i class="bi bi-person me-1"></i><span data-i18n="profile.lastName">Apellido:</span></label>
         <input type="text" id="apellido" name="apellido" required readonly>
       </div>
       <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required readonly style="width:100%;padding:16px 20px;margin-bottom:1.2rem;font-size:1.1rem;border:2.5px solid #A3D8F4;border-radius:12px;transition:border-color 0.3s,background-color 0.3s,box-shadow 0.3s,transform 0.2s;display:block;background:#f7f7f7;">
+        <label for="email"><i class="bi bi-envelope me-1"></i><span data-i18n="profile.email">Email:</span></label>
+        <input type="email" id="email" name="email" required readonly>
       </div>
       <div class="form-group">
-        <label for="ci">C茅dula de Identidad:</label>
+        <label for="ci"><i class="bi bi-card-text me-1"></i><span data-i18n="profile.idCard">C閐ula de Identidad:</span></label>
         <input type="text" id="ci" name="ci" required readonly>
       </div>
       <div class="form-group">
-        <label for="telefono">Tel茅fono:</label>
+        <label for="telefono"><i class="bi bi-telephone me-1"></i><span data-i18n="profile.phone">Tel閒ono:</span></label>
         <input type="text" id="telefono" name="telefono" required>
       </div>
       <div class="form-group">
-        <label for="direccion">Direcci贸n:</label>
+        <label for="direccion"><i class="bi bi-geo-alt me-1"></i><span data-i18n="profile.address">Direcci髇:</span></label>
         <input type="text" id="direccion" name="direccion" required>
       </div>
       <div class="form-group">
-        <label for="estadoCivil">Estado Civil:</label>
+        <label for="estadoCivil"><i class="bi bi-heart me-1"></i><span data-i18n="profile.maritalStatus">Estado Civil:</span></label>
         <input type="text" id="estadoCivil" name="estadoCivil">
       </div>
       <div class="form-group">
-        <label for="genero">G茅nero:</label>
+        <label for="genero"><i class="bi bi-person me-1"></i><span data-i18n="profile.gender">G閚ero:</span></label>
         <input type="text" id="genero" name="genero">
       </div>
       <div class="form-group">
-        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required style="width:100%;padding:16px 20px;margin-bottom:1.2rem;font-size:1.1rem;border:2.5px solid #A3D8F4;border-radius:12px;transition:border-color 0.3s ease,background-color 0.3s ease,box-shadow 0.3s ease,transform 0.2s ease;display:block;background:#f7f7f7;">
+        <label for="fechaNacimiento"><i class="bi bi-calendar3 me-1"></i><span data-i18n="profile.birthDate">Fecha de Nacimiento:</span></label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
       </div>
       <div class="form-group">
-        <label for="ocupacion">Ocupaci贸n:</label>
+        <label for="ocupacion"><i class="bi bi-briefcase me-1"></i><span data-i18n="profile.occupation">Ocupaci髇:</span></label>
         <input type="text" id="ocupacion" name="ocupacion">
       </div>
       <div class="form-group">
-        <label for="nacionalidad">Nacionalidad:</label>
+        <label for="nacionalidad"><i class="bi bi-flag me-1"></i><span data-i18n="profile.nationality">Nacionalidad:</span></label>
         <input type="text" id="nacionalidad" name="nacionalidad">
       </div>
-      <button type="submit" class="btn">Guardar y Activar Cuenta</button>
+      <button type="submit" class="btn">
+        <i class="bi bi-check-circle me-2"></i><span data-i18n="profile.saveAndActivate">Guardar y Activar Cuenta</span>
+      </button>
     </form>
-    <div id="mensaje" style="margin-top:20px;"></div>
+    <div id="mensaje"></div>
+  </div>
   </div>
   <script src="JavaScript/loader.js"></script>
+    <script src="JavaScript/universal-loader.js"></script>
+  <script src="JavaScript/navbar-skeleton.js"></script>
+  <script src="JavaScript/page-loader.js"></script>
   <script src="JavaScript/config.js"></script>
-  <script>
-    // Precargar datos del usuario autenticado
-    document.addEventListener('DOMContentLoaded', async function() {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = 'index.html';
-        return;
-      }
-      try {
-        const res = await fetch(API_URLS.usuarios.validate(), {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-          }
-        });
-        if (!res.ok) throw new Error('No se pudo validar el token');
-        const data = await res.json();
-        const persona = Array.isArray(data.persona) ? data.persona[0] : data.persona;
-        const user = Array.isArray(data.user) ? data.user[0] : data.user;
-        document.getElementById('nombre').value = persona?.name || '';
-        document.getElementById('apellido').value = persona?.apellido || '';
-        document.getElementById('email').value = user?.email || '';
-        document.getElementById('ci').value = persona?.CI || '';
-      } catch (err) {
-        window.location.href = 'index.html';
-      }
-    });
-
-    document.getElementById('completarDatosForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = 'index.html';
-        return;
-      }
-      // Validar que todos los campos est茅n completos
-  const requiredFields = ['telefono','direccion','estadoCivil','genero','fechaNacimiento','ocupacion','nacionalidad'];
-      let valid = true;
-      for (const id of requiredFields) {
-        const el = document.getElementById(id);
-        if (!el || !el.value.trim()) {
-          valid = false;
-          el && (el.style.borderColor = '#de5f88');
-        } else {
-          el.style.borderColor = '#A3D8F4';
-        }
-      }
-      if (!valid) {
-        document.getElementById('mensaje').innerHTML = '<span style="color:red;">Debes completar todos los campos para activar tu cuenta.</span>';
-        console.error('Faltan campos obligatorios para activar la cuenta.');
-        return;
-      }
-      const datos = {
-        telefono: document.getElementById('telefono').value,
-        direccion: document.getElementById('direccion').value,
-        estadoCivil: document.getElementById('estadoCivil').value,
-        genero: document.getElementById('genero').value,
-        fechaNacimiento: document.getElementById('fechaNacimiento').value,
-        ocupacion: document.getElementById('ocupacion').value,
-        nacionalidad: document.getElementById('nacionalidad').value
-      };
-      try {
-        const res = await fetch(API_URLS.usuarios.completarDatos(), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify(datos)
-        });
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById('mensaje').innerHTML = '<span style="color:green;">Datos completados correctamente. Tu cuenta ser谩 activada pronto.</span>';
-          console.log('Datos guardados correctamente:', data);
-          setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
-        } else {
-          let errorMsg = data.message || 'Error al guardar los datos.';
-          if (data.errors) {
-            errorMsg += '<ul>' + Object.values(data.errors).map(arr => `<li>${arr[0]}</li>`).join('') + '</ul>';
-          }
-          document.getElementById('mensaje').innerHTML = '<span style="color:red;">' + errorMsg + '</span>';
-          console.error('Error al guardar los datos:', data);
-        }
-      } catch (err) {
-        document.getElementById('mensaje').innerHTML = '<span style="color:red;">Error de conexi贸n.</span>';
-        console.error('Error de conexi贸n:', err);
-      }
-    });
-  </script>
+  <script src="JavaScript/completarDatos.js"></script>
+  
 </body>
 </html>
